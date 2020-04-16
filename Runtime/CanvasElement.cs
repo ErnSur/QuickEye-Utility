@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace QuickEye.CanvasElements
 {
@@ -11,12 +10,5 @@ namespace QuickEye.CanvasElements
         {
             Context = context;
         }
-    }
-
-    public abstract class CanvasElement<TEventHub, TModel> : CanvasElement<(TEventHub, TModel)>
-        where TEventHub : IEventHub
-    {
-        protected TEventHub EventHub => Context.Item1;
-        protected TModel Model => Context.Item2;
     }
 }

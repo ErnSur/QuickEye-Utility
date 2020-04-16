@@ -2,9 +2,9 @@
 {
     public static partial class CanvasElementExtensions
     {
-        public static T AddNewInitialized<T,C>(this ElementList<T> g, C c) where T : CanvasElement<C>
+        public static T AddNewInitialized<T, C>(this Container<T> g, C c) where T : CanvasElement<C>
         {
-            var e = UnityEngine.Object.Instantiate(g.itemPrefab, g.container);
+            var e = UnityEngine.Object.Instantiate(g.itemPrefab, g.transform);
             e.Initialize(c);
             g.Add(e);
             return e;
