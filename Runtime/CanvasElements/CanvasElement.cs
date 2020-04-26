@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace QuickEye.CanvasElements
+namespace QuickEye.Utility
 {
-    public abstract class CanvasElement<TContext> : MonoBehaviour, ICanvasElement<TContext>
+    public abstract class CanvasElement<TContext> : MonoBehaviour
     {
         protected TContext Context { get; private set; }
 
