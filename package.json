@@ -1,8 +1,7 @@
 {
-  "name": "com.quickeye.canvaselements",
-  "displayName": "Canvas Elements",
+  "name": "com.quickeye.quickeyeutility",
+  "displayName": "QuickEye Utility",
   "version": "1.0.0",
   "author": "Ernest Sury\u015b",
-  "description": "Small Unity library to help you write UI with a predictable patterns.",
   "type": "library"
 }
