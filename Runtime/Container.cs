@@ -73,7 +73,6 @@ namespace QuickEye.Utility
         {
             if (_items.Remove(item))
             {
-                Debug.Log($"Removed {item}");
                 OnRemove(item);
                 return true;
             }
@@ -87,11 +86,8 @@ namespace QuickEye.Utility
 
         public void Clear()
         {
-            Debug.Log($"Clear {_items.Count}");
             for (int i = _items.Count-1; i >= 0; i--)
             {
-                Debug.Log($"Try Remove");
-
                 Remove(_items[i]);
             }
         }
