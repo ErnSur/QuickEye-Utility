@@ -7,72 +7,72 @@ namespace QuickEye.Utility
     public class GameObjectPool<T> where T : Component
     {
         [SerializeField]
-        private T _original;
+        private T original;
 
         [SerializeField]
-        private Transform _parent;
+        private Transform parent;
 
         [SerializeField]
-        private int _startSize;
+        private int startSize;
 
-        private readonly Stack<T> _available = new Stack<T>();
-        private readonly HashSet<T> _rented = new HashSet<T>();
+        private readonly Stack<T> available = new Stack<T>();
+        private readonly HashSet<T> rented = new HashSet<T>();
 
         public int CountAll => CountRented + CountAvailable;
-        public int CountRented => _rented.Count;
-        public int CountAvailable => _available.Count;
+        public int CountRented => rented.Count;
+        public int CountAvailable => available.Count;
 
-        public T Original => _original;
-        public Transform Parent => _parent;
+        public T Original => original;
+        public Transform Parent => parent;
 
         // Empty Ctr is needed for proper serialization
         public GameObjectPool() { }
         public GameObjectPool(Transform parent, T original, int size)
         {
-            _parent = parent;
-            _original = original;
-            _startSize = size;
+            this.parent = parent;
+            this.original = original;
+            startSize = size;
             Initialize();
         }
 
         public void Initialize()
         {
-            for (int i = 0; i < _startSize; i++)
-                _available.Push(CreateObject());
+            for (int i = 0; i < startSize; i++)
+                available.Push(CreateObject());
         }
 
         public virtual T Rent()
         {
-            var obj = _available.Count > 0 ? _available.Pop() : CreateObject();
-            _rented.Add(obj);
+            var obj = available.Count > 0 ? available.Pop() : CreateObject();
+            rented.Add(obj);
             return obj;
         }
 
         public void Return(T obj)
         {
-            if (_available.Contains(obj))
+            if (available.Contains(obj))
             {
                 Debug.LogWarning($"Trying to return already released object");
                 return;
             }
 
-            _rented.Remove(obj);
+            rented.Remove(obj);
 
             obj.gameObject.SetActive(false);
-            obj.transform.SetParent(_parent);
+            obj.transform.SetParent(parent);
 
-            _available.Push(obj);
+            available.Push(obj);
         }
 
         public void ReturnAll()
         {
-            foreach (var obj in _rented)
+            foreach (var obj in rented)
                 Return(obj);
         }
 
         private T CreateObject()
         {
-            var newObject = Object.Instantiate(_original, _parent);
+            var newObject = Object.Instantiate(original, parent);
             newObject.gameObject.SetActive(false);
             return newObject;
         }

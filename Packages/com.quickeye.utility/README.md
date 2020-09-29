@@ -8,7 +8,10 @@ Because of `IList<T>`, it functions as a collection with additional behavior of 
 Cuts much of the boilerplate code with UI scripting. 
 
 ### `GameObjectPool`
-As the name suggests, it is the object pool pattern implementation.
+Object pool pattern implementation with Unity specific API.
+* Serializable, can be configured from editor.
+* Prototype as prefab.
+* Configurable transform parent.
 
 ### `CanvasElement`
 A very simple interface that forces the user to initialize UI components in a certain way.
