@@ -1,5 +1,9 @@
 Collection of small useful classes.
 
+### `Singleton<T>`
+`MonoBehaviour` Singleton implementation.
+* Allows for prefab instantiation together with `SingletonAssetAttribute`
+* Takes into account some common problems of many singleton implementations that are out there.
 ### `Container` and `PoolContainer`
 A serializable object that holds a prefab and a `Transform` reference, implements `IList<T>`.
 `AddNew` method creates a new instance of prefab inside the transform.
