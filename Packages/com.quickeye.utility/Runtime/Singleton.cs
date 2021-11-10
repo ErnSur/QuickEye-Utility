@@ -21,7 +21,7 @@ namespace QuickEye.Utility
                 Destroy(gameObject);
                 throw new SingletonAlreadyExistsException(this);
             }
-            
+
             ForceDontDestroyOnLoad();
             instance = (T)this;
         }
@@ -72,7 +72,7 @@ namespace QuickEye.Utility
             {
                 var prefab = Resources.Load<T>(attr.ResourcesPath);
                 if (prefab == null)
-                    Debug.Log($"Prefab at : {attr.ResourcesPath} has no {typeof(T).Name} component.");
+                    throw new SingletonAssetIsMissingException(attr.ResourcesPath, typeof(T));
                 obj = Instantiate(prefab);
                 obj.name = typeof(T).Name;
                 return true;
@@ -81,7 +81,7 @@ namespace QuickEye.Utility
             return obj = null;
         }
     }
-    
+
     [AttributeUsage(AttributeTargets.Class)]
     public sealed class SingletonAssetAttribute : Attribute
     {
@@ -89,7 +89,7 @@ namespace QuickEye.Utility
 
         public SingletonAssetAttribute(string resourcesPath) => ResourcesPath = resourcesPath;
     }
-    
+
     public class SingletonAlreadyExistsException : Exception
     {
         internal SingletonAlreadyExistsException(Singleton obj) : base(
@@ -108,6 +108,14 @@ namespace QuickEye.Utility
 
             path = $"{obj.scene.name}{path}";
             return path;
+        }
+    }
+
+    public class SingletonAssetIsMissingException : Exception
+    {
+        internal SingletonAssetIsMissingException(string assetPath, Type componentType) : base(
+            $"Prefab at : {assetPath} has no {componentType.Name} component.")
+        {
         }
     }
 }
