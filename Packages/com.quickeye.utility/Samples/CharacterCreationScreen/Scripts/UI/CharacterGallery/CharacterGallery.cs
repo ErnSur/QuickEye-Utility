@@ -1,20 +1,22 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-namespace QuickEye.Utility.CharacterCreation
+namespace QuickEye.Samples.CharacterCreation
 {
-
-    public class CharacterGallery : CanvasElement<(CharacterCreationEvents events, CharacterTemplate[] fighters)>
+    public class CharacterGallery : MonoBehaviour
     {
+        public event Action<CharacterTemplate> CharacterSelected;
+
         [SerializeField]
         private CharacterGalleryItems _galleryItems;
 
-        public override void Initialize((CharacterCreationEvents events, CharacterTemplate[] fighters) c)
+        public void Initialize(CharacterTemplate[] fighters)
         {
-            base.Initialize(c);
-            
-            foreach (var item in c.fighters)
+            foreach (var characterTemplate in fighters)
             {
-                _galleryItems.AddNew().Initialize((c.events, item));
+                var item = _galleryItems.AddNew();
+                item.Initialize(characterTemplate);
+                item.Clicked += c => CharacterSelected?.Invoke(c);
             }
         }
     }

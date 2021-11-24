@@ -1,31 +1,32 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-namespace QuickEye.Utility.CharacterCreation
+namespace QuickEye.Samples.CharacterCreation
 {
-    public class CharacterCreationEvents
-    {
-        public Action<CharacterTemplate> CharacterSelectedEvent;
-        public Action<CharacterTemplate> RemoveFromTeam;
-    }
-
     public class CharacterCreationController : MonoBehaviour
     {
-        private CharacterCreationEvents events = new CharacterCreationEvents();
+        [FormerlySerializedAs("_selectableFighters")]
+        [SerializeField]
+        private CharacterTemplate[] selectableFighters;
 
         [SerializeField]
-        private CharacterTemplate[] _selectableFighters;
+        private SkillGallery skillGallery;
+
+        [SerializeField]
+        private CharacterPreview characterPreview;
+
+        [SerializeField]
+        private CharacterGallery characterGallery;
 
         private void Awake()
         {
-            GetComponentInChildren<CharacterGallery>()
-                .Initialize((events, _selectableFighters));
-
-            GetComponentInChildren<SkillGallery>()
-                .Initialize(events);
-
-            GetComponentInChildren<CharacterPreview>()
-                .Initialize(events);
+            characterGallery.Initialize(selectableFighters);
+            characterGallery.CharacterSelected += c =>
+            {
+                skillGallery.Setup(c);
+                characterPreview.Setup(c);
+            };
         }
     }
 }

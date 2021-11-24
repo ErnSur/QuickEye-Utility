@@ -1,30 +1,21 @@
-﻿using QuickEye.Utility;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace QuickEye.Utility.CharacterCreation
+namespace QuickEye.Samples.CharacterCreation
 {
-    public class SkillGallery : CanvasElement<CharacterCreationEvents>
+    public class SkillGallery : MonoBehaviour
     {
         [SerializeField]
         private SkillGalleryItems _galleryItems;
-
-        public override void Initialize(CharacterCreationEvents eventHub)
-        {
-            base.Initialize(eventHub);
-            eventHub.CharacterSelectedEvent += Refresh;
-        }
-
-        private void Refresh(CharacterTemplate character)
+        
+        public void Setup(CharacterTemplate character)
         {
             _galleryItems.Clear();
 
-            if (character == null || character.skills == null)
+            if (character?.skills == null)
                 return;
 
             foreach (var skill in character.skills)
-            {
-                _galleryItems.AddNew().Initialize((Context, skill));
-            }
+                _galleryItems.AddNew().Setup(skill);
         }
     }
 }

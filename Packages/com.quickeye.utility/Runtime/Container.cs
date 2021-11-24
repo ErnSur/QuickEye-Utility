@@ -83,7 +83,8 @@ namespace QuickEye.Utility
 
         public void Clear()
         {
-            for (var i = items.Count - 1; i >= 0; i--) Remove(items[i]);
+            for (var i = items.Count - 1; i >= 0; i--)
+                Remove(items[i]);
         }
 
         public bool Contains(T item)

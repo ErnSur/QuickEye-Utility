@@ -10,11 +10,22 @@ namespace QuickEye.Utility
         [NonSerialized]
         public GameObjectPool<T> pool;
 
-        public PoolContainer() { }
+        public PoolContainer()
+        {
+        }
 
         public PoolContainer(Transform transform, T itemPrefab) : base(transform, itemPrefab)
         {
             pool = new GameObjectPool<T>(transform, itemPrefab, 0);
+        }
+
+        void ISerializationCallbackReceiver.OnAfterDeserialize()
+        {
+            pool = new GameObjectPool<T>(Transform, ItemPrefab, 0);
+        }
+
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
+        {
         }
 
         protected override T GetNewItem()
@@ -28,12 +39,5 @@ namespace QuickEye.Utility
         {
             pool.Return(item);
         }
-
-        void ISerializationCallbackReceiver.OnAfterDeserialize()
-        {
-            pool = new GameObjectPool<T>(Transform, ItemPrefab, 0);
-        }
-
-        void ISerializationCallbackReceiver.OnBeforeSerialize() { }
     }
 }
