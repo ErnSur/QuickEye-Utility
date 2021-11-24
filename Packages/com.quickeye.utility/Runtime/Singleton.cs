@@ -87,7 +87,10 @@ namespace QuickEye.Utility
     {
         public string ResourcesPath { get; }
 
-        public SingletonAssetAttribute(string resourcesPath) => ResourcesPath = resourcesPath;
+        public SingletonAssetAttribute(string resourcesPath)
+        {
+            ResourcesPath = resourcesPath;
+        }
     }
 
     public class SingletonAlreadyExistsException : Exception

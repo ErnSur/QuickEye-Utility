@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace QuickEye.Utility.CharacterCreation
+namespace QuickEye.Samples.CharacterCreation
 {
-    public class CharacterPreview : CanvasElement<CharacterCreationEvents>
+    public class CharacterPreview : MonoBehaviour
     {
         [SerializeField]
         private Image _avatar;
@@ -18,15 +16,8 @@ namespace QuickEye.Utility.CharacterCreation
 
         [SerializeField]
         private Sprite _nothingSelectedAvatar;
-
-        public override void Initialize(CharacterCreationEvents eventHub)
-        {
-            base.Initialize(eventHub);
-            Refresh(null);
-            eventHub.CharacterSelectedEvent += Refresh;
-        }
-
-        private void Refresh(CharacterTemplate selectedFighter)
+        
+        public void Setup(CharacterTemplate selectedFighter)
         {
             UpdateCharacterDetails(selectedFighter);
         }

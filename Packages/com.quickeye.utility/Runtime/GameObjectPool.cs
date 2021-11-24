@@ -21,7 +21,9 @@ namespace QuickEye.Utility
         private readonly HashSet<T> rented = new HashSet<T>();
 
         // Empty constructor is needed for proper unity serialization
-        public GameObjectPool() { }
+        public GameObjectPool()
+        {
+        }
 
         public GameObjectPool(Transform parent, T original, int size)
         {

@@ -66,7 +66,8 @@ namespace QuickEye.Utility.Tests
         {
             container = new Container<Transform>(containerTransform, prefab);
 
-            for (var i = 0; i < elementCount; i++) container.AddNew();
+            for (var i = 0; i < elementCount; i++)
+                container.AddNew();
             container.Clear();
             yield return null;
 
@@ -109,7 +110,8 @@ namespace QuickEye.Utility.Tests
             var elementCount = 3;
             container = new Container<Transform>(containerTransform, prefab);
 
-            for (var i = 0; i < elementCount; i++) container.AddNew();
+            for (var i = 0; i < elementCount; i++)
+                container.AddNew();
             container.Clear();
             yield return null;
             Assert.AreEqual(0, containerTransform.childCount);
@@ -117,7 +119,8 @@ namespace QuickEye.Utility.Tests
 
         private IEnumerable<Transform> GetTransformChildren(Transform parent)
         {
-            foreach (Transform transform in parent) yield return transform;
+            foreach (Transform transform in parent)
+                yield return transform;
         }
     }
 }

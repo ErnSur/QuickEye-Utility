@@ -1,22 +1,25 @@
-﻿using UnityEngine;
+﻿using System;
+using QuickEye.Utility;
+using UnityEngine;
 using UnityEngine.UI;
 
-namespace QuickEye.Utility.CharacterCreation
+namespace QuickEye.Samples.CharacterCreation
 {
-    [System.Serializable]
-    public class SkillGalleryItems : PoolContainer<SkillGalleryItem> { }
-    public class SkillGalleryItem : CanvasElement<(CharacterCreationEvents, Skill)>
+    [Serializable]
+    public class SkillGalleryItems : PoolContainer<SkillGalleryItem>
+    {
+    }
+
+    public class SkillGalleryItem : MonoBehaviour
     {
         [SerializeField]
         private Image _icon;
 
         [SerializeField]
         private Sprite _noSkillIcon;
-
-        public override void Initialize((CharacterCreationEvents, Skill) context)
+        
+        public void Setup( Skill skill)
         {
-            base.Initialize(context);
-            var skill = context.Item2;
             _icon.sprite = skill != null ? skill.icon : _noSkillIcon;
         }
     }

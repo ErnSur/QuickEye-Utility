@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-namespace QuickEye.Utility.CharacterCreation
+namespace QuickEye.Samples.CharacterCreation
 {
-    [System.Serializable]
+    [Serializable]
     public class Skill
     {
         public Sprite icon;
