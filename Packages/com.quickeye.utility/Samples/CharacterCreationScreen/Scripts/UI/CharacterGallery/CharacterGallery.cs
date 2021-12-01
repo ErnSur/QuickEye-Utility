@@ -1,12 +1,10 @@
-﻿using System;
+﻿using QuickEye.Samples.UIEvents;
 using UnityEngine;
 
 namespace QuickEye.Samples.CharacterCreation
 {
     public class CharacterGallery : MonoBehaviour
     {
-        public event Action<CharacterTemplate> CharacterSelected;
-
         [SerializeField]
         private CharacterGalleryItems _galleryItems;
 
@@ -16,7 +14,7 @@ namespace QuickEye.Samples.CharacterCreation
             {
                 var item = _galleryItems.AddNew();
                 item.Initialize(characterTemplate);
-                item.Clicked += c => CharacterSelected?.Invoke(c);
+                item.Clicked += CharacterSelected.Trigger;
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using QuickEye.Samples.UIEvents;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -22,11 +22,11 @@ namespace QuickEye.Samples.CharacterCreation
         private void Awake()
         {
             characterGallery.Initialize(selectableFighters);
-            characterGallery.CharacterSelected += c =>
+            CharacterSelected.Register( c =>
             {
                 skillGallery.Setup(c);
                 characterPreview.Setup(c);
-            };
+            });
         }
     }
 }
