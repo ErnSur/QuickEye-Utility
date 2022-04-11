@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.Experimental.AI;
 
 namespace QuickEye.Utility
 {
@@ -85,11 +89,62 @@ namespace QuickEye.Utility
     [AttributeUsage(AttributeTargets.Class)]
     public sealed class SingletonAssetAttribute : Attribute
     {
+        /// <summary>
+        /// For `Singleton<T>` singletons a prefab path relative to resources folder.
+        /// For `ScriptableSingleton<T>` a SO path relative to Assets folder.
+        /// </summary>
         public string ResourcesPath { get; }
 
         public SingletonAssetAttribute(string resourcesPath)
         {
             ResourcesPath = resourcesPath;
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Class)]
+    public sealed class ScriptableSingletonAssetAttribute : Attribute
+    {
+        /// <summary>
+        /// Project metadata about Singleton Asset.
+        /// </summary>
+        /// <param name="path">Path at which singleton asset should be found. Relative to the Resources folder if `AutoCreateAsset` is set to `false` otherwise relative to the Assets folder.</param>
+        /// <param name="assetIsMandatory">Should editor throw an exception if singleton asset in not present in the project.</param>
+        /// <param name="autoCreateAsset">Automatically create asset in editor if it does not exists.</param>
+        public ScriptableSingletonAssetAttribute(string path, bool assetIsMandatory = true, bool autoCreateAsset = false)
+        {
+            if (autoCreateAsset)
+            {
+                AssetsPath = path;
+                ResourcesPath = GetResPath(path);
+            }
+            else
+            {
+                ResourcesPath = path;
+            }
+
+            AutoCreateAsset = autoCreateAsset;
+            AssetIsMandatory = assetIsMandatory;
+        }
+
+        public string AssetsPath { get; }
+
+        public string ResourcesPath { get; }
+
+        // Requires Full assetPath
+        public bool AutoCreateAsset { get; }
+
+        //does not require full asset path
+        public bool AssetIsMandatory { get; }
+
+        private static string GetResPath(string path)
+        {
+            path = Path.GetFullPath(path);
+
+            var resourcesFolder = $"{Path.DirectorySeparatorChar}Resources{Path.DirectorySeparatorChar}";
+            var index = path.IndexOf(resourcesFolder, StringComparison.InvariantCulture);
+            if (index == -1)
+                throw new ArgumentException("path has to contain Resources folder");
+            return path.Substring(index + resourcesFolder.Length);
         }
     }
 
@@ -118,6 +173,14 @@ namespace QuickEye.Utility
     {
         internal SingletonAssetIsMissingException(string assetPath, Type componentType) : base(
             $"Prefab at : {assetPath} has no {componentType.Name} component.")
+        {
+        }
+    }
+
+    public class SingletonAssetPathIsOutsideResources : Exception
+    {
+        internal SingletonAssetPathIsOutsideResources(Type type) : base(
+            $"Type {type.FullName} has singleton path defined but does not include Resources folder.")
         {
         }
     }
