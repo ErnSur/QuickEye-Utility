@@ -6,7 +6,7 @@ namespace QuickEye.Utility
 {
     /// <summary>
     /// class that derives from ScriptableSingleton<T>:
-    /// will create its instance automatically when referenced by Instance property
+    /// will create its instance automatically when Instance property is used
     /// if class also has `SingletonAsset` attribute an asset has to be present at relevant path, unless a `SingletonAssetAttribute.Mandatory` is set to false.
     /// </summary>
     public abstract class ScriptableSingleton<T> : ScriptableSingleton where T : ScriptableSingleton<T>

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace QuickEye.Utility.Editor
 {
-    internal static class ProjectSettingsProviderFactory
+    internal static class SettingsProviderFactory
     {
         [SettingsProviderGroup]
         private static SettingsProvider[] GetProviders()

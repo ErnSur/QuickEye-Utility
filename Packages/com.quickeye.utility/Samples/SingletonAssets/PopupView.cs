@@ -16,7 +16,9 @@ namespace QuickEye.Utility.Samples.SingletonAssets
 
         private void Start()
         {
-            Debug.Log($"MES: {UIStyles.Instance}");
+            // we are using another singleton instance- "UIStyles"
+            // `UIStyles` singleton is different from `PopupView` in that it is a `ScriptableObject` singleton
+            // and `PopupView` is a `MonoBehaviour` singleton.
             label.color = UIStyles.Instance.popupTextColor;
         }
 
