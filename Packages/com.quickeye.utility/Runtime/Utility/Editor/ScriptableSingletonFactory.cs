@@ -11,49 +11,39 @@ namespace QuickEye.Utility.Editor
         [InitializeOnLoadMethod]
         private static void RegisterCallback()
         {
-            ScriptableSingleton.SingletonInstantiated += TryCreateAsset;
+            ScriptableSingleton.TryCreateAssetAction += TryCreateAsset;
         }
 
-        // This can crash the editor if it would occur at editor startup
+        // This can crash the editor if it would occur at editor startup (pre 2021.2.0a15)
         // https://fogbugz.unity3d.com/default.asp?1322299_jm6m9dvbph96nd5o
-        private static void TryCreateAsset(ScriptableObject obj)
+        private static bool TryCreateAsset(ScriptableObject obj)
         {
             if (!TryGetAssetPath(obj.GetType(), out var path))
-                return;
+                return false;
 
             var baseDir = Path.GetDirectoryName(path);
             if (baseDir != null)
                 Directory.CreateDirectory(baseDir);
             AssetDatabase.CreateAsset(obj, path);
             AssetDatabase.SaveAssets();
+            return true;
         }
 
         private static bool TryGetAssetPath(Type type, out string path)
         {
-            var attr = type.GetCustomAttribute<SingletonAssetAttribute>();
+            var attr = type.GetCustomAttribute<CreateAssetAutomaticallyAttribute>();
             if (attr == null)
             {
                 path = null;
                 return false;
             }
 
-            path = attr.ResourcesPath;
-            path = path.TrimStart('/');
-            path = path.TrimStart('\\');
-            if (!path.StartsWith("Assets/") && !path.StartsWith("Assets\\"))
-                path = $"Assets/{path}";
+            path = PathUtility.EnsurePathStartsWith("Assets", attr.FullAssetPath);
+            if (!PathUtility.ContainsFolder("Resources", path))
+                path = Path.Combine(Path.GetDirectoryName(path) ?? "", "Resources", Path.GetFileName(path));
             if (!path.EndsWith(".asset"))
                 path += ".asset";
             return true;
-        }
-
-        private static string GetAssetPath(Type type)
-        {
-            const string baseDir = "Assets/Singleton Assets/Resources";
-            var attr = type.GetCustomAttribute<SingletonAssetAttribute>();
-            var resourcesPath = attr?.ResourcesPath ?? $"{type.Name}";
-            var runtimeDir = Path.Combine(baseDir, $"{resourcesPath}.asset");
-            return runtimeDir;
         }
     }
 }

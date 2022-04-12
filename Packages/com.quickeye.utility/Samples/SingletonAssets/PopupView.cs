@@ -16,7 +16,8 @@ namespace QuickEye.Utility.Samples.SingletonAssets
 
         private void Start()
         {
-            label.color = GlobalSettings.Instance.popupTextColor;
+            Debug.Log($"MES: {UIStyles.Instance}");
+            label.color = UIStyles.Instance.popupTextColor;
         }
 
         public void SetMessage(string message)
