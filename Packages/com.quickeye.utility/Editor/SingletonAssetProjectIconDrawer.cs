@@ -19,8 +19,8 @@ namespace QuickEye.Utility.Editor
             alignment = TextAnchor.MiddleRight
         };
 
-        private const string linkedIcon = "Linked";
-        private const string unlinkedIcon = "Unlinked";
+        private const string LinkedIcon = "Packages/com.quickeye.utility/Editor/Resources/com.quickeye.utility/Linked.png";
+        private const string UnlinkedIcon = "Packages/com.quickeye.utility/Editor/Resources/com.quickeye.utility/Unlinked.png";
 
         static SingletonAssetProjectIconDrawer()
         {
@@ -39,8 +39,8 @@ namespace QuickEye.Utility.Editor
         private static GUIContent GetGuiContent(bool isCorrectPath, string resourcesPath)
         {
             var iconContent = isCorrectPath
-                ? EditorGUIUtility.IconContent(linkedIcon)
-                : EditorGUIUtility.IconContent(unlinkedIcon);
+                ? EditorGUIUtility.IconContent(LinkedIcon)
+                : EditorGUIUtility.IconContent(UnlinkedIcon);
             iconContent.tooltip = isCorrectPath
                 ? "Singleton Asset is loaded from this path"
                 : $"Singleton Asset is not in correct path:\n\"Resources/{resourcesPath}\"";
