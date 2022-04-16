@@ -82,17 +82,6 @@ namespace QuickEye.Utility
         }
     }
 
-    [AttributeUsage(AttributeTargets.Class)]
-    public sealed class SingletonAssetAttribute : Attribute
-    {
-        public string ResourcesPath { get; }
-
-        public SingletonAssetAttribute(string resourcesPath)
-        {
-            ResourcesPath = resourcesPath;
-        }
-    }
-
     public class SingletonAlreadyExistsException : Exception
     {
         internal SingletonAlreadyExistsException(Singleton obj) : base(
@@ -118,6 +107,13 @@ namespace QuickEye.Utility
     {
         internal SingletonAssetIsMissingException(string assetPath, Type componentType) : base(
             $"Prefab at : {assetPath} has no {componentType.Name} component.")
+        {
+        }
+    }
+    public class SingletonAssetPathIsOutsideResourcesException : Exception
+    {
+        internal SingletonAssetPathIsOutsideResourcesException(Type type) : base(
+            $"Type {type.FullName} has singleton path defined but does not include Resources folder.")
         {
         }
     }
