@@ -1,3 +1,5 @@
+# QuickEye Utility
+
 Collection of small useful classes.
 
 ### `Singleton<T>`
@@ -28,3 +30,7 @@ Object pool pattern implementation with Unity specific API.
 * Serializable, can be configured from editor.
 * Prototype as prefab.
 * Configurable transform parent.
+
+## Editor
+
+### `QuickEye.Utility.Editor.EditorColorPalette`

@@ -11,8 +11,8 @@
       "path": "Samples~/SingletonAssets"
     },
     {
-      "displayName": "Character creation screen",
-      "description": "Basic usage of the Container classes.",
+      "displayName": "Usage of Container classes.",
+      "description": "UI scene with usage of the Container classes.",
       "path": "Samples~/CharacterCreationScreen"
     }
   ]
