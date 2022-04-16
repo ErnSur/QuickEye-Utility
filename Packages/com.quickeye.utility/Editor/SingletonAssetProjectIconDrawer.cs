@@ -11,6 +11,12 @@ namespace QuickEye.Utility.Editor
     [InitializeOnLoad]
     internal static class SingletonAssetProjectIconDrawer
     {
+        private const string LinkedIcon =
+            "Packages/com.quickeye.utility/Editor/Resources/com.quickeye.utility/Linked.png";
+
+        private const string UnlinkedIcon =
+            "Packages/com.quickeye.utility/Editor/Resources/com.quickeye.utility/Unlinked.png";
+        
         private static readonly Dictionary<string, SingletonAssetAttribute> CachedAssets =
             new Dictionary<string, SingletonAssetAttribute>();
 
@@ -19,13 +25,7 @@ namespace QuickEye.Utility.Editor
             margin = new RectOffset(),
             padding = new RectOffset()
         };
-
-        private const string LinkedIcon =
-            "Packages/com.quickeye.utility/Editor/Resources/com.quickeye.utility/Linked.png";
-
-        private const string UnlinkedIcon =
-            "Packages/com.quickeye.utility/Editor/Resources/com.quickeye.utility/Unlinked.png";
-
+        
         static SingletonAssetProjectIconDrawer()
         {
             EditorApplication.projectWindowItemOnGUI += ProjectWindowItemOnGUI;
