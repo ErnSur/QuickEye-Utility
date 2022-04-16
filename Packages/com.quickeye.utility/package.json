@@ -1,13 +1,18 @@
 {
   "name": "com.quickeye.utility",
   "displayName": "QuickEye Utility",
-  "version": "1.2.0",
-  "author": "Ernest Sury\u015b",
+  "version": "1.3.0",
+  "author": "Quick Eye",
   "type": "library",
   "samples": [
     {
-      "displayName": "Character creation screen",
-      "description": "Basic usage of the Containers and CanvasElements.",
+      "displayName": "Usage of Singleton classes",
+      "description": "Basic usage of the Singleton and ScriptableSingleton.",
+      "path": "Samples~/SingletonAssets"
+    },
+    {
+      "displayName": "Usage of Container classes.",
+      "description": "UI scene with usage of the Container classes.",
       "path": "Samples~/CharacterCreationScreen"
     }
   ]
