@@ -11,29 +11,36 @@ namespace QuickEye.Utility.Editor
     [InitializeOnLoad]
     internal static class SingletonAssetProjectIconDrawer
     {
-        private static readonly Dictionary<string, SingletonAssetAttribute> cachedAssets =
+        private static readonly Dictionary<string, SingletonAssetAttribute> CachedAssets =
             new Dictionary<string, SingletonAssetAttribute>();
 
         private static GUIStyle IconLabelStyle => new GUIStyle(EditorStyles.label)
         {
-            alignment = TextAnchor.MiddleRight
+            margin = new RectOffset(),
+            padding = new RectOffset()
         };
 
-        private const string LinkedIcon = "Packages/com.quickeye.utility/Editor/Resources/com.quickeye.utility/Linked.png";
-        private const string UnlinkedIcon = "Packages/com.quickeye.utility/Editor/Resources/com.quickeye.utility/Unlinked.png";
+        private const string LinkedIcon =
+            "Packages/com.quickeye.utility/Editor/Resources/com.quickeye.utility/Linked.png";
+
+        private const string UnlinkedIcon =
+            "Packages/com.quickeye.utility/Editor/Resources/com.quickeye.utility/Unlinked.png";
 
         static SingletonAssetProjectIconDrawer()
         {
             EditorApplication.projectWindowItemOnGUI += ProjectWindowItemOnGUI;
         }
 
-        private static void ProjectWindowItemOnGUI(string guid, Rect selectionRect)
+        private static void ProjectWindowItemOnGUI(string guid, Rect rect)
         {
-            if (!cachedAssets.TryGetValue(guid, out var attr))
+            if (!CachedAssets.TryGetValue(guid, out var attr))
                 CacheItem(guid);
             if (attr == null)
                 return;
-            DrawItem(selectionRect, AssetDatabase.GUIDToAssetPath(guid), attr);
+            if (rect.height > EditorGUIUtility.singleLineHeight)
+                DrawItemOnGrid(rect, AssetDatabase.GUIDToAssetPath(guid), attr);
+            else
+                DrawItem(rect, AssetDatabase.GUIDToAssetPath(guid), attr);
         }
 
         private static GUIContent GetGuiContent(bool isCorrectPath, string resourcesPath)
@@ -49,15 +56,43 @@ namespace QuickEye.Utility.Editor
 
         private static void DrawItem(Rect rect, string path, SingletonAssetAttribute attribute)
         {
+            const int projWindowIconWidth = 16;
+            var resPath = GetResPath(path);
+            var hasCorrectPath = resPath == attribute.ResourcesPath;
+
+            var content = new GUIContent(Path.GetFileNameWithoutExtension(path));
+            var labelTextSize = new GUIStyle("label").CalcSize(content);
+            var itemLabel = new Rect(rect)
+            {
+                width = labelTextSize.x + projWindowIconWidth
+            };
+            var linkedIconRect = new Rect(rect)
+            {
+                x = itemLabel.xMax + 2,
+                xMax = rect.xMax
+            };
+            var linkedIcon = GetGuiContent(hasCorrectPath, attribute.ResourcesPath);
+            GUI.Label(linkedIconRect, linkedIcon, IconLabelStyle);
+        }
+
+        private static void DrawItemOnGrid(Rect rect, string path, SingletonAssetAttribute attribute)
+        {
             var resPath = GetResPath(path);
             var hasCorrectPath = resPath == attribute.ResourcesPath;
             var content = GetGuiContent(hasCorrectPath, attribute.ResourcesPath);
-            var bRect = new Rect(rect)
+            var iconRect = new Rect(rect)
             {
-                xMin = rect.xMax - 30,
-                xMax = rect.xMax
+                size = new Vector2(rect.size.y, rect.size.y) / 3
             };
-            GUI.Label(bRect, content, IconLabelStyle);
+
+            using (new EditorGUIUtility.IconSizeScope(iconRect.size))
+            {
+                GUI.color = EditorColorPalette.Current.WindowBackground;
+                using (new EditorGUIUtility.IconSizeScope(iconRect.size + Vector2.one))
+                    GUI.Label(iconRect, EditorGUIUtility.IconContent("Folder On Icon"), IconLabelStyle);
+                GUI.color = Color.white;
+                GUI.Label(iconRect, content, IconLabelStyle);
+            }
         }
 
         private static void CacheItem(string guid)
@@ -73,7 +108,7 @@ namespace QuickEye.Utility.Editor
                 attribute = singleton.GetType().GetCustomAttribute<SingletonAssetAttribute>();
             }
 
-            cachedAssets[guid] = attribute;
+            CachedAssets[guid] = attribute;
         }
 
         private static string GetResPath(string path)
