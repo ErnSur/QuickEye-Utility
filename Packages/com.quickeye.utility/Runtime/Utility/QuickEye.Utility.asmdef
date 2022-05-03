@@ -1,5 +1,6 @@
 {
   "name": "QuickEye.Utility",
+  "rootNamespace": "QuickEye.Utility",
   "references": [],
   "includePlatforms": [],
   "excludePlatforms": [],
