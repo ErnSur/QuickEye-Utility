@@ -1,6 +1,6 @@
 {
     "name": "QuickEye.Utility.Editor",
-    "rootNamespace": "",
+    "rootNamespace": "QuickEye.Utility.Editor",
     "references": [
         "GUID:07ccd62b4443d194480040cde09607cc"
     ],
