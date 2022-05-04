@@ -212,12 +212,12 @@ namespace QuickEye.Utility
         public int CompareTo(object value)
         {
             if (value == null) return 1;
-            if (!(value is UnityDateOnly UnityDateOnly))
+            if (!(value is UnityDateOnly unityDateOnly))
             {
                 throw new ArgumentException("Must be UnityDateOnly", nameof(value));
             }
 
-            return CompareTo(UnityDateOnly);
+            return CompareTo(unityDateOnly);
         }
 
         /// <summary>
@@ -233,7 +233,7 @@ namespace QuickEye.Utility
         /// <param name="value">The object to compare to this instance.</param>
         /// <returns>true if value is an instance of UnityDateOnly and equals the value of this instance; otherwise, false.</returns>
         public override bool Equals(object value) =>
-            value is UnityDateOnly UnityDateOnly && dayNumber == UnityDateOnly.dayNumber;
+            value is UnityDateOnly unityDateOnly && dayNumber == unityDateOnly.dayNumber;
 
         /// <summary>
         /// Returns the hash code for this instance.

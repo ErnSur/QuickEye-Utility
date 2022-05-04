@@ -8,7 +8,7 @@ namespace QuickEye.Utility
         where T : Component
     {
         [NonSerialized]
-        public GameObjectPool<T> pool;
+        public GameObjectPool<T> Pool;
 
         public PoolContainer()
         {
@@ -16,12 +16,12 @@ namespace QuickEye.Utility
 
         public PoolContainer(Transform transform, T itemPrefab) : base(transform, itemPrefab)
         {
-            pool = new GameObjectPool<T>(transform, itemPrefab, 0);
+            Pool = new GameObjectPool<T>(transform, itemPrefab, 0);
         }
 
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
-            pool = new GameObjectPool<T>(Transform, ItemPrefab, 0);
+            Pool = new GameObjectPool<T>(Transform, ItemPrefab, 0);
         }
 
         void ISerializationCallbackReceiver.OnBeforeSerialize()
@@ -30,14 +30,14 @@ namespace QuickEye.Utility
 
         protected override T GetNewItem()
         {
-            var item = pool.Rent();
+            var item = Pool.Rent();
             item.gameObject.SetActive(true);
             return item;
         }
 
         protected override void OnRemove(T item)
         {
-            pool.Return(item);
+            Pool.Return(item);
         }
     }
 }

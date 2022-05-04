@@ -17,8 +17,8 @@ namespace QuickEye.Utility
         [SerializeField]
         private int startSize;
 
-        private readonly Stack<T> available = new Stack<T>();
-        private readonly HashSet<T> rented = new HashSet<T>();
+        private readonly Stack<T> _available = new Stack<T>();
+        private readonly HashSet<T> _rented = new HashSet<T>();
 
         // Empty constructor is needed for proper unity serialization
         public GameObjectPool()
@@ -34,8 +34,8 @@ namespace QuickEye.Utility
         }
 
         public int CountAll => CountRented + CountAvailable;
-        public int CountRented => rented.Count;
-        public int CountAvailable => available.Count;
+        public int CountRented => _rented.Count;
+        public int CountAvailable => _available.Count;
 
         public T Original => original;
         public Transform Parent => parent;
@@ -43,35 +43,35 @@ namespace QuickEye.Utility
         public void Initialize()
         {
             for (var i = 0; i < startSize; i++)
-                available.Push(CreateObject());
+                _available.Push(CreateObject());
         }
 
         public virtual T Rent()
         {
-            var obj = available.Count > 0 ? available.Pop() : CreateObject();
-            rented.Add(obj);
+            var obj = _available.Count > 0 ? _available.Pop() : CreateObject();
+            _rented.Add(obj);
             return obj;
         }
 
         public void Return(T obj)
         {
-            if (available.Contains(obj))
+            if (_available.Contains(obj))
             {
                 Debug.LogWarning("Trying to return already released object");
                 return;
             }
 
-            rented.Remove(obj);
+            _rented.Remove(obj);
 
             obj.gameObject.SetActive(false);
             obj.transform.SetParent(parent);
 
-            available.Push(obj);
+            _available.Push(obj);
         }
 
         public void ReturnAll()
         {
-            foreach (var obj in rented)
+            foreach (var obj in _rented)
                 Return(obj);
         }
 
