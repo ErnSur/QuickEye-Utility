@@ -16,7 +16,7 @@ namespace QuickEye.Utility.Samples.SingletonAssets
     // SettingsProvider Attribute combined with SingletonAsset Attribute
     // will create a settings entry in Project Settings Window.
     [SettingsProvider("Project/Custom Settings From Scriptable Singleton")]
-    public class UIStyles : ScriptableSingleton<UIStyles>
+    public class UIStyles : SingletonScriptableObject<UIStyles>
     {
         private const string ResourcesPath = "UI Styles";
         private const string AutoCreatePath = "Assets/Settings/Resources/" + ResourcesPath;

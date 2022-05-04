@@ -5,11 +5,11 @@ using UnityEngine;
 namespace QuickEye.Utility
 {
     /// <summary>
-    /// class that derives from ScriptableSingleton<T>:
+    /// class that derives from SingletonScriptableObject<T>:
     /// will create its instance automatically when Instance property is used
     /// if class also has `SingletonAsset` attribute an asset has to be present at relevant path, unless a `SingletonAssetAttribute.Mandatory` is set to false.
     /// </summary>
-    public abstract class ScriptableSingleton<T> : ScriptableSingleton where T : ScriptableSingleton<T>
+    public abstract class SingletonScriptableObject<T> : SingletonScriptableObject where T : SingletonScriptableObject<T>
     {
         private static T _instance;
         public static T Instance => GetInstance();
@@ -22,7 +22,7 @@ namespace QuickEye.Utility
         }
     }
     
-    public abstract class ScriptableSingleton : ScriptableObject
+    public abstract class SingletonScriptableObject : ScriptableObject
     {
         internal static TryCreateAsset TryCreateAssetAction;
 

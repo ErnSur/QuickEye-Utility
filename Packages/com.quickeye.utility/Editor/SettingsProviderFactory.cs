@@ -15,7 +15,7 @@ namespace QuickEye.Utility.Editor
                 from type in assembly.GetTypes()
                 where Attribute.IsDefined(type, typeof(SettingsProviderAttribute))
                 where Attribute.IsDefined(type, typeof(SingletonAssetAttribute))
-                where typeof(ScriptableSingleton).IsAssignableFrom(type)
+                where typeof(SingletonScriptableObject).IsAssignableFrom(type)
                 let settingsAssetAttribute = type.GetCustomAttribute<SettingsProviderAttribute>()
                 select CreateSettingsProvider(settingsAssetAttribute.SettingsWindowPath, type);
 

@@ -11,7 +11,7 @@ namespace QuickEye.Utility
         public string ResourcesPath { get; }
 
         /// <summary>
-        /// Applicable only for `ScriptableSingleton`:
+        /// Applicable only for `SingletonScriptableObject`:
         /// If set to `true` singleton will throw an exception in case where there was no asset under `ResourcesPath`.
         /// If set to `false` singleton will dynamically create a new runtime instance if there is no asset present.
         /// By default `true`.
