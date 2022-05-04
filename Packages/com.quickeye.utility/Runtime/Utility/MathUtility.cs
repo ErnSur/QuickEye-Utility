@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
+using UnityEngine;
 
 namespace QuickEye.Utility
 {
@@ -23,6 +24,19 @@ namespace QuickEye.Utility
             }
 
             return value;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int Repeat(int t, int length)
+        {
+            return (t % length + length) % length;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float PingPong(int t, int length)
+        {
+            t = Repeat(t, length * 2);
+            return length - Mathf.Abs(t - length);
         }
     }
 }

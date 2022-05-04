@@ -586,7 +586,7 @@ MonoBehaviour:
   _galleryItems:
     itemPrefab: {fileID: 9043650147068828822, guid: 42ceba1b555e78e4a9e853fabf089a55,
       type: 3}
-    transform: {fileID: 6693831482108080581}
+    root: {fileID: 6693831482108080581}
     items: []
 --- !u!114 &6693831481685839009
 MonoBehaviour:
@@ -689,7 +689,7 @@ MonoBehaviour:
   _statsContainer: {fileID: 6693831482064388905}
   _hpLabel: {fileID: 6693831482043548728}
   _nameLabel: {fileID: 6693831480612168720}
-  _nothingSelectedAvatar: {fileID: -4500778559983003615, guid: 67e90e71de69c9442a2102c324960928,
+  _nothingSelectedAvatar: {fileID: 21300000, guid: 67e90e71de69c9442a2102c324960928,
     type: 3}
 --- !u!222 &6693831481936366375
 CanvasRenderer:
@@ -783,7 +783,7 @@ MonoBehaviour:
   _galleryItems:
     itemPrefab: {fileID: 5603739950771278510, guid: 0259ddd5c2c53c9428da98c0358dfe90,
       type: 3}
-    transform: {fileID: 6693831480802814667}
+    root: {fileID: 6693831480802814667}
     items: []
 --- !u!222 &6693831481984086650
 CanvasRenderer:

@@ -5,42 +5,42 @@ namespace QuickEye.Utility.Tests
 {
     public class GameObjectPoolTests
     {
-        private Transform original;
-        private Transform parent;
-        private GameObjectPool<Transform> pool;
+        private Transform _original;
+        private Transform _parent;
+        private GameObjectPool<Transform> _pool;
 
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
-            original = new GameObject("Prefab").transform;
+            _original = new GameObject("Prefab").transform;
         }
 
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
-            Object.Destroy(original.gameObject);
-            pool = null;
+            Object.Destroy(_original.gameObject);
+            _pool = null;
         }
 
         [SetUp]
         public void Setup()
         {
-            parent = new GameObject("Container").transform;
+            _parent = new GameObject("Container").transform;
         }
 
         [TearDown]
         public void TearDown()
         {
-            Object.Destroy(parent.gameObject);
-            pool = null;
+            Object.Destroy(_parent.gameObject);
+            _pool = null;
         }
 
         [Test]
         public void Should_ReturnInactiveGameObject_WhenRent()
         {
-            pool = new GameObjectPool<Transform>(null, original, 0);
+            _pool = new GameObjectPool<Transform>(null, _original, 0);
 
-            var instance = pool.Rent();
+            var instance = _pool.Rent();
 
             Assert.IsNotNull(instance);
             Assert.IsFalse(instance.gameObject.activeSelf);
@@ -50,18 +50,18 @@ namespace QuickEye.Utility.Tests
         [TestCase(5)]
         public void Should_CreateInactiveInstances_When_CtorWithStartSize(int startSize)
         {
-            pool = new GameObjectPool<Transform>(null, original, startSize);
+            _pool = new GameObjectPool<Transform>(null, _original, startSize);
 
-            Assert.AreEqual(startSize, pool.CountAvailable);
+            Assert.AreEqual(startSize, _pool.CountAvailable);
         }
 
         [TestCase(0)]
         [TestCase(5)]
         public void Should_PoolObjectsBeContainerChildren(int startSize)
         {
-            pool = new GameObjectPool<Transform>(parent, original, startSize);
+            _pool = new GameObjectPool<Transform>(_parent, _original, startSize);
 
-            Assert.AreEqual(startSize, parent.childCount);
+            Assert.AreEqual(startSize, _parent.childCount);
         }
 
         [TestCase(0, 5)]
@@ -69,12 +69,12 @@ namespace QuickEye.Utility.Tests
         [TestCase(5, 3)]
         public void Should_GetRentedCount(int startSize, int rentCount)
         {
-            pool = new GameObjectPool<Transform>(parent, original, startSize);
+            _pool = new GameObjectPool<Transform>(_parent, _original, startSize);
 
             for (var i = 0; i < rentCount; i++)
-                pool.Rent();
+                _pool.Rent();
 
-            Assert.AreEqual(rentCount, pool.CountRented);
+            Assert.AreEqual(rentCount, _pool.CountRented);
         }
 
         [TestCase(0, 5)]
@@ -82,13 +82,13 @@ namespace QuickEye.Utility.Tests
         [TestCase(5, 3)]
         public void Should_NotCreateNewObject_WhenUnusedObjectExists(int startSize, int rentCount)
         {
-            pool = new GameObjectPool<Transform>(parent, original, startSize);
+            _pool = new GameObjectPool<Transform>(_parent, _original, startSize);
 
             for (var i = 0; i < rentCount; i++)
-                pool.Rent();
+                _pool.Rent();
 
 
-            Assert.AreEqual(Mathf.Max(startSize, rentCount), pool.CountAll);
+            Assert.AreEqual(Mathf.Max(startSize, rentCount), _pool.CountAll);
         }
     }
 }

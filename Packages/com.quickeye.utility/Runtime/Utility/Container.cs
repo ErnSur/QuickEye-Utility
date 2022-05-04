@@ -6,6 +6,9 @@ using Object = UnityEngine.Object;
 
 namespace QuickEye.Utility
 {
+#if ODIN_INSPECTOR
+    [Sirenix.OdinInspector.DrawWithUnity]
+#endif
     [Serializable]
     public class Container<T> : IList<T>, IReadOnlyList<T> where T : Component
     {
@@ -13,31 +16,33 @@ namespace QuickEye.Utility
         private T itemPrefab;
 
         [SerializeField]
-        protected Transform transform;
+        protected Transform root;
 
         [SerializeField]
         protected List<T> items = new List<T>();
 
-        public Container() { }
-
-        public Container(Transform transform, T itemPrefab)
+        protected Container()
         {
-            this.transform = transform;
+        }
+
+        public Container(Transform root, T itemPrefab)
+        {
+            this.root = root;
             this.itemPrefab = itemPrefab;
         }
 
         public T ItemPrefab => itemPrefab;
 
-        public virtual Transform Transform
+        public virtual Transform Root
         {
-            get => transform;
+            get => root;
             set
             {
-                if (transform == value)
+                if (root == value)
                     return;
 
-                transform = value;
-                items.ForEach(i => i.transform.SetParent(transform));
+                root = value;
+                items.ForEach(i => i.transform.SetParent(root));
             }
         }
 
@@ -53,15 +58,19 @@ namespace QuickEye.Utility
 
         public void Add(T item)
         {
-            if (item.transform.parent != transform)
-                item.transform.SetParent(transform);
+            if (item == null)
+                return;
+            if (item.transform.parent != root)
+                item.transform.SetParent(root);
             items.Add(item);
         }
 
         public void Insert(int index, T item)
         {
-            if (item.transform.parent != transform)
-                item.transform.SetParent(transform);
+            if (item == null)
+                return;
+            if (item.transform.parent != root)
+                item.transform.SetParent(root);
             items.Insert(index, item);
         }
 
@@ -121,7 +130,7 @@ namespace QuickEye.Utility
 
         protected virtual T GetNewItem()
         {
-            return Object.Instantiate(itemPrefab, transform);
+            return Object.Instantiate(itemPrefab, root);
         }
 
         protected virtual void OnRemove(T item)

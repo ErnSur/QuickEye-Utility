@@ -5,11 +5,6 @@ using UnityEngine.UI;
 
 namespace QuickEye.Samples.CharacterCreation
 {
-    [Serializable]
-    public class SkillGalleryItems : PoolContainer<SkillGalleryItem>
-    {
-    }
-
     public class SkillGalleryItem : MonoBehaviour
     {
         [SerializeField]
@@ -22,5 +17,9 @@ namespace QuickEye.Samples.CharacterCreation
         {
             _icon.sprite = skill != null ? skill.icon : _noSkillIcon;
         }
+    }
+    [Serializable]
+    public class SkillGalleryContainer : PoolContainer<SkillGalleryItem>
+    {
     }
 }

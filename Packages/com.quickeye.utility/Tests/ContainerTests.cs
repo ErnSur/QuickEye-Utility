@@ -9,53 +9,53 @@ namespace QuickEye.Utility.Tests
 {
     public class ContainerTests
     {
-        private Container<Transform> container;
-        private Transform containerTransform;
-        private Transform prefab;
+        private Container<Transform> _container;
+        private Transform _containerTransform;
+        private Transform _prefab;
 
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
-            prefab = new GameObject("Prefab").transform;
+            _prefab = new GameObject("Prefab").transform;
         }
 
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
-            Object.Destroy(prefab.gameObject);
+            Object.Destroy(_prefab.gameObject);
         }
 
         [SetUp]
         public void Setup()
         {
-            containerTransform = new GameObject("Container").transform;
+            _containerTransform = new GameObject("Container").transform;
         }
 
         [TearDown]
         public void TearDown()
         {
-            Object.Destroy(containerTransform.gameObject);
+            Object.Destroy(_containerTransform.gameObject);
         }
 
         [Test]
         public void AddNew_ReturnsContainerChild()
         {
-            container = new Container<Transform>(containerTransform, prefab);
+            _container = new Container<Transform>(_containerTransform, _prefab);
 
-            var child = container.AddNew();
+            var child = _container.AddNew();
 
-            Assert.AreEqual(container.Transform, child.transform.parent);
+            Assert.AreEqual(_container.Root, child.transform.parent);
         }
 
         [Test]
         public void Add_SetsNewItemParentToContainerTransform()
         {
-            container = new Container<Transform>(containerTransform, prefab);
+            _container = new Container<Transform>(_containerTransform, _prefab);
             var child = new GameObject().transform;
 
-            container.Add(child);
+            _container.Add(child);
 
-            Assert.AreEqual(container.Transform, child.transform.parent);
+            Assert.AreEqual(_container.Root, child.transform.parent);
         }
 
         [UnityTest]
@@ -64,14 +64,14 @@ namespace QuickEye.Utility.Tests
         [TestCase(3, ExpectedResult = null)]
         public IEnumerator Clear_DestroysAllContainerItems(int elementCount)
         {
-            container = new Container<Transform>(containerTransform, prefab);
+            _container = new Container<Transform>(_containerTransform, _prefab);
 
             for (var i = 0; i < elementCount; i++)
-                container.AddNew();
-            container.Clear();
+                _container.AddNew();
+            _container.Clear();
             yield return null;
 
-            Assert.AreEqual(0, containerTransform.childCount);
+            Assert.AreEqual(0, _containerTransform.childCount);
         }
 
         [TestCase(0)]
@@ -79,22 +79,22 @@ namespace QuickEye.Utility.Tests
         [TestCase(3)]
         public void Clear_ReturnsAllItemsToPool(int elementCount)
         {
-            container = new PoolContainer<Transform>(containerTransform, prefab);
+            _container = new PoolContainer<Transform>(_containerTransform, _prefab);
 
             for (var i = 0; i < elementCount; i++)
             {
-                var item = container.AddNew();
+                var item = _container.AddNew();
             }
 
-            container.Clear();
+            _container.Clear();
 
-            var children = GetTransformChildren(containerTransform);
+            var children = GetTransformChildren(_containerTransform);
             var allPoolItemsAreDeisabled =
                 children.All(t => t.gameObject.activeSelf == false);
 
-            for (var i = 0; i < containerTransform.childCount; i++)
+            for (var i = 0; i < _containerTransform.childCount; i++)
             {
-                var child = containerTransform.GetChild(i);
+                var child = _containerTransform.GetChild(i);
                 Debug.Log($"c {i}");
                 Assert.IsFalse(child.gameObject.activeSelf);
             }
@@ -108,13 +108,13 @@ namespace QuickEye.Utility.Tests
         public IEnumerator Clear_DestroyAll(int c)
         {
             var elementCount = 3;
-            container = new Container<Transform>(containerTransform, prefab);
+            _container = new Container<Transform>(_containerTransform, _prefab);
 
             for (var i = 0; i < elementCount; i++)
-                container.AddNew();
-            container.Clear();
+                _container.AddNew();
+            _container.Clear();
             yield return null;
-            Assert.AreEqual(0, containerTransform.childCount);
+            Assert.AreEqual(0, _containerTransform.childCount);
         }
 
         private IEnumerable<Transform> GetTransformChildren(Transform parent)

@@ -1,46 +1,66 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
-using UnityEditor;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace QuickEye.Utility.Editor
 {
+    using UnityEditor;
+
     [InitializeOnLoad]
     internal static class SingletonAssetProjectIconDrawer
     {
         private const string LinkedIcon =
-            "Packages/com.quickeye.utility/Editor/Resources/com.quickeye.utility/Linked.png";
+            "Packages/com.quickeye.utility/Editor/Icons/Linked.png";
 
         private const string UnlinkedIcon =
-            "Packages/com.quickeye.utility/Editor/Resources/com.quickeye.utility/Unlinked.png";
-        
-        private static readonly Dictionary<string, SingletonAssetAttribute> CachedAssets =
-            new Dictionary<string, SingletonAssetAttribute>();
+            "Packages/com.quickeye.utility/Editor/Icons/Unlinked.png";
 
         private static GUIStyle IconLabelStyle => new GUIStyle(EditorStyles.label)
         {
             margin = new RectOffset(),
             padding = new RectOffset()
         };
-        
+
         static SingletonAssetProjectIconDrawer()
         {
             EditorApplication.projectWindowItemOnGUI += ProjectWindowItemOnGUI;
+            Editor.finishedDefaultHeaderGUI += OnPostHeaderGUI;
+        }
+
+        private static void OnPostHeaderGUI(Editor editor)
+        {
+            if (editor.targets.Length > 1 ||
+                !EditorUtility.IsPersistent(editor.target) ||
+                !SingletonAssetCache.TryGetEntry(editor.serializedObject.targetObject, out var metadata) ||
+                metadata.SingletonAssetAttribute == null)
+                return;
+
+            var resPath = metadata.ResourcesPath;
+            var hasCorrectPath = metadata.IsInLoadablePath;
+            var iconContent = new GUIContent(GetGuiContent(hasCorrectPath, resPath));
+            var cHex = ColorUtility.ToHtmlStringRGB(EditorColorPalette.Current.DefaultText);
+            iconContent.text =
+                $"<b>Singleton Asset</b>: <color=#{cHex}{128:X2}>*/Resources/</color>{resPath}";
+            using (new GUILayout.HorizontalScope())
+            {
+                var style = new GUIStyle("label");
+                style.richText = true;
+                var layout = GUILayout.ExpandWidth(false);
+                // light alpha: 130
+                // dark: 128
+                // rich text alpha color works a different from GUI.color alpha 
+                GUILayout.Label(iconContent, style, layout);
+            }
         }
 
         private static void ProjectWindowItemOnGUI(string guid, Rect rect)
         {
-            if (!CachedAssets.TryGetValue(guid, out var attr))
-                CacheItem(guid);
-            if (attr == null)
+            if (!SingletonAssetCache.TryGetEntry(guid, out var metadata) ||
+                metadata.SingletonAssetAttribute == null)
                 return;
             if (rect.height > EditorGUIUtility.singleLineHeight)
-                DrawItemOnGrid(rect, AssetDatabase.GUIDToAssetPath(guid), attr);
+                DrawProjectGridItem(rect, metadata);
             else
-                DrawItem(rect, AssetDatabase.GUIDToAssetPath(guid), attr);
+                DrawProjectItem(rect, AssetDatabase.GUIDToAssetPath(guid), metadata);
         }
 
         private static GUIContent GetGuiContent(bool isCorrectPath, string resourcesPath)
@@ -54,12 +74,9 @@ namespace QuickEye.Utility.Editor
             return iconContent;
         }
 
-        private static void DrawItem(Rect rect, string path, SingletonAssetAttribute attribute)
+        private static void DrawProjectItem(Rect rect, string path, SingletonAssetCache.AssetMetadata meta)
         {
             const int projWindowIconWidth = 16;
-            var resPath = GetResPath(path);
-            var hasCorrectPath = resPath == attribute.ResourcesPath;
-
             var content = new GUIContent(Path.GetFileNameWithoutExtension(path));
             var labelTextSize = new GUIStyle("label").CalcSize(content);
             var itemLabel = new Rect(rect)
@@ -71,15 +88,13 @@ namespace QuickEye.Utility.Editor
                 x = itemLabel.xMax + 2,
                 xMax = rect.xMax
             };
-            var linkedIcon = GetGuiContent(hasCorrectPath, attribute.ResourcesPath);
+            var linkedIcon = GetGuiContent(meta.IsInLoadablePath, meta.ResourcesPath);
             GUI.Label(linkedIconRect, linkedIcon, IconLabelStyle);
         }
 
-        private static void DrawItemOnGrid(Rect rect, string path, SingletonAssetAttribute attribute)
+        private static void DrawProjectGridItem(Rect rect, SingletonAssetCache.AssetMetadata meta)
         {
-            var resPath = GetResPath(path);
-            var hasCorrectPath = resPath == attribute.ResourcesPath;
-            var content = GetGuiContent(hasCorrectPath, attribute.ResourcesPath);
+            var content = GetGuiContent(meta.IsInLoadablePath, meta.ResourcesPath);
             var iconRect = new Rect(rect)
             {
                 size = new Vector2(rect.size.y, rect.size.y) / 3
@@ -93,32 +108,6 @@ namespace QuickEye.Utility.Editor
                 GUI.color = Color.white;
                 GUI.Label(iconRect, content, IconLabelStyle);
             }
-        }
-
-        private static void CacheItem(string guid)
-        {
-            var path = AssetDatabase.GUIDToAssetPath(guid);
-            Object singleton = AssetDatabase.LoadAssetAtPath<ScriptableSingleton>(path);
-            if (singleton == null)
-                singleton = AssetDatabase.LoadAssetAtPath<Singleton>(path);
-
-            SingletonAssetAttribute attribute = null;
-            if (singleton != null)
-            {
-                attribute = singleton.GetType().GetCustomAttribute<SingletonAssetAttribute>();
-            }
-
-            CachedAssets[guid] = attribute;
-        }
-
-        private static string GetResPath(string path)
-        {
-            path = Path.GetFullPath(path);
-            path = Path.Combine(Path.GetDirectoryName(path) ?? "", Path.GetFileNameWithoutExtension(path));
-
-            var resourcesFolder = $"{Path.DirectorySeparatorChar}Resources{Path.DirectorySeparatorChar}";
-            var index = path.IndexOf(resourcesFolder, StringComparison.InvariantCulture);
-            return index == -1 ? null : path.Substring(index + resourcesFolder.Length);
         }
     }
 }

@@ -21,7 +21,7 @@ namespace QuickEye.Samples.CharacterCreation
         }
     }
     [Serializable]
-    public class CharacterGalleryItems : Container<CharacterGalleryItem>
+    public class CharacterGalleryContainer : Container<CharacterGalleryItem>
     {
     }
 }
