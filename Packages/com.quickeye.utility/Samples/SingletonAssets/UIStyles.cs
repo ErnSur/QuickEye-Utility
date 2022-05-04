@@ -3,10 +3,10 @@
 namespace QuickEye.Utility.Samples.SingletonAssets
 {
 
-    // UIStyles is a ScriptableSingleton- a singleton that has ScriptableObject as a base class.
+    // UIStyles is a SingletonScriptableObject- a singleton that has ScriptableObject as a base class.
     // It uses following attributes to customize its usage:
 
-    // SingletonAsset Attribute will define a path at which the singleton instance should be saved and loaded from.
+    // SingletonAsset Attribute will define a path at which the singleton instance should be loaded from.
     [SingletonAsset(ResourcesPath)]
     
     // CreateAssetAutomatically Attribute turns on a system that will create scriptable object file at specific path

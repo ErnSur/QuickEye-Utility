@@ -2,6 +2,10 @@ using System;
 
 namespace QuickEye.Utility
 {
+    /// <summary>
+    /// Define a path at which the singleton instance should be loaded from
+    /// Enter prefab path in case of MonoBehaviour Singleton
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public sealed class SingletonAssetAttribute : Attribute
     {
