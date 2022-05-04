@@ -4,41 +4,51 @@ using UnityEngine;
 
 namespace QuickEye.Utility
 {
-    public abstract class Singleton : MonoBehaviour
+    // Execute Order allows us to execute Awake before all non-singletons
+    // This allows other scripts to access initialized singletons in their awake methods.
+    [DefaultExecutionOrder(-10000)]
+    public abstract class SingletonMonoBehaviour : MonoBehaviour
     {
         protected static bool IsAppQuitting;
+
+        protected virtual void OnApplicationQuit()
+        {
+            IsAppQuitting = true;
+        }
     }
 
-    public class Singleton<T> : Singleton where T : Singleton<T>
+    public class SingletonMonoBehaviour<T> : SingletonMonoBehaviour where T : SingletonMonoBehaviour<T>
     {
-        private static T instance;
+        private static T _instance;
         public static T Instance => GetInstance();
 
-        protected virtual void Awake()
+        protected virtual void Awake() => Initialize();
+
+        private void Initialize()
         {
-            if (instance != null || !(this is T))
-            {
-                Destroy(gameObject);
-                throw new SingletonAlreadyExistsException(this);
-            }
+            if (_instance != this)
+                if (_instance != null || !(this is T))
+                {
+                    Destroy(gameObject);
+                    throw new SingletonAlreadyExistsException(this);
+                }
 
             ForceDontDestroyOnLoad();
-            instance = (T)this;
+            _instance = (T)this;
         }
 
         protected virtual void OnDestroy()
         {
-            if (instance != this)
+            if (_instance != this)
                 return;
-            instance = null;
-            IsAppQuitting = true; // App exit is the only case when singletons should be destroyed.
+            _instance = null;
         }
 
         private void ForceDontDestroyOnLoad()
         {
             // `Object.DontDestroyOnLoad` only works for root GameObjects
             // That's why we want to leave parents that aren't singletons.
-            var singletonParents = GetComponentsInParent<Singleton>();
+            var singletonParents = GetComponentsInParent<SingletonMonoBehaviour>();
             if (singletonParents.Length <= 1)
                 transform.SetParent(null);
             DontDestroyOnLoad(gameObject);
@@ -48,12 +58,12 @@ namespace QuickEye.Utility
         {
             // When app is quitting singleton objects will be destroyed
             // In this case we shouldn't try to create a new singleton
-            // because this can create a loop of objects being created and destroyed
             if (IsAppQuitting)
                 return null;
-            if (instance == null)
-                instance = CreateInstance();
-            return instance;
+            if (_instance == null)
+                _instance = CreateInstance();
+            
+            return _instance;
         }
 
         private static T CreateInstance()
@@ -84,7 +94,7 @@ namespace QuickEye.Utility
 
     public class SingletonAlreadyExistsException : Exception
     {
-        internal SingletonAlreadyExistsException(Singleton obj) : base(
+        internal SingletonAlreadyExistsException(SingletonMonoBehaviour obj) : base(
             $"Singleton of type {obj.GetType()} already exists. Destroying \"{GetGameObjectPath(obj.gameObject)}\"")
         {
         }
@@ -107,13 +117,6 @@ namespace QuickEye.Utility
     {
         internal SingletonAssetIsMissingException(string assetPath, Type componentType) : base(
             $"Prefab at : {assetPath} has no {componentType.Name} component.")
-        {
-        }
-    }
-    public class SingletonAssetPathIsOutsideResourcesException : Exception
-    {
-        internal SingletonAssetPathIsOutsideResourcesException(Type type) : base(
-            $"Type {type.FullName} has singleton path defined but does not include Resources folder.")
         {
         }
     }

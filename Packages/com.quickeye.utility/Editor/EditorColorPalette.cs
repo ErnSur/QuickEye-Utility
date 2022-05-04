@@ -94,6 +94,7 @@ namespace QuickEye.Utility.Editor
         public Color ToolbarButtonBorder { get; private set; }
 
         public Color DefaultText { get; private set; }
+        public Color DefaultTextDisabled { get; private set; }
         public Color DefaultTextHover { get; private set; }
         public Color ErrorText { get; private set; }
         public Color LinkText { get; private set; }
@@ -212,6 +213,7 @@ namespace QuickEye.Utility.Editor
                 ToolbarButtonBorder = FromHex("#999999"),
 
                 DefaultText = FromHex("#090909"),
+                DefaultTextDisabled = FromHex("#727272"),
                 DefaultTextHover = FromHex("#090909"),
                 ErrorText = FromHex("#5A0000"),
                 LinkText = FromHex("#4C7EFF"),
@@ -324,6 +326,7 @@ namespace QuickEye.Utility.Editor
                 ToolbarButtonBorder = FromHex("#232323"),
 
                 DefaultText = FromHex("#D2D2D2"),
+                DefaultTextDisabled = FromHex("#898989"),
                 DefaultTextHover = FromHex("#BDBDBD"),
                 ErrorText = FromHex("#D32222"),
                 LinkText = FromHex("#4C7EFF"),

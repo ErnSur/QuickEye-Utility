@@ -9,7 +9,7 @@ namespace QuickEye.Utility.Samples.SingletonAssets
     /// In this case it will instantiate a prefab under: Resources/Popup View
     /// </summary>
     [SingletonAsset("Popup View")]
-    public class PopupView : Singleton<PopupView>
+    public class PopupView : SingletonMonoBehaviour<PopupView>
     {
         [SerializeField]
         private Text label;

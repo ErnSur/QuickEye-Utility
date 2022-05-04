@@ -11,8 +11,13 @@
       "path": "Samples~/SingletonAssets"
     },
     {
-      "displayName": "Usage of Container classes.",
-      "description": "UI scene with usage of the Container classes.",
+      "displayName": "Usage of Container classes",
+      "description": "UI scene with a simple usage of container class.",
+      "path": "Samples~/ContainerUsage"
+    },
+    {
+      "displayName": "UI - Character Selection Screen",
+      "description": "UI scene example utilizing lib classes.",
       "path": "Samples~/CharacterCreationScreen"
     }
   ]

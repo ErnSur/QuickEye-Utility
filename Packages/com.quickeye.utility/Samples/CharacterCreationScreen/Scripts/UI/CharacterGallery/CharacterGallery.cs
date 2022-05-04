@@ -6,7 +6,7 @@ namespace QuickEye.Samples.CharacterCreation
     public class CharacterGallery : MonoBehaviour
     {
         [SerializeField]
-        private CharacterGalleryItems _galleryItems;
+        private CharacterGalleryContainer _galleryItems;
 
         public void Initialize(CharacterTemplate[] fighters)
         {

@@ -2,6 +2,10 @@ using System;
 
 namespace QuickEye.Utility
 {
+    /// <summary>
+    /// Define a path at which the singleton instance should be loaded from
+    /// Enter prefab path in case of MonoBehaviour Singleton
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public sealed class SingletonAssetAttribute : Attribute
     {
@@ -11,7 +15,7 @@ namespace QuickEye.Utility
         public string ResourcesPath { get; }
 
         /// <summary>
-        /// Applicable only for `ScriptableSingleton`:
+        /// Applicable only for `SingletonScriptableObject`:
         /// If set to `true` singleton will throw an exception in case where there was no asset under `ResourcesPath`.
         /// If set to `false` singleton will dynamically create a new runtime instance if there is no asset present.
         /// By default `true`.
