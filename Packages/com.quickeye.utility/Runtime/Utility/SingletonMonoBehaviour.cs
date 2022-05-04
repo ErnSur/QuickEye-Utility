@@ -13,7 +13,6 @@ namespace QuickEye.Utility
 
         protected virtual void OnApplicationQuit()
         {
-            Debug.Log($"App Is Quitting");
             IsAppQuitting = true;
         }
     }
