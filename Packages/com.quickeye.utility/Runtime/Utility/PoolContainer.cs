@@ -7,21 +7,20 @@ namespace QuickEye.Utility
     public class PoolContainer<T> : Container<T>, ISerializationCallbackReceiver
         where T : Component
     {
-        [NonSerialized]
-        public GameObjectPool<T> Pool;
+        public GameObjectPool<T> Pool { get; private set; }
 
-        public PoolContainer()
+        protected PoolContainer()
         {
         }
 
-        public PoolContainer(Transform transform, T itemPrefab) : base(transform, itemPrefab)
+        public PoolContainer(Transform root, T itemPrefab) : base(root, itemPrefab)
         {
-            Pool = new GameObjectPool<T>(transform, itemPrefab, 0);
+            Pool = new GameObjectPool<T>(root, itemPrefab, 0);
         }
 
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
-            Pool = new GameObjectPool<T>(Transform, ItemPrefab, 0);
+            Pool = new GameObjectPool<T>(Root, ItemPrefab, 0);
         }
 
         void ISerializationCallbackReceiver.OnBeforeSerialize()

@@ -20,8 +20,7 @@ namespace QuickEye.Utility
         private readonly Stack<T> _available = new Stack<T>();
         private readonly HashSet<T> _rented = new HashSet<T>();
 
-        // Empty constructor is needed for proper unity serialization
-        public GameObjectPool()
+        protected GameObjectPool()
         {
         }
 

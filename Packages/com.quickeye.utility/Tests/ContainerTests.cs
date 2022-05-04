@@ -44,7 +44,7 @@ namespace QuickEye.Utility.Tests
 
             var child = _container.AddNew();
 
-            Assert.AreEqual(_container.Transform, child.transform.parent);
+            Assert.AreEqual(_container.Root, child.transform.parent);
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace QuickEye.Utility.Tests
 
             _container.Add(child);
 
-            Assert.AreEqual(_container.Transform, child.transform.parent);
+            Assert.AreEqual(_container.Root, child.transform.parent);
         }
 
         [UnityTest]
