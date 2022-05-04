@@ -7,7 +7,7 @@ using Object = UnityEngine.Object;
 
 namespace QuickEye.Utility.Editor
 {
-    public static class SingletonAssetCache
+    internal static class SingletonAssetCache
     {
         private static readonly Dictionary<string, AssetMetadata> CachedGuidResults =
             new Dictionary<string, AssetMetadata>();
