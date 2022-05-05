@@ -1,4 +1,4 @@
-<p  align="right" >👁️</p>
+<img src="Documentation~/eyeLogo.png" align="right" width="12%" />
 
 # QuickEye Utility
 > Not all of the features are documented
