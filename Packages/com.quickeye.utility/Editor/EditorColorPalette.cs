@@ -1,357 +1,318 @@
-﻿using UnityEditor;
+﻿using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace QuickEye.Utility.Editor
 {
+    [Serializable]
     public class EditorColorPalette
     {
-        public Color AppToolbarBackground { get; private set; }
-        public Color AppToolbarButtonBackground { get; private set; }
-        public Color AppToolbarButtonBackgroundChecked { get; private set; }
-        public Color AppToolbarButtonBackgroundHover { get; private set; }
-        public Color AppToolbarButtonBackgroundPressed { get; private set; }
-        public Color AppToolbarButtonBorder { get; private set; }
-        public Color AppToolbarButtonBorderAccent { get; private set; }
+        #region fields
 
-        public Color ButtonBackground { get; private set; }
-        public Color ButtonBackgroundFocus { get; private set; }
-        public Color ButtonBackgroundHover { get; private set; }
-        public Color ButtonBackgroundPressed { get; private set; }
-        public Color ButtonBorder { get; private set; }
-        public Color ButtonBorderAccent { get; private set; }
-        public Color ButtonBorderPressed { get; private set; }
-        public Color ButtonText { get; private set; }
+        // @formatter:place_accessorholder_attribute_on_same_line true
+        // @formatter:keep_blank_lines_in_declarations 0
+        [field: SerializeField] public Color AppToolbarBackground { get; private set; }
+        [field: SerializeField] public Color AppToolbarButtonBackground { get; private set; }
+        [field: SerializeField] public Color AppToolbarButtonBackgroundChecked { get; private set; }
+        [field: SerializeField] public Color AppToolbarButtonBackgroundHover { get; private set; }
+        [field: SerializeField] public Color AppToolbarButtonBackgroundPressed { get; private set; }
+        [field: SerializeField] public Color AppToolbarButtonBorder { get; private set; }
+        [field: SerializeField] public Color AppToolbarButtonBorderAccent { get; private set; }
+        [field: SerializeField] public Color ButtonBackground { get; private set; }
+        [field: SerializeField] public Color ButtonBackgroundFocus { get; private set; }
+        [field: SerializeField] public Color ButtonBackgroundHover { get; private set; }
+        [field: SerializeField] public Color ButtonBackgroundPressed { get; private set; }
+        [field: SerializeField] public Color ButtonBorder { get; private set; }
+        [field: SerializeField] public Color ButtonBorderAccent { get; private set; }
+        [field: SerializeField] public Color ButtonBorderPressed { get; private set; }
+        [field: SerializeField] public Color ButtonText { get; private set; }
+        [field: SerializeField] public Color DropdownBackground { get; private set; }
+        [field: SerializeField] public Color DropdownBackgroundHover { get; private set; }
+        [field: SerializeField] public Color DropdownBorder { get; private set; }
+        [field: SerializeField] public Color DropdownBorderAccent { get; private set; }
+        [field: SerializeField] public Color DropdownText { get; private set; }
+        [field: SerializeField] public Color HelpboxBackground { get; private set; }
+        [field: SerializeField] public Color HelpboxBorder { get; private set; }
+        [field: SerializeField] public Color InputFieldBackground { get; private set; }
+        [field: SerializeField] public Color InputFieldBorder { get; private set; }
+        [field: SerializeField] public Color InputFieldBorderAccent { get; private set; }
+        [field: SerializeField] public Color InputFieldBorderFocus { get; private set; }
+        [field: SerializeField] public Color InputFieldBorderHover { get; private set; }
+        [field: SerializeField] public Color ObjectFieldBackground { get; private set; }
+        [field: SerializeField] public Color ObjectFieldBorder { get; private set; }
+        [field: SerializeField] public Color ObjectFieldBorderFocus { get; private set; }
+        [field: SerializeField] public Color ObjectFieldBorderHover { get; private set; }
+        [field: SerializeField] public Color ObjectFieldButtonBackground { get; private set; }
+        [field: SerializeField] public Color ObjectFieldButtonBackgroundHover { get; private set; }
+        [field: SerializeField] public Color ScrollbarButtonBackground { get; private set; }
+        [field: SerializeField] public Color ScrollbarButtonBackgroundHover { get; private set; }
+        [field: SerializeField] public Color ScrollbarGrooveBackground { get; private set; }
+        [field: SerializeField] public Color ScrollbarGrooveBorder { get; private set; }
+        [field: SerializeField] public Color ScrollbarThumbBackground { get; private set; }
+        [field: SerializeField] public Color ScrollbarThumbBackgroundHover { get; private set; }
+        [field: SerializeField] public Color ScrollbarThumbBorder { get; private set; }
+        [field: SerializeField] public Color ScrollbarThumbBorderHover { get; private set; }
+        [field: SerializeField] public Color SliderGrooveBackground { get; private set; }
+        [field: SerializeField] public Color SliderGrooveBackgroundDisabled { get; private set; }
+        [field: SerializeField] public Color SliderThumbBackground { get; private set; }
+        [field: SerializeField] public Color SliderThumbBackgroundDisabled { get; private set; }
+        [field: SerializeField] public Color SliderThumbBackgroundHover { get; private set; }
+        [field: SerializeField] public Color SliderThumbBorder { get; private set; }
+        [field: SerializeField] public Color SliderThumbBorderDisabled { get; private set; }
+        [field: SerializeField] public Color SliderThumbHaloBackground { get; private set; }
+        [field: SerializeField] public Color TabBackground { get; private set; }
+        [field: SerializeField] public Color TabBackgroundChecked { get; private set; }
+        [field: SerializeField] public Color TabBackgroundHover { get; private set; }
+        [field: SerializeField] public Color TabHighlightBackground { get; private set; }
+        [field: SerializeField] public Color InspectorTitlebarBackground { get; private set; }
+        [field: SerializeField] public Color InspectorTitlebarBackgroundHover { get; private set; }
+        [field: SerializeField] public Color InspectorToolbarBackground { get; private set; }
+        [field: SerializeField] public Color InspectorWindowBackground { get; private set; }
+        [field: SerializeField] public Color InspectorTitlebarBorder { get; private set; }
+        [field: SerializeField] public Color InspectorTitlebarBorderAccent { get; private set; }
+        [field: SerializeField] public Color WindowTabDefaultBackground { get; private set; }
+        [field: SerializeField] public Color WindowHighlightBackgroundInactive { get; private set; }
+        [field: SerializeField] public Color WindowHighlightBackground { get; private set; }
+        [field: SerializeField] public Color WindowHighlightBackgroundHover { get; private set; }
+        [field: SerializeField] public Color WindowHighlightBackgroundHoverLighter { get; private set; }
+        [field: SerializeField] public Color WindowBackground { get; private set; }
+        [field: SerializeField] public Color WindowAlternatedRowsBackground { get; private set; }
+        [field: SerializeField] public Color DefaultBorder { get; private set; }
+        [field: SerializeField] public Color WindowBorder { get; private set; }
+        [field: SerializeField] public Color ToolbarBackground { get; private set; }
+        [field: SerializeField] public Color ToolbarBorder { get; private set; }
+        [field: SerializeField] public Color ToolbarButtonBackground { get; private set; }
+        [field: SerializeField] public Color ToolbarButtonBackgroundChecked { get; private set; }
+        [field: SerializeField] public Color ToolbarButtonBackgroundFocus { get; private set; }
+        [field: SerializeField] public Color ToolbarButtonBackgroundHover { get; private set; }
+        [field: SerializeField] public Color ToolbarButtonBorder { get; private set; }
+        [field: SerializeField] public Color DefaultText { get; private set; }
+        [field: SerializeField] public Color DefaultTextDisabled { get; private set; }
+        [field: SerializeField] public Color DefaultTextHover { get; private set; }
+        [field: SerializeField] public Color ErrorText { get; private set; }
+        [field: SerializeField] public Color LinkText { get; private set; }
+        [field: SerializeField] public Color VisitedLinkText { get; private set; }
+        [field: SerializeField] public Color WarningText { get; private set; }
+        [field: SerializeField] public Color HelpboxText { get; private set; }
+        [field: SerializeField] public Color HighlightText { get; private set; }
+        [field: SerializeField] public Color HighlightTextInactive { get; private set; }
+        [field: SerializeField] public Color LabelText { get; private set; }
+        [field: SerializeField] public Color LabelTextFocus { get; private set; }
+        [field: SerializeField] public Color PreviewOverlayText { get; private set; }
+        [field: SerializeField] public Color WindowText { get; private set; }
+        [field: SerializeField] public Color TabText { get; private set; }
+        [field: SerializeField] public Color ToolbarButtonText { get; private set; }
+        [field: SerializeField] public Color ToolbarButtonTextChecked { get; private set; }
+        [field: SerializeField] public Color ToolbarButtonTextHover { get; private set; }
 
-        public Color DropdownBackground { get; private set; }
-        public Color DropdownBackgroundHover { get; private set; }
-        public Color DropdownBorder { get; private set; }
-        public Color DropdownBorderAccent { get; private set; }
-        public Color DropdownText { get; private set; }
-
-        public Color HelpboxBackground { get; private set; }
-        public Color HelpboxBorder { get; private set; }
-
-        public Color InputFieldBackground { get; private set; }
-        public Color InputFieldBorder { get; private set; }
-        public Color InputFieldBorderAccent { get; private set; }
-        public Color InputFieldBorderFocus { get; private set; }
-        public Color InputFieldBorderHover { get; private set; }
-
-        public Color ObjectFieldBackground { get; private set; }
-        public Color ObjectFieldBorder { get; private set; }
-        public Color ObjectFieldBorderFocus { get; private set; }
-        public Color ObjectFieldBorderHover { get; private set; }
-        public Color ObjectFieldButtonBackground { get; private set; }
-        public Color ObjectFieldButtonBackgroundHover { get; private set; }
-
-        public Color ScrollbarButtonBackground { get; private set; }
-        public Color ScrollbarButtonBackgroundHover { get; private set; }
-        public Color ScrollbarGrooveBackground { get; private set; }
-        public Color ScrollbarGrooveBorder { get; private set; }
-        public Color ScrollbarThumbBackground { get; private set; }
-        public Color ScrollbarThumbBackgroundHover { get; private set; }
-        public Color ScrollbarThumbBorder { get; private set; }
-        public Color ScrollbarThumbBorderHover { get; private set; }
-
-        public Color SliderGrooveBackground { get; private set; }
-        public Color SliderGrooveBackgroundDisabled { get; private set; }
-        public Color SliderThumbBackground { get; private set; }
-        public Color SliderThumbBackgroundDisabled { get; private set; }
-        public Color SliderThumbBackgroundHover { get; private set; }
-        public Color SliderThumbBorder { get; private set; }
-        public Color SliderThumbBorderDisabled { get; private set; }
-        public Color SliderThumbHaloBackground { get; private set; }
-
-        public Color TabBackground { get; private set; }
-        public Color TabBackgroundChecked { get; private set; }
-        public Color TabBackgroundHover { get; private set; }
-        public Color TabHighlightBackground { get; private set; }
-
-        public Color InspectorTitlebarBackground { get; private set; }
-        public Color InspectorTitlebarBackgroundHover { get; private set; }
-        public Color InspectorToolbarBackground { get; private set; }
-        public Color InspectorWindowBackground { get; private set; }
-        public Color InspectorTitlebarBorder { get; private set; }
-        public Color InspectorTitlebarBorderAccent { get; private set; }
-
-        public Color WindowTabDefaultBackground { get; private set; }
-        public Color WindowHighlightBackgroundInactive { get; private set; }
-        public Color WindowHighlightBackground { get; private set; }
-        public Color WindowHighlightBackgroundHover { get; private set; }
-        public Color WindowHighlightBackgroundHoverLighter { get; private set; }
-        public Color WindowBackground { get; private set; }
-        public Color WindowAlternatedRowsBackground { get; private set; }
-
-        public Color DefaultBorder { get; private set; }
-        public Color WindowBorder { get; private set; }
-
-        public Color ToolbarBackground { get; private set; }
-        public Color ToolbarBorder { get; private set; }
-        public Color ToolbarButtonBackground { get; private set; }
-        public Color ToolbarButtonBackgroundChecked { get; private set; }
-        public Color ToolbarButtonBackgroundFocus { get; private set; }
-        public Color ToolbarButtonBackgroundHover { get; private set; }
-        public Color ToolbarButtonBorder { get; private set; }
-
-        public Color DefaultText { get; private set; }
-        public Color DefaultTextDisabled { get; private set; }
-        public Color DefaultTextHover { get; private set; }
-        public Color ErrorText { get; private set; }
-        public Color LinkText { get; private set; }
-        public Color VisitedLinkText { get; private set; }
-        public Color WarningText { get; private set; }
-
-        public Color HelpboxText { get; private set; }
-        public Color HighlightText { get; private set; }
-        public Color HighlightTextInactive { get; private set; }
-        public Color LabelText { get; private set; }
-        public Color LabelTextFocus { get; private set; }
-        public Color PreviewOverlayText { get; private set; }
-        public Color WindowText { get; private set; }
-
-        public Color TabText { get; private set; }
-        public Color ToolbarButtonText { get; private set; }
-        public Color ToolbarButtonTextChecked { get; private set; }
-        public Color ToolbarButtonTextHover { get; private set; }
+        // @formatter:keep_blank_lines_in_declarations restore
+        // @formatter:place_accessorholder_attribute_on_same_line restore
 
         public static readonly EditorColorPalette Light;
         public static readonly EditorColorPalette Dark;
+
+        #endregion
 
         public static EditorColorPalette Current => EditorGUIUtility.isProSkin ? Dark : Light;
 
         static EditorColorPalette()
         {
+            // @formatter:int_align_assignments true
             Light = new EditorColorPalette
             {
-                AppToolbarBackground = FromHex("#8A8A8A"),
-                AppToolbarButtonBackground = FromHex("#C8C8C8"),
-                AppToolbarButtonBackgroundChecked = FromHex("#656565"),
-                AppToolbarButtonBackgroundHover = FromHex("#BBBBBB"),
-                AppToolbarButtonBackgroundPressed = FromHex("#656565"),
-                AppToolbarButtonBorder = FromHex("#6B6B6B"),
-                AppToolbarButtonBorderAccent = FromHex("#6B6B6B"),
-
-                ButtonBackground = FromHex("#E4E4E4"),
-                ButtonBackgroundFocus = FromHex("#BEBEBE"),
-                ButtonBackgroundHover = FromHex("#ECECEC"),
-                ButtonBackgroundPressed = FromHex("#96C3FB"),
-                ButtonBorder = FromHex("#B2B2B2"),
-                ButtonBorderAccent = FromHex("#939393"),
-                ButtonBorderPressed = FromHex("#707070"),
-                ButtonText = FromHex("#090909"),
-
-                DropdownBackground = FromHex("#DFDFDF"),
-                DropdownBackgroundHover = FromHex("#E4E4E4"),
-                DropdownBorder = FromHex("#B2B2B2"),
-                DropdownBorderAccent = FromHex("#939393"),
-                DropdownText = FromHex("#090909"),
-
-                HelpboxBackground = new Color32(235, 235, 235, 52),
-                HelpboxBorder = FromHex("#A9A9A9"),
-
-                InputFieldBackground = FromHex("#F0F0F0"),
-                InputFieldBorder = FromHex("#B7B7B7"),
-                InputFieldBorderAccent = FromHex("#A0A0A0"),
-                InputFieldBorderFocus = FromHex("#1D5087"),
-                InputFieldBorderHover = FromHex("#6C6C6C"),
-
-                ObjectFieldBackground = FromHex("#EDEDED"),
-                ObjectFieldBorder = FromHex("#B0B0B0"),
-                ObjectFieldBorderFocus = FromHex("#1D5087"),
-                ObjectFieldBorderHover = FromHex("#6C6C6C"),
-                ObjectFieldButtonBackground = FromHex("#DEDEDE"),
-                ObjectFieldButtonBackgroundHover = FromHex("#CCCCCC"),
-
-                ScrollbarButtonBackground = new Color(0f, 0f, 0f, 0.05098039f),
-                ScrollbarButtonBackgroundHover = FromHex("#A7A7A7"),
-                ScrollbarGrooveBackground = new Color(0f, 0f, 0f, 0.05098039f),
-                ScrollbarGrooveBorder = new Color(0f, 0f, 0f, 0.1019608f),
-                ScrollbarThumbBackground = FromHex("#9A9A9A"),
-                ScrollbarThumbBackgroundHover = FromHex("#8E8E8E"),
-                ScrollbarThumbBorder = FromHex("#B9B9B9"),
-                ScrollbarThumbBorderHover = FromHex("#8E8E8E"),
-
-                SliderGrooveBackground = FromHex("#8F8F8F"),
-                SliderGrooveBackgroundDisabled = FromHex("#A4A4A4"),
-                SliderThumbBackground = FromHex("#616161"),
-                SliderThumbBackgroundDisabled = FromHex("#9B9B9B"),
-                SliderThumbBackgroundHover = FromHex("#4F4F4F"),
-                SliderThumbBorder = FromHex("#616161"),
-                SliderThumbBorderDisabled = FromHex("#666666"),
-                SliderThumbHaloBackground = new Color32(12, 108, 203, 113),
-
-                TabBackground = FromHex("#B6B6B6"),
-                TabBackgroundChecked = FromHex("#CBCBCB"),
-                TabBackgroundHover = FromHex("#B0B0B0"),
-                TabHighlightBackground = FromHex("#3A72B0"),
-
-                InspectorTitlebarBackground = FromHex("#CBCBCB"),
-                InspectorTitlebarBackgroundHover = FromHex("#D6D6D6"),
-                InspectorToolbarBackground = FromHex("#CBCBCB"),
-                InspectorWindowBackground = FromHex("#C8C8C8"),
-
-                InspectorTitlebarBorder = FromHex("#7F7F7F"),
-                InspectorTitlebarBorderAccent = FromHex("#BABABA"),
-
-                WindowTabDefaultBackground = FromHex("#A5A5A5"),
-                WindowHighlightBackgroundInactive = FromHex("#AEAEAE"),
-                WindowHighlightBackground = FromHex("#3A72B0"),
-                WindowHighlightBackgroundHover = new Color(0, 0, 0, 0.0627451f),
-                WindowHighlightBackgroundHoverLighter = FromHex("#9A9A9A"),
-                WindowBackground = FromHex("#C8C8C8"),
-                WindowAlternatedRowsBackground = FromHex("#CACACA"),
-
-                DefaultBorder = FromHex("#999999"),
-                WindowBorder = FromHex("#939393"),
-
-                ToolbarBackground = FromHex("#CBCBCB"),
-                ToolbarBorder = FromHex("#999999"),
-                ToolbarButtonBackground = FromHex("#CBCBCB"),
-                ToolbarButtonBackgroundChecked = FromHex("#EFEFEF"),
-                ToolbarButtonBackgroundFocus = FromHex("#C1C1C1"),
-                ToolbarButtonBackgroundHover = FromHex("#C1C1C1"),
-                ToolbarButtonBorder = FromHex("#999999"),
-
-                DefaultText = FromHex("#090909"),
-                DefaultTextDisabled = FromHex("#727272"),
-                DefaultTextHover = FromHex("#090909"),
-                ErrorText = FromHex("#5A0000"),
-                LinkText = FromHex("#4C7EFF"),
-                VisitedLinkText = FromHex("#AA00AA"),
-                WarningText = FromHex("#333308"),
-
-                HelpboxText = FromHex("#161616"),
-                HighlightText = FromHex("#0032E6"),
-                HighlightTextInactive = FromHex("#FFFFFF"),
-                LabelText = FromHex("#090909"),
-                LabelTextFocus = FromHex("#003C88"),
-                PreviewOverlayText = FromHex("#FFFFFF"),
-                WindowText = FromHex("#090909"),
-
-                TabText = FromHex("#090909"),
-                ToolbarButtonText = FromHex("#090909"),
-                ToolbarButtonTextChecked = FromHex("#090909"),
-                ToolbarButtonTextHover = FromHex("#090909"),
+                AppToolbarBackground                  = new Color32(0x8A, 0x8A, 0x8A, 255),
+                AppToolbarButtonBackground            = new Color32(0xC8, 0xC8, 0xC8, 255),
+                AppToolbarButtonBackgroundChecked     = new Color32(0x65, 0x65, 0x65, 255),
+                AppToolbarButtonBackgroundHover       = new Color32(0xBB, 0xBB, 0xBB, 255),
+                AppToolbarButtonBackgroundPressed     = new Color32(0x65, 0x65, 0x65, 255),
+                AppToolbarButtonBorder                = new Color32(0x6B, 0x6B, 0x6B, 255),
+                AppToolbarButtonBorderAccent          = new Color32(0x6B, 0x6B, 0x6B, 255), //
+                ButtonBackground                      = new Color32(0xE4, 0xE4, 0xE4, 255),
+                ButtonBackgroundFocus                 = new Color32(0xBE, 0xBE, 0xBE, 255),
+                ButtonBackgroundHover                 = new Color32(0xEC, 0xEC, 0xEC, 255),
+                ButtonBackgroundPressed               = new Color32(0x96, 0xC3, 0xFB, 255),
+                ButtonBorder                          = new Color32(0xB2, 0xB2, 0xB2, 255),
+                ButtonBorderAccent                    = new Color32(0x93, 0x93, 0x93, 255),
+                ButtonBorderPressed                   = new Color32(0x70, 0x70, 0x70, 255),
+                ButtonText                            = new Color32(0x09, 0x09, 0x09, 255), //
+                DropdownBackground                    = new Color32(0xDF, 0xDF, 0xDF, 255),
+                DropdownBackgroundHover               = new Color32(0xE4, 0xE4, 0xE4, 255),
+                DropdownBorder                        = new Color32(0xB2, 0xB2, 0xB2, 255),
+                DropdownBorderAccent                  = new Color32(0x93, 0x93, 0x93, 255),
+                DropdownText                          = new Color32(0x09, 0x09, 0x09, 255), //
+                HelpboxBackground                     = new Color32(235, 235, 235, 52),
+                HelpboxBorder                         = new Color32(0xA9, 0xA9, 0xA9, 255), //
+                InputFieldBackground                  = new Color32(0xF0, 0xF0, 0xF0, 255),
+                InputFieldBorder                      = new Color32(0xB7, 0xB7, 0xB7, 255),
+                InputFieldBorderAccent                = new Color32(0xA0, 0xA0, 0xA0, 255),
+                InputFieldBorderFocus                 = new Color32(0x1D, 0x50, 0x87, 255),
+                InputFieldBorderHover                 = new Color32(0x6C, 0x6C, 0x6C, 255), //
+                ObjectFieldBackground                 = new Color32(0xED, 0xED, 0xED, 255),
+                ObjectFieldBorder                     = new Color32(0xB0, 0xB0, 0xB0, 255),
+                ObjectFieldBorderFocus                = new Color32(0x1D, 0x50, 0x87, 255),
+                ObjectFieldBorderHover                = new Color32(0x6C, 0x6C, 0x6C, 255),
+                ObjectFieldButtonBackground           = new Color32(0xDE, 0xDE, 0xDE, 255),
+                ObjectFieldButtonBackgroundHover      = new Color32(0xCC, 0xCC, 0xCC, 255), //
+                ScrollbarButtonBackground             = new Color(0f, 0f, 0f, 0.05098039f),
+                ScrollbarButtonBackgroundHover        = new Color32(0xA7, 0xA7, 0xA7, 255),
+                ScrollbarGrooveBackground             = new Color(0f, 0f, 0f, 0.05098039f),
+                ScrollbarGrooveBorder                 = new Color(0f, 0f, 0f, 0.1019608f),
+                ScrollbarThumbBackground              = new Color32(0x9A, 0x9A, 0x9A, 255),
+                ScrollbarThumbBackgroundHover         = new Color32(0x8E, 0x8E, 0x8E, 255),
+                ScrollbarThumbBorder                  = new Color32(0xB9, 0xB9, 0xB9, 255),
+                ScrollbarThumbBorderHover             = new Color32(0x8E, 0x8E, 0x8E, 255), //
+                SliderGrooveBackground                = new Color32(0x8F, 0x8F, 0x8F, 255),
+                SliderGrooveBackgroundDisabled        = new Color32(0xA4, 0xA4, 0xA4, 255),
+                SliderThumbBackground                 = new Color32(0x61, 0x61, 0x61, 255),
+                SliderThumbBackgroundDisabled         = new Color32(0x9B, 0x9B, 0x9B, 255),
+                SliderThumbBackgroundHover            = new Color32(0x4F, 0x4F, 0x4F, 255),
+                SliderThumbBorder                     = new Color32(0x61, 0x61, 0x61, 255),
+                SliderThumbBorderDisabled             = new Color32(0x66, 0x66, 0x66, 255),
+                SliderThumbHaloBackground             = new Color32(12, 108, 203, 113), //
+                TabBackground                         = new Color32(0xB6, 0xB6, 0xB6, 255),
+                TabBackgroundChecked                  = new Color32(0xCB, 0xCB, 0xCB, 255),
+                TabBackgroundHover                    = new Color32(0xB0, 0xB0, 0xB0, 255),
+                TabHighlightBackground                = new Color32(0x3A, 0x72, 0xB0, 255), //
+                InspectorTitlebarBackground           = new Color32(0xCB, 0xCB, 0xCB, 255),
+                InspectorTitlebarBackgroundHover      = new Color32(0xD6, 0xD6, 0xD6, 255),
+                InspectorToolbarBackground            = new Color32(0xCB, 0xCB, 0xCB, 255),
+                InspectorWindowBackground             = new Color32(0xC8, 0xC8, 0xC8, 255), //
+                InspectorTitlebarBorder               = new Color32(0x7F, 0x7F, 0x7F, 255),
+                InspectorTitlebarBorderAccent         = new Color32(0xBA, 0xBA, 0xBA, 255), //
+                WindowTabDefaultBackground            = new Color32(0xA5, 0xA5, 0xA5, 255),
+                WindowHighlightBackgroundInactive     = new Color32(0xAE, 0xAE, 0xAE, 255),
+                WindowHighlightBackground             = new Color32(0x3A, 0x72, 0xB0, 255),
+                WindowHighlightBackgroundHover        = new Color(0, 0, 0, 0.0627451f),
+                WindowHighlightBackgroundHoverLighter = new Color32(0x9A, 0x9A, 0x9A, 255),
+                WindowBackground                      = new Color32(0xC8, 0xC8, 0xC8, 255),
+                WindowAlternatedRowsBackground        = new Color32(0xCA, 0xCA, 0xCA, 255), //
+                DefaultBorder                         = new Color32(0x99, 0x99, 0x99, 255),
+                WindowBorder                          = new Color32(0x93, 0x93, 0x93, 255), //
+                ToolbarBackground                     = new Color32(0xCB, 0xCB, 0xCB, 255),
+                ToolbarBorder                         = new Color32(0x99, 0x99, 0x99, 255),
+                ToolbarButtonBackground               = new Color32(0xCB, 0xCB, 0xCB, 255),
+                ToolbarButtonBackgroundChecked        = new Color32(0xEF, 0xEF, 0xEF, 255),
+                ToolbarButtonBackgroundFocus          = new Color32(0xC1, 0xC1, 0xC1, 255),
+                ToolbarButtonBackgroundHover          = new Color32(0xC1, 0xC1, 0xC1, 255),
+                ToolbarButtonBorder                   = new Color32(0x99, 0x99, 0x99, 255), //
+                DefaultText                           = new Color32(0x09, 0x09, 0x09, 255),
+                DefaultTextDisabled                   = new Color32(0x72, 0x72, 0x72, 255),
+                DefaultTextHover                      = new Color32(0x09, 0x09, 0x09, 255),
+                ErrorText                             = new Color32(0x5A, 0x00, 0x00, 255),
+                LinkText                              = new Color32(0x4C, 0x7E, 0xFF, 255),
+                VisitedLinkText                       = new Color32(0xAA, 0x00, 0xAA, 255),
+                WarningText                           = new Color32(0x33, 0x33, 0x08, 255), //
+                HelpboxText                           = new Color32(0x16, 0x16, 0x16, 255),
+                HighlightText                         = new Color32(0x00, 0x32, 0xE6, 255),
+                HighlightTextInactive                 = new Color32(0xFF, 0xFF, 0xFF, 255),
+                LabelText                             = new Color32(0x09, 0x09, 0x09, 255),
+                LabelTextFocus                        = new Color32(0x00, 0x3C, 0x88, 255),
+                PreviewOverlayText                    = new Color32(0xFF, 0xFF, 0xFF, 255),
+                WindowText                            = new Color32(0x09, 0x09, 0x09, 255), //
+                TabText                               = new Color32(0x09, 0x09, 0x09, 255),
+                ToolbarButtonText                     = new Color32(0x09, 0x09, 0x09, 255),
+                ToolbarButtonTextChecked              = new Color32(0x09, 0x09, 0x09, 255),
+                ToolbarButtonTextHover                = new Color32(0x09, 0x09, 0x09, 255),
             };
 
             Dark = new EditorColorPalette
             {
-                AppToolbarBackground = FromHex("#191919"),
-                AppToolbarButtonBackground = FromHex("#383838"),
-                AppToolbarButtonBackgroundChecked = FromHex("#6A6A6A"),
-                AppToolbarButtonBackgroundHover = FromHex("#424242"),
-                AppToolbarButtonBackgroundPressed = FromHex("#6A6A6A"),
-                AppToolbarButtonBorder = FromHex("#191919"),
-                AppToolbarButtonBorderAccent = FromHex("#222222"),
-
-                ButtonBackground = FromHex("#585858"),
-                ButtonBackgroundFocus = FromHex("#6E6E6E"),
-                ButtonBackgroundHover = FromHex("#676767"),
-                ButtonBackgroundPressed = FromHex("#46607C"),
-                ButtonBorder = FromHex("#303030"),
-                ButtonBorderAccent = FromHex("#242424"),
-                ButtonBorderPressed = FromHex("#0D0D0D"),
-                ButtonText = FromHex("#EEEEEE"),
-
-                DropdownBackground = FromHex("#515151"),
-                DropdownBackgroundHover = FromHex("#585858"),
-                DropdownBorder = FromHex("#303030"),
-                DropdownBorderAccent = FromHex("#242424"),
-                DropdownText = FromHex("#E4E4E4"),
-
-                HelpboxBackground = new Color32(96, 96, 96, 52),
-                HelpboxBorder = FromHex("#232323"),
-
-                InputFieldBackground = FromHex("#2A2A2A"),
-                InputFieldBorder = FromHex("#212121"),
-                InputFieldBorderAccent = FromHex("#0D0D0D"),
-                InputFieldBorderFocus = FromHex("#3A79BB"),
-                InputFieldBorderHover = FromHex("#656565"),
-
-                ObjectFieldBackground = FromHex("#282828"),
-                ObjectFieldBorder = FromHex("#202020"),
-                ObjectFieldBorderFocus = FromHex("#3A79BB"),
-                ObjectFieldBorderHover = FromHex("#656565"),
-                ObjectFieldButtonBackground = FromHex("#373737"),
-                ObjectFieldButtonBackgroundHover = FromHex("#4C4C4C"),
-
-                ScrollbarButtonBackground = new Color(0f, 0f, 0f, 05098039f),
-                ScrollbarButtonBackgroundHover = FromHex("#494949"),
-                ScrollbarGrooveBackground = new Color(0f, 0f, 0f, 05098039f),
-                ScrollbarGrooveBorder = new Color(0f, 0f, 0f, 0.1019608f),
-                ScrollbarThumbBackground = FromHex("#5F5F5F"),
-                ScrollbarThumbBackgroundHover = FromHex("#686868"),
-                ScrollbarThumbBorder = FromHex("#323232"),
-                ScrollbarThumbBorderHover = FromHex("#686868"),
-
-                SliderGrooveBackground = FromHex("#5E5E5E"),
-                SliderGrooveBackgroundDisabled = FromHex("#575757"),
-                SliderThumbBackground = FromHex("#999999"),
-                SliderThumbBackgroundDisabled = FromHex("#666666"),
-                SliderThumbBackgroundHover = FromHex("#EAEAEA"),
-                SliderThumbBorder = FromHex("#999999"),
-                SliderThumbBorderDisabled = FromHex("#666666"),
-                SliderThumbHaloBackground = new Color32(12, 108, 203, 113),
-
-                TabBackground = FromHex("#353535"),
-                TabBackgroundChecked = FromHex("#3C3C3C"),
-                TabBackgroundHover = FromHex("#303030"),
-                TabHighlightBackground = FromHex("#2C5D87"),
-
-                InspectorTitlebarBackground = FromHex("#3E3E3E"),
-                InspectorTitlebarBackgroundHover = FromHex("#474747"),
-                InspectorToolbarBackground = FromHex("#3C3C3C"),
-                InspectorWindowBackground = FromHex("#383838"),
-
-                InspectorTitlebarBorder = FromHex("#1A1A1A"),
-                InspectorTitlebarBorderAccent = FromHex("#303030"),
-
-                WindowTabDefaultBackground = FromHex("#282828"),
-                WindowHighlightBackgroundInactive = FromHex("#4D4D4D"),
-                WindowHighlightBackground = FromHex("#2C5D87"),
-                WindowHighlightBackgroundHover = new Color(0, 0, 0, 0627451f),
-                WindowHighlightBackgroundHoverLighter = FromHex("#5F5F5F"),
-                WindowBackground = FromHex("#383838"),
-                WindowAlternatedRowsBackground = FromHex("#3F3F3F"),
-
-                DefaultBorder = FromHex("#232323"),
-                WindowBorder = FromHex("#242424"),
-
-                ToolbarBackground = FromHex("#3C3C3C"),
-                ToolbarBorder = FromHex("#232323"),
-                ToolbarButtonBackground = FromHex("#3C3C3C"),
-                ToolbarButtonBackgroundChecked = FromHex("#505050"),
-                ToolbarButtonBackgroundFocus = FromHex("#464646"),
-                ToolbarButtonBackgroundHover = FromHex("#464646"),
-                ToolbarButtonBorder = FromHex("#232323"),
-
-                DefaultText = FromHex("#D2D2D2"),
-                DefaultTextDisabled = FromHex("#898989"),
-                DefaultTextHover = FromHex("#BDBDBD"),
-                ErrorText = FromHex("#D32222"),
-                LinkText = FromHex("#4C7EFF"),
-                VisitedLinkText = FromHex("#FF00FF"),
-                WarningText = FromHex("#F4BC02"),
-
-                HelpboxText = FromHex("#BDBDBD"),
-                HighlightText = FromHex("#4C7EFF"),
-                HighlightTextInactive = FromHex("#FFFFFF"),
-                LabelText = FromHex("#C4C4C4"),
-                LabelTextFocus = FromHex("#81B4FF"),
-                PreviewOverlayText = FromHex("#DEDEDE"),
-                WindowText = FromHex("#BDBDBD"),
-
-                TabText = FromHex("#BDBDBD"),
-                ToolbarButtonText = FromHex("#C4C4C4"),
-                ToolbarButtonTextChecked = FromHex("#C4C4C4"),
-                ToolbarButtonTextHover = FromHex("#BDBDBD"),
+                AppToolbarBackground                  = new Color32(0x19, 0x19, 0x19, 255),
+                AppToolbarButtonBackground            = new Color32(0x38, 0x38, 0x38, 255),
+                AppToolbarButtonBackgroundChecked     = new Color32(0x6A, 0x6A, 0x6A, 255),
+                AppToolbarButtonBackgroundHover       = new Color32(0x42, 0x42, 0x42, 255),
+                AppToolbarButtonBackgroundPressed     = new Color32(0x6A, 0x6A, 0x6A, 255),
+                AppToolbarButtonBorder                = new Color32(0x19, 0x19, 0x19, 255),
+                AppToolbarButtonBorderAccent          = new Color32(0x22, 0x22, 0x22, 255), //
+                ButtonBackground                      = new Color32(0x58, 0x58, 0x58, 255),
+                ButtonBackgroundFocus                 = new Color32(0x6E, 0x6E, 0x6E, 255),
+                ButtonBackgroundHover                 = new Color32(0x67, 0x67, 0x67, 255),
+                ButtonBackgroundPressed               = new Color32(0x46, 0x60, 0x7C, 255),
+                ButtonBorder                          = new Color32(0x30, 0x30, 0x30, 255),
+                ButtonBorderAccent                    = new Color32(0x24, 0x24, 0x24, 255),
+                ButtonBorderPressed                   = new Color32(0x0D, 0x0D, 0x0D, 255),
+                ButtonText                            = new Color32(0xEE, 0xEE, 0xEE, 255), //
+                DropdownBackground                    = new Color32(0x51, 0x51, 0x51, 255),
+                DropdownBackgroundHover               = new Color32(0x58, 0x58, 0x58, 255),
+                DropdownBorder                        = new Color32(0x30, 0x30, 0x30, 255),
+                DropdownBorderAccent                  = new Color32(0x24, 0x24, 0x24, 255),
+                DropdownText                          = new Color32(0xE4, 0xE4, 0xE4, 255), //
+                HelpboxBackground                     = new Color32(96, 96, 96, 52),
+                HelpboxBorder                         = new Color32(0x23, 0x23, 0x23, 255), //
+                InputFieldBackground                  = new Color32(0x2A, 0x2A, 0x2A, 255),
+                InputFieldBorder                      = new Color32(0x21, 0x21, 0x21, 255),
+                InputFieldBorderAccent                = new Color32(0x0D, 0x0D, 0x0D, 255),
+                InputFieldBorderFocus                 = new Color32(0x3A, 0x79, 0xBB, 255),
+                InputFieldBorderHover                 = new Color32(0x65, 0x65, 0x65, 255), //
+                ObjectFieldBackground                 = new Color32(0x28, 0x28, 0x28, 255),
+                ObjectFieldBorder                     = new Color32(0x20, 0x20, 0x20, 255),
+                ObjectFieldBorderFocus                = new Color32(0x3A, 0x79, 0xBB, 255),
+                ObjectFieldBorderHover                = new Color32(0x65, 0x65, 0x65, 255),
+                ObjectFieldButtonBackground           = new Color32(0x37, 0x37, 0x37, 255),
+                ObjectFieldButtonBackgroundHover      = new Color32(0x4C, 0x4C, 0x4C, 255), //
+                ScrollbarButtonBackground             = new Color(0f, 0f, 0f, 05098039f),
+                ScrollbarButtonBackgroundHover        = new Color32(0x49, 0x49, 0x49, 255),
+                ScrollbarGrooveBackground             = new Color(0f, 0f, 0f, 05098039f),
+                ScrollbarGrooveBorder                 = new Color(0f, 0f, 0f, 0.1019608f),
+                ScrollbarThumbBackground              = new Color32(0x5F, 0x5F, 0x5F, 255),
+                ScrollbarThumbBackgroundHover         = new Color32(0x68, 0x68, 0x68, 255),
+                ScrollbarThumbBorder                  = new Color32(0x32, 0x32, 0x32, 255),
+                ScrollbarThumbBorderHover             = new Color32(0x68, 0x68, 0x68, 255), //
+                SliderGrooveBackground                = new Color32(0x5E, 0x5E, 0x5E, 255),
+                SliderGrooveBackgroundDisabled        = new Color32(0x57, 0x57, 0x57, 255),
+                SliderThumbBackground                 = new Color32(0x99, 0x99, 0x99, 255),
+                SliderThumbBackgroundDisabled         = new Color32(0x66, 0x66, 0x66, 255),
+                SliderThumbBackgroundHover            = new Color32(0xEA, 0xEA, 0xEA, 255),
+                SliderThumbBorder                     = new Color32(0x99, 0x99, 0x99, 255),
+                SliderThumbBorderDisabled             = new Color32(0x66, 0x66, 0x66, 255),
+                SliderThumbHaloBackground             = new Color32(12, 108, 203, 113), //
+                TabBackground                         = new Color32(0x35, 0x35, 0x35, 255),
+                TabBackgroundChecked                  = new Color32(0x3C, 0x3C, 0x3C, 255),
+                TabBackgroundHover                    = new Color32(0x30, 0x30, 0x30, 255),
+                TabHighlightBackground                = new Color32(0x2C, 0x5D, 0x87, 255), //
+                InspectorTitlebarBackground           = new Color32(0x3E, 0x3E, 0x3E, 255),
+                InspectorTitlebarBackgroundHover      = new Color32(0x47, 0x47, 0x47, 255),
+                InspectorToolbarBackground            = new Color32(0x3C, 0x3C, 0x3C, 255),
+                InspectorWindowBackground             = new Color32(0x38, 0x38, 0x38, 255), //
+                InspectorTitlebarBorder               = new Color32(0x1A, 0x1A, 0x1A, 255),
+                InspectorTitlebarBorderAccent         = new Color32(0x30, 0x30, 0x30, 255), //
+                WindowTabDefaultBackground            = new Color32(0x28, 0x28, 0x28, 255),
+                WindowHighlightBackgroundInactive     = new Color32(0x4D, 0x4D, 0x4D, 255),
+                WindowHighlightBackground             = new Color32(0x2C, 0x5D, 0x87, 255),
+                WindowHighlightBackgroundHover        = new Color(0, 0, 0, 0627451f),
+                WindowHighlightBackgroundHoverLighter = new Color32(0x5F, 0x5F, 0x5F, 255),
+                WindowBackground                      = new Color32(0x38, 0x38, 0x38, 255),
+                WindowAlternatedRowsBackground        = new Color32(0x3F, 0x3F, 0x3F, 255), //
+                DefaultBorder                         = new Color32(0x23, 0x23, 0x23, 255),
+                WindowBorder                          = new Color32(0x24, 0x24, 0x24, 255), //
+                ToolbarBackground                     = new Color32(0x3C, 0x3C, 0x3C, 255),
+                ToolbarBorder                         = new Color32(0x23, 0x23, 0x23, 255),
+                ToolbarButtonBackground               = new Color32(0x3C, 0x3C, 0x3C, 255),
+                ToolbarButtonBackgroundChecked        = new Color32(0x50, 0x50, 0x50, 255),
+                ToolbarButtonBackgroundFocus          = new Color32(0x46, 0x46, 0x46, 255),
+                ToolbarButtonBackgroundHover          = new Color32(0x46, 0x46, 0x46, 255),
+                ToolbarButtonBorder                   = new Color32(0x23, 0x23, 0x23, 255), //
+                DefaultText                           = new Color32(0xD2, 0xD2, 0xD2, 255),
+                DefaultTextDisabled                   = new Color32(0x89, 0x89, 0x89, 255),
+                DefaultTextHover                      = new Color32(0xBD, 0xBD, 0xBD, 255),
+                ErrorText                             = new Color32(0xD3, 0x22, 0x22, 255),
+                LinkText                              = new Color32(0x4C, 0x7E, 0xFF, 255),
+                VisitedLinkText                       = new Color32(0xFF, 0x00, 0xFF, 255),
+                WarningText                           = new Color32(0xF4, 0xBC, 0x02, 255), //
+                HelpboxText                           = new Color32(0xBD, 0xBD, 0xBD, 255),
+                HighlightText                         = new Color32(0x4C, 0x7E, 0xFF, 255),
+                HighlightTextInactive                 = new Color32(0xFF, 0xFF, 0xFF, 255),
+                LabelText                             = new Color32(0xC4, 0xC4, 0xC4, 255),
+                LabelTextFocus                        = new Color32(0x81, 0xB4, 0xFF, 255),
+                PreviewOverlayText                    = new Color32(0xDE, 0xDE, 0xDE, 255),
+                WindowText                            = new Color32(0xBD, 0xBD, 0xBD, 255), //
+                TabText                               = new Color32(0xBD, 0xBD, 0xBD, 255),
+                ToolbarButtonText                     = new Color32(0xC4, 0xC4, 0xC4, 255),
+                ToolbarButtonTextChecked              = new Color32(0xC4, 0xC4, 0xC4, 255),
+                ToolbarButtonTextHover                = new Color32(0xBD, 0xBD, 0xBD, 255),
             };
-        }
 
-        private static Color FromHex(string hexString)
-        {
-            ColorUtility.TryParseHtmlString(hexString, out var c);
-            return c;
+            // @formatter:int_align_assignments restore
         }
     }
 }

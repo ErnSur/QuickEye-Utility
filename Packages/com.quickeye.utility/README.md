@@ -1,15 +1,18 @@
+<img src="Documentation~/eyeLogo.png" align="right" width="11%" />
+
 # QuickEye Utility
+> Not all of the features are documented
 
-Collection of small useful classes.
+### `SingletonMonoBehaviour<T>`
 
-### `Singleton<T>`
+
+<img  src="Documentation~/PrefabLabel.png"  align="right" width="50%">
 
 `MonoBehaviour` Singleton implementation.
-
 * Allows to define singleton prefabs when used with `SingletonAssetAttribute`
 * Takes into account some common problems of many singleton implementations that are out there.
 
-### `ScriptableSingleton<T>`
+### `SingletonScriptableObject<T>`
 
 `ScriptableObject` Singleton implementation.
 
@@ -31,6 +34,29 @@ Object pool pattern implementation with Unity specific API.
 * Prototype as prefab.
 * Configurable transform parent.
 
+### Time Serialization Types
+
+Data types, GUI Controls and Property Drawers related to time.
+
+![](Documentation~/TimeSpan.png)
+
+![](Documentation~/DateOnly.png)
+
+![](Documentation~/DateTime.png)
+
+#### `UnityTimeSpan`
+
+`System.TimeSpan` equivalent. If `TimeOfDayAttribute` is used on serialized field the property drawer will restrain input between `0` and `23:59:59.999`. 
+
+####  `UnityDateTime` & `UnityDateOnly`
+
+`System.DateTime` and .NET 6s `System.DateOnly` equivalents.
+
 ## Editor
 
-### `QuickEye.Utility.Editor.EditorColorPalette`
+### `EditorColorPalette` and Editor Color Palette Window
+#### Open from context menu: _Window/Editor Color Palette_
+
+Browser for color values used by Unity Editor. 
+
+<img  src="Documentation~/EditorColorPalette.png" width="50%">

@@ -2,6 +2,14 @@ using System;
 
 namespace QuickEye.Utility
 {
+    public abstract class Event
+    {
+        public static event Action Ev;
+        public static void Register(Action callback) => Ev += callback;
+        public static void Unregister(Action callback) => Ev -= callback;
+        public static void Trigger() => Ev?.Invoke();
+    }
+    
     public abstract class Event<T> where T : Event<T>
     {
         public static event Action<T> Ev;
