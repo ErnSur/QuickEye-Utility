@@ -9,7 +9,7 @@ namespace QuickEye.Utility.Editor
 {
     internal class EditorColorPaletteWindow : EditorWindow
     {
-        [MenuItem("Window/Quick Eye/Editor Color Palette")]
+        [MenuItem("Window/Editor Color Palette")]
         public static void OpenWindow()
         {
             GetWindow<EditorColorPaletteWindow>();

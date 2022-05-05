@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Globalization;
 using UnityEditor;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 namespace QuickEye.Utility.Editor
 {

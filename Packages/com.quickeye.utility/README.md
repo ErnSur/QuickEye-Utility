@@ -1,11 +1,14 @@
-# QuickEye Utility
+# 👁️ QuickEye Utility
 
-Collection of small useful classes.
+## Features
+#### Not all of them are documented
 
 ### `SingletonMonoBehaviour<T>`
 
-`MonoBehaviour` Singleton implementation.
 
+<img  src="Documentation~/PrefabLabel.png" width="50%">
+
+`MonoBehaviour` Singleton implementation.
 * Allows to define singleton prefabs when used with `SingletonAssetAttribute`
 * Takes into account some common problems of many singleton implementations that are out there.
 
@@ -33,6 +36,7 @@ Object pool pattern implementation with Unity specific API.
 
 ### Time Serialization Types
 
+Data types, GUI Controls and Property Drawers related to time.
 #### `UnityTimeSpan`
 ![](Documentation~/TimeSpanField.png)
 
@@ -44,12 +48,11 @@ Object pool pattern implementation with Unity specific API.
 
 `System.DateTime` and .NET 6s `System.DateOnly` equivalents.
 
-### Static Events
-
-###   
-
 ## Editor
 
-### `EditorColorPalette`
+### `EditorColorPalette` and Editor Color Palette Window
+#### Open from context menu: _Window/Editor Color Palette_
+
+Browser for color values used by Unity Editor. 
 
 <img  src="Documentation~/EditorColorPalette.png" width="50%">
