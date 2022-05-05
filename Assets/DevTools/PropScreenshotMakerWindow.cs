@@ -73,7 +73,8 @@ namespace QuickEye.DevTools
             {
                 var r = padding.Add(_propRect);
                 r.position = GUIUtility.GUIToScreenPoint(r.position);
-                ScreenShotUtility.SaveScreenShot(r, _prop.displayName);
+                var fileName = _prop.displayName.Replace(" ", string.Empty);
+                ScreenShotUtility.SaveScreenShot(r, fileName);
             }
 
             DrawProperty();

@@ -38,11 +38,11 @@ Object pool pattern implementation with Unity specific API.
 
 Data types, GUI Controls and Property Drawers related to time.
 
-![](Documentation~/TimeSpanField.png)
+![](Documentation~/TimeSpan.png)
 
-![](Documentation~/DateOnlyField.png)
+![](Documentation~/DateOnly.png)
 
-![](Documentation~/DateTimeField.png)
+![](Documentation~/DateTime.png)
 
 #### `UnityTimeSpan`
 
