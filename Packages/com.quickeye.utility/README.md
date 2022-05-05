@@ -1,7 +1,7 @@
-# 👁️ QuickEye Utility
+<p  align="right" >👁️</p>
 
-## Features
-#### Not all of them are documented
+# QuickEye Utility
+> Not all of the features are documented
 
 ### `SingletonMonoBehaviour<T>`
 
