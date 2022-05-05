@@ -36,19 +36,15 @@ namespace QuickEye.Utility.Editor
 
             var resPath = metadata.ResourcesPath;
             var hasCorrectPath = metadata.IsInLoadablePath;
-            var iconContent = new GUIContent(GetGuiContent(hasCorrectPath, resPath));
-            var cHex = ColorUtility.ToHtmlStringRGB(EditorColorPalette.Current.DefaultText);
-            iconContent.text =
-                $"<b>Singleton Asset</b>: <color=#{cHex}{128:X2}>*/Resources/</color>{resPath}";
             using (new GUILayout.HorizontalScope())
             {
-                var style = new GUIStyle("label");
-                style.richText = true;
-                var layout = GUILayout.ExpandWidth(false);
-                // light alpha: 130
-                // dark: 128
-                // rich text alpha color works a different from GUI.color alpha 
-                GUILayout.Label(iconContent, style, layout);
+                var iconContent = new GUIContent(GetGuiContent(hasCorrectPath, resPath));
+                iconContent.text = "Singleton Asset";
+                using (new EditorGUIUtility.IconSizeScope(new Vector2(17, 17)))
+                    GUILayout.Label(iconContent, GUILayout.ExpandWidth(false));
+                GUI.enabled = false;
+                EditorGUILayout.TextField($"*/Resources/{resPath}");
+                GUI.enabled = true;
             }
         }
 

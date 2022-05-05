@@ -1,23 +1,23 @@
 {
   "name": "com.quickeye.utility",
   "displayName": "QuickEye Utility",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "author": "Quick Eye",
   "type": "library",
   "samples": [
     {
       "displayName": "Usage of Singleton classes",
-      "description": "Basic usage of the Singleton and ScriptableSingleton.",
+      "description": "Basic usage of the Singletons classes.",
       "path": "Samples~/SingletonAssets"
     },
     {
       "displayName": "Usage of Container classes",
-      "description": "UI scene with a simple usage of container class.",
+      "description": "UI scene with a simple usage of Container class.",
       "path": "Samples~/ContainerUsage"
     },
     {
       "displayName": "UI - Character Selection Screen",
-      "description": "UI scene example utilizing lib classes.",
+      "description": "UI scene example utilizing lib features.",
       "path": "Samples~/CharacterCreationScreen"
     }
   ]
