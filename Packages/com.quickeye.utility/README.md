@@ -1,4 +1,4 @@
-<img src="Documentation~/eyeLogo.png" align="right" width="12%" />
+<img src="Documentation~/eyeLogo.png" align="right" width="11%" />
 
 # QuickEye Utility
 > Not all of the features are documented
@@ -6,7 +6,7 @@
 ### `SingletonMonoBehaviour<T>`
 
 
-<img  src="Documentation~/PrefabLabel.png" width="50%">
+<img  src="Documentation~/PrefabLabel.png"  align="right" width="50%">
 
 `MonoBehaviour` Singleton implementation.
 * Allows to define singleton prefabs when used with `SingletonAssetAttribute`
@@ -37,14 +37,18 @@ Object pool pattern implementation with Unity specific API.
 ### Time Serialization Types
 
 Data types, GUI Controls and Property Drawers related to time.
-#### `UnityTimeSpan`
+
 ![](Documentation~/TimeSpanField.png)
+
+![](Documentation~/DateOnlyField.png)
+
+![](Documentation~/DateTimeField.png)
+
+#### `UnityTimeSpan`
 
 `System.TimeSpan` equivalent. If `TimeOfDayAttribute` is used on serialized field the property drawer will restrain input between `0` and `23:59:59.999`. 
 
 ####  `UnityDateTime` & `UnityDateOnly`
-![](Documentation~/DateTimeField.png)
-![](Documentation~/DateOnlyField.png)
 
 `System.DateTime` and .NET 6s `System.DateOnly` equivalents.
 
