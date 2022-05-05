@@ -2,14 +2,14 @@
 
 Collection of small useful classes.
 
-### `Singleton<T>`
+### `SingletonMonoBehaviour<T>`
 
 `MonoBehaviour` Singleton implementation.
 
 * Allows to define singleton prefabs when used with `SingletonAssetAttribute`
 * Takes into account some common problems of many singleton implementations that are out there.
 
-### `ScriptableSingleton<T>`
+### `SingletonScriptableObject<T>`
 
 `ScriptableObject` Singleton implementation.
 
@@ -31,6 +31,25 @@ Object pool pattern implementation with Unity specific API.
 * Prototype as prefab.
 * Configurable transform parent.
 
+### Time Serialization Types
+
+#### `UnityTimeSpan`
+![](Documentation~/TimeSpanField.png)
+
+`System.TimeSpan` equivalent. If `TimeOfDayAttribute` is used on serialized field the property drawer will restrain input between `0` and `23:59:59.999`. 
+
+####  `UnityDateTime` & `UnityDateOnly`
+![](Documentation~/DateTimeField.png)
+![](Documentation~/DateOnlyField.png)
+
+`System.DateTime` and .NET 6s `System.DateOnly` equivalents.
+
+### Static Events
+
+###   
+
 ## Editor
 
-### `QuickEye.Utility.Editor.EditorColorPalette`
+### `EditorColorPalette`
+
+<img  src="Documentation~/EditorColorPalette.png" width="50%">
