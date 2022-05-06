@@ -15,13 +15,22 @@ function Update-UpmBranch {
     Update-SamplesDirectory (Get-Location)
     New-CommitWithVersionTag $BranchName $PackageVersion
 }
+
 function Remove-AllExceptPackage([Parameter(Mandatory)] $PackageDirectory) {
-    $allFiles = Get-ChildItem * -Recurse -Force | Select-Object -ExpandProperty FullName
-    $filesToRemove = $allFiles -notmatch ".git\/+|$PackageDirectory"
-    $filesToRemove | Sort-Object Length -Descending | Remove-Item -Force
-    ex git add .
+    $filesToRemove = Get-FilesToDelete
+    $filesToRemove | Remove-Item -Recurse -Force
     ex git mv $PackageDirectory/* ./
+    Remove-Item -Path "Packages/" -Recurse -Force
+    ex git add .
 }
+
+function Get-FilesToDelete() {
+    return Get-ChildItem -Force | 
+    Where-Object Name -notin '.git', 'Packages' |
+    Select-Object -ExpandProperty FullName |
+    Sort-Object Length -Descending
+}
+
 function Update-SamplesDirectory([Parameter(Mandatory)] $PackageDirectory) {
     $samplesDir = Join-Path $PackageDirectory "Samples"
     if (Test-Path "$samplesDir") {
