@@ -4,6 +4,9 @@
   "version": "2.1.0",
   "author": "Quick Eye",
   "type": "library",
+  "dependencies": {
+    "com.unity.settings-manager": "2.0.1"
+  },
   "samples": [
     {
       "displayName": "Usage of Singleton classes",
