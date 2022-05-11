@@ -1,8 +1,8 @@
 {
     "name": "QuickEye.Utility.Editor",
-    "rootNamespace": "QuickEye.Utility.Editor",
     "references": [
-        "GUID:07ccd62b4443d194480040cde09607cc"
+        "GUID:07ccd62b4443d194480040cde09607cc",
+        "GUID:49818357e697641afb75d2f8acaf1861"
     ],
     "includePlatforms": [
         "Editor"
@@ -15,6 +15,12 @@
     ],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.settings-manager",
+            "expression": "",
+            "define": "UNITY_SETTINGS_MANAGER"
+        }
+    ],
     "noEngineReferences": false
 }
