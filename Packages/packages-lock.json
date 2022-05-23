@@ -1,5 +1,19 @@
 {
   "dependencies": {
+    "com.av.smart-inspector": {
+      "version": "https://github.com/neon-age/Smart-Inspector.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "a2de2559449ac2af3055adf72fb5c0fcc721158b"
+    },
+    "com.quickeye.icon-browser": {
+      "version": "https://github.com/ErnSur/unity-editor-icons.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "ae113cf24025069bf92191ce0ecbd93ddb512365"
+    },
     "com.quickeye.utility": {
       "version": "file:com.quickeye.utility",
       "depth": 0,
@@ -66,6 +80,13 @@
         "com.unity.modules.ui": "1.0.0",
         "com.unity.modules.imgui": "1.0.0"
       }
+    },
+    "com.unity.ui.builder": {
+      "version": "1.0.0-preview.18",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
     },
     "com.unity.xr.legacyinputhelpers": {
       "version": "2.1.8",
