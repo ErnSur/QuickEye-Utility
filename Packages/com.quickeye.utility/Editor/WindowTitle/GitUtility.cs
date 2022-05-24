@@ -35,6 +35,7 @@ namespace QuickEye.Utility.Editor
                 var headRef = File.ReadAllText(headPath);
                 //"ref: refs/heads/"
                 //var pos = headRef.LastIndexOf("/", StringComparison.InvariantCulture) + 1;
+                //TODO: Handle detached head case
                 var pos = "ref: refs/heads/".Length;
                 branchName = headRef.Substring(pos).TrimEnd();
                 return true;

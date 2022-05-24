@@ -1,4 +1,5 @@
 ﻿#if UNITY_SETTINGS_MANAGER
+using System;
 using System.Reflection;
 using UnityEditor;
 using UnityEditor.SettingsManagement;
@@ -10,7 +11,8 @@ namespace QuickEye.Utility.Editor.WindowTitle
     {
         private static Settings _instance;
 
-        public static Settings Instance => _instance ?? (_instance = new Settings(ThisPackage.Name));
+        public static Settings Instance =>
+            _instance ?? (_instance = new Settings(new[] { new UserSettingsRepository() }));
 
         private static readonly string _DisabledTextColorTag =
             $"<color=#{ColorUtility.ToHtmlStringRGB(EditorColorPalette.Current.DefaultText)}{128:X2}>";
@@ -71,9 +73,15 @@ namespace QuickEye.Utility.Editor.WindowTitle
 
         private static void UpdateWindowTitle()
         {
-            var type = typeof(EditorApplication);
-            var method = type.GetMethod("UpdateMainWindowTitle", BindingFlags.Static | BindingFlags.NonPublic);
-            method.Invoke(null, null);
+            try
+            {
+                var type = typeof(EditorApplication);
+                var method = type.GetMethod("UpdateMainWindowTitle", BindingFlags.Static | BindingFlags.NonPublic);
+                method.Invoke(null, null);
+            }
+            catch
+            {
+            }
         }
     }
 }

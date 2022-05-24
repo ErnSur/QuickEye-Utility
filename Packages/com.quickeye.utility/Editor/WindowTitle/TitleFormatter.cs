@@ -56,9 +56,9 @@ namespace QuickEye.Utility.Editor.WindowTitle
             return n;
         }
 
-        public static string Format(string text, string customRepoPath = null)
+        public static string Format(string text)
         {
-            customRepoPath = WindowTitleSettings.RepositoryPath;
+            var customRepoPath = WindowTitleSettings.RepositoryPath;
             _Tags[BranchKey] = GetBranchName();
             if (string.IsNullOrEmpty(customRepoPath))
             {
