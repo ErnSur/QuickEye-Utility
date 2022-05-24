@@ -7,31 +7,29 @@ using System.Diagnostics;
 using Debug = UnityEngine.Debug;
 
 // Modified version of https://github.com/karl-/unity-symlink-utility
-namespace QuickEye.Symlink
+namespace QuickEye.Utility.Editor
 {
     [InitializeOnLoad]
     internal static class SymlinkUtility
     {
-        private enum SymlinkType
-        {
-            Junction,
-            Absolute,
-            Relative
-        }
+        private const string JunctionMenuName = "Assets/Symlink/Junction";
+        private const string AbsSymlinkMenuName = "Assets/Symlink/Absolute Symlink";
+        private const string RelSymlinkMenuName = "Assets/Symlink/Relative Symlink";
 
         // FileAttributes that match a junction folder.
-        const FileAttributes FOLDER_SYMLINK_ATTRIBUTES = FileAttributes.Directory | FileAttributes.ReparsePoint;
+        private const FileAttributes FolderSymlinkAttributes = FileAttributes.Directory | FileAttributes.ReparsePoint;
 
-        private static GUIStyle SymlinkMarkerStyle =>
-            new GUIStyle(EditorStyles.label)
+        private const string SymlinkLabelText = "⇔";
+
+        private static GUIStyle SymlinkMarkerStyle => new GUIStyle(EditorStyles.label)
+        {
+            normal =
             {
-                normal =
-                {
-                    textColor = new Color(.2f, .8f, .2f, .8f)
-                },
-                alignment = TextAnchor.MiddleRight,
-                fontStyle = FontStyle.Bold
-            };
+                textColor = EditorColorPalette.Current.DefaultText
+            },
+            fontStyle = FontStyle.Bold,
+            fontSize = 13
+        };
 
         static SymlinkUtility()
         {
@@ -47,9 +45,9 @@ namespace QuickEye.Symlink
                 if (string.IsNullOrEmpty(path))
                     return;
                 var attributes = File.GetAttributes(path);
-
-                if ((attributes & FOLDER_SYMLINK_ATTRIBUTES) == FOLDER_SYMLINK_ATTRIBUTES)
-                    GUI.Label(r, "⇔", SymlinkMarkerStyle);
+                var nr = IMGUIUtility.CalculateRectAfterLabelText(r, path, true);
+                if ((attributes & FolderSymlinkAttributes) == FolderSymlinkAttributes)
+                    GUI.Label(nr, SymlinkLabelText, SymlinkMarkerStyle);
             }
             catch (Exception e)
             {
@@ -57,31 +55,27 @@ namespace QuickEye.Symlink
             }
         }
 
-        private const string JunctionMenuName = "Assets/Symlink/Junction";
-        private const string AbsSymlinkMenuName = "Assets/Symlink/Absolute Symlink";
-        private const string RelSymlinkMenuName = "Assets/Symlink/Relative Symlink";
-
 #if UNITY_EDITOR_WIN
         [MenuItem(JunctionMenuName, false, 20)]
-        static void Junction()
+        private static void Junction()
         {
             Symlink(SymlinkType.Junction);
         }
 #endif
 
         [MenuItem(AbsSymlinkMenuName, false, 21)]
-        static void SymlinkAbsolute()
+        private static void SymlinkAbsolute()
         {
             Symlink(SymlinkType.Absolute);
         }
 
         [MenuItem(RelSymlinkMenuName, false, 22)]
-        static void SymlinkRelative()
+        private static void SymlinkRelative()
         {
             Symlink(SymlinkType.Relative);
         }
 
-        static void Symlink(SymlinkType linkType)
+        private static void Symlink(SymlinkType linkType)
         {
             var sourceFolderPath = EditorUtility.OpenFolderPanel("Select Folder Source", "", "");
 
@@ -154,7 +148,7 @@ namespace QuickEye.Symlink
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
         }
 
-        static string GetRelativePath(string sourcePath, string outputPath)
+        private static string GetRelativePath(string sourcePath, string outputPath)
         {
             if (string.IsNullOrEmpty(outputPath))
             {
@@ -198,7 +192,7 @@ namespace QuickEye.Symlink
             return string.Join(Path.DirectorySeparatorChar.ToString(), newSplitTarget);
         }
 
-        static void ExecuteCmdCommand(string command, bool asAdmin)
+        private static void ExecuteCmdCommand(string command, bool asAdmin)
         {
             var startInfo = new ProcessStartInfo
             {
@@ -231,7 +225,7 @@ namespace QuickEye.Symlink
             }
         }
 
-        static void ExecuteBashCommand(string command)
+        private static void ExecuteBashCommand(string command)
         {
             command = command.Replace("\"", "\"\"");
 
@@ -258,6 +252,13 @@ namespace QuickEye.Symlink
                     Debug.LogError(proc.StandardError.ReadToEnd());
                 }
             }
+        }
+        
+        private enum SymlinkType
+        {
+            Junction,
+            Absolute,
+            Relative
         }
     }
 }

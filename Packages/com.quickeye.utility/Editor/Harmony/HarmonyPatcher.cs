@@ -11,7 +11,8 @@ namespace QuickEye.Utility.Editor
         [InitializeOnLoadMethod]
         public static void DoPatching()
         {
-            Harmony = new Harmony("com.quickeye.utility");
+            Harmony = new Harmony(ThisPackage.Name);
+            Harmony.PatchAll();
         }
     }
 }

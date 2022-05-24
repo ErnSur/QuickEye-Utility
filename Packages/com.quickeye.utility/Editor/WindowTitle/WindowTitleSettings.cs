@@ -10,7 +10,7 @@ namespace QuickEye.Utility.Editor.WindowTitle
     {
         private static Settings _instance;
 
-        public static Settings Instance => _instance ?? (_instance = new Settings(PackageInfo.PackageName));
+        public static Settings Instance => _instance ?? (_instance = new Settings(ThisPackage.Name));
 
         private static readonly string _DisabledTextColorTag =
             $"<color=#{ColorUtility.ToHtmlStringRGB(EditorColorPalette.Current.DefaultText)}{128:X2}>";
@@ -33,7 +33,7 @@ namespace QuickEye.Utility.Editor.WindowTitle
         public static string RepositoryPath => _RepositoryPath.value;
 
         [UserSettingBlock(" ")]
-        static void OnGUI(string searchContext)
+        private static void OnGUI(string searchContext)
         {
             var style = new GUIStyle(EditorStyles.helpBox);
             style.fontSize = 13;
@@ -50,15 +50,15 @@ namespace QuickEye.Utility.Editor.WindowTitle
                     SettingsGUILayout.SettingsTextField(
                         new GUIContent("Git Repository Path", "Git repository root directory"), _RepositoryPath,
                         searchContext);
-                var parametersInfoBox = $@"Available parameters:
-    * <Branch> {_DisabledTextColorTag}{TitleFormatter.Format("<Branch>")}</color>
-    * <SceneName> {_DisabledTextColorTag}{TitleFormatter.Format("<SceneName>")}</color>
-    * <ProjectName> {_DisabledTextColorTag}{TitleFormatter.Format("<ProjectName>")}</color>
-    * <RepoDirName> {_DisabledTextColorTag}{TitleFormatter.Format("<RepoDirName>")}</color>
-    * <ProjectPath> {_DisabledTextColorTag}{TitleFormatter.Format("<ProjectPath>")}</color>
-    * <RepoPath> {_DisabledTextColorTag}{TitleFormatter.Format("<RepoPath>")}</color>
-    * <EditorVersion> {_DisabledTextColorTag}{TitleFormatter.Format("<EditorVersion>")}</color>
-    * <TargetPlatform> {_DisabledTextColorTag}{TitleFormatter.Format("<TargetPlatform>")}</color>";
+                var parametersInfoBox = $@"Available title parameters:
+    • <Branch> {_DisabledTextColorTag}{TitleFormatter.Format("<Branch>")}</color>
+    • <SceneName> {_DisabledTextColorTag}{TitleFormatter.Format("<SceneName>")}</color>
+    • <ProjectName> {_DisabledTextColorTag}{TitleFormatter.Format("<ProjectName>")}</color>
+    • <RepoDirName> {_DisabledTextColorTag}{TitleFormatter.Format("<RepoDirName>")}</color>
+    • <ProjectPath> {_DisabledTextColorTag}{TitleFormatter.Format("<ProjectPath>")}</color>
+    • <RepoPath> {_DisabledTextColorTag}{TitleFormatter.Format("<RepoPath>")}</color>
+    • <EditorVersion> {_DisabledTextColorTag}{TitleFormatter.Format("<EditorVersion>")}</color>
+    • <TargetPlatform> {_DisabledTextColorTag}{TitleFormatter.Format("<TargetPlatform>")}</color>";
                 GUILayout.Label(parametersInfoBox, style);
             }
 
