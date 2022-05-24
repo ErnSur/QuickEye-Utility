@@ -1,9 +1,12 @@
 {
   "name": "com.quickeye.utility",
   "displayName": "QuickEye Utility",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "author": "Quick Eye",
   "type": "library",
+  "dependencies": {
+    "com.unity.settings-manager": "2.0.1"
+  },
   "samples": [
     {
       "displayName": "Usage of Singleton classes",

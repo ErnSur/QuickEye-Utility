@@ -13,10 +13,10 @@ namespace QuickEye.Utility.Editor
         {
             var providers = from assembly in AppDomain.CurrentDomain.GetAssemblies()
                 from type in assembly.GetTypes()
-                where Attribute.IsDefined(type, typeof(SettingsProviderAttribute))
+                where Attribute.IsDefined(type, typeof(SettingsProviderAssetAttribute))
                 where Attribute.IsDefined(type, typeof(SingletonAssetAttribute))
                 where typeof(SingletonScriptableObject).IsAssignableFrom(type)
-                let settingsAssetAttribute = type.GetCustomAttribute<SettingsProviderAttribute>()
+                let settingsAssetAttribute = type.GetCustomAttribute<SettingsProviderAssetAttribute>()
                 select CreateSettingsProvider(settingsAssetAttribute.SettingsWindowPath, type);
 
             return providers.ToArray();
