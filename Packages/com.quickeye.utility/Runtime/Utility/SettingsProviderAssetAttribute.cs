@@ -6,9 +6,9 @@ namespace QuickEye.Utility
     /// Creates a settings entry in Project Settings Window.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public sealed class SettingsProviderAttribute : Attribute
+    public sealed class SettingsProviderAssetAttribute : Attribute
     {
-        public SettingsProviderAttribute(string settingsWindowPath)
+        public SettingsProviderAssetAttribute(string settingsWindowPath)
         {
             SettingsWindowPath = settingsWindowPath;
         }

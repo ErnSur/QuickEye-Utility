@@ -72,22 +72,12 @@ namespace QuickEye.Utility.Editor
 
         private static void DrawProjectItem(Rect rect, string path, SingletonAssetCache.AssetMetadata meta)
         {
-            const int projWindowIconWidth = 16;
-            var content = new GUIContent(Path.GetFileNameWithoutExtension(path));
-            var labelTextSize = new GUIStyle("label").CalcSize(content);
-            var itemLabel = new Rect(rect)
-            {
-                width = labelTextSize.x + projWindowIconWidth
-            };
-            var linkedIconRect = new Rect(rect)
-            {
-                x = itemLabel.xMax + 2,
-                xMax = rect.xMax
-            };
+            var projectItemLabelContent = new GUIContent(Path.GetFileNameWithoutExtension(path));
+            var linkedIconRect = IMGUIUtility.CalculateRectAfterLabelText(rect, projectItemLabelContent,true);
             var linkedIcon = GetGuiContent(meta.IsInLoadablePath, meta.ResourcesPath);
             GUI.Label(linkedIconRect, linkedIcon, IconLabelStyle);
         }
-
+        
         private static void DrawProjectGridItem(Rect rect, SingletonAssetCache.AssetMetadata meta)
         {
             var content = GetGuiContent(meta.IsInLoadablePath, meta.ResourcesPath);
