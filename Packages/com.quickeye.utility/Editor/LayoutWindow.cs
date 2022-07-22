@@ -1,81 +1,42 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
-using static UnityEngine.GUILayout;
+using UnityEngine.UIElements;
 
 namespace QuickEye.Utility.Editor
 {
-    internal class LayoutWindow : EditorWindow
+    internal class LayoutWindow
     {
-        [SerializeField]
-        private string layoutPath;
-
-        [SerializeField]
-        private List<LayoutButton> _buttons = new List<LayoutButton>()
+        private static List<LayoutButton> _buttons = new List<LayoutButton>()
         {
             new LayoutButton("layouts/test1.wlt"),
             new LayoutButton("layouts/test2.wlt"),
             new LayoutButton("layouts/test3.wlt"),
         };
 
-        
-        
-        [MenuItem("Window/Layout Palette")]
-        public static void OpenWindow()
-        {
-            var wnd =GetWindow<LayoutWindow>();
-            
-        }
+        private static ScriptableObject mainToolbar;
 
-        private void OnGUI()
+        [InitializeOnLoadMethod]
+        public static void Reg()
         {
-            using (new HorizontalScope())
+            EditorApplication.update += () =>
             {
-                foreach (var button in _buttons)
-                {
-                    button.GUI();
-                }
-            }
-        }
-    }
-
-    public class LayoutButton
-    {
-        public string path;
-        private static string _currentLayoutPath;
-        public LayoutButton(string path)
-        {
-            this.path = path;
+                if (mainToolbar == null)
+                    SetupToolbar();
+            };
         }
 
-        public void GUI()
+        private static void SetupToolbar()
         {
-            
-            if (Button(Path.GetFileName(path)) && _currentLayoutPath != path)
+            mainToolbar = ReflectionHelper.GetMainToolbar();
+            var root = ReflectionHelper.GetToolbarRoot();
+            var left = root.Q("ToolbarZoneLeftAlign");
+            foreach (var button in _buttons)
             {
-                WindowLayoutHelper.SaveLayout(_currentLayoutPath);
-                _currentLayoutPath = path;
-                if(!File.Exists(path))
-                    WindowLayoutHelper.SaveLayout(_currentLayoutPath);
-                WindowLayoutHelper.LoadLayout(_currentLayoutPath);
+                left.Add(button);
             }
-        }
-    }
-
-    public static class WindowLayoutHelper
-    {
-        public static void LoadLayout(string path) => EditorUtility.LoadWindowLayout(path);
-
-        public static void SaveLayout(string path)
-        {
-            var type = typeof(EditorWindow).Assembly.GetType("UnityEditor.WindowLayout");
-            Debug.Log($"$MES$: {type}");
-            var method = type.GetMethod("SaveWindowLayout", BindingFlags.Public | BindingFlags.Static);
-            Debug.Log($"$MES$: {method}");
-            method.Invoke(null, new object[] { path });
         }
     }
 }
