@@ -1,8 +1,10 @@
 {
     "name": "QuickEye.Utility.Editor",
+    "rootNamespace": "",
     "references": [
         "GUID:07ccd62b4443d194480040cde09607cc",
-        "GUID:49818357e697641afb75d2f8acaf1861"
+        "GUID:49818357e697641afb75d2f8acaf1861",
+        "GUID:9861c8596b4de1544a09a56d39ef2572"
     ],
     "includePlatforms": [
         "Editor"
