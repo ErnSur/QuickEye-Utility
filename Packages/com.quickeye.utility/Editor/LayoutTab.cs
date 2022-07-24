@@ -1,20 +1,21 @@
 using System.IO;
+using QuickEye.UIToolkit;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace QuickEye.Utility.Editor
 {
-    public class LayoutButton : Button
+    public class LayoutTab : Tab
     {
         public string path;
         private static string _currentLayoutPath;
 
-        public LayoutButton(string path)
+        public LayoutTab(string path)
         {
             this.path = path;
-            text = Path.GetFileName(path);
-            AddToClassList("unity-toolbar-button");
-            clicked += () =>
+            Text = Path.GetFileNameWithoutExtension(path);
+            //AddToClassList("unity-toolbar-button");
+            this.RegisterValueChangedCallback(e =>
             {
                 if (_currentLayoutPath != path)
                 {
@@ -24,7 +25,7 @@ namespace QuickEye.Utility.Editor
                         WindowLayoutHelper.SaveLayout(_currentLayoutPath);
                     WindowLayoutHelper.LoadLayout(_currentLayoutPath);
                 }
-            };
+            });
         }
     }
 }
