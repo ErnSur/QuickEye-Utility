@@ -69,3 +69,5 @@ crashlytics-build.properties
 /Assets/Debug.meta
 /Assets/Samples/
 /Assets/Samples.meta
+Assets/Plugins
+Assets/Plugins.meta

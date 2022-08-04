@@ -23,5 +23,6 @@
       "description": "UI scene example utilizing lib features.",
       "path": "Samples~/CharacterCreationScreen"
     }
-  ]
+  ],
+  "hideInEditor": false
 }

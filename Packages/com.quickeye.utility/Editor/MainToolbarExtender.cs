@@ -1,22 +1,13 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
-using QuickEye.UIToolkit;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace QuickEye.Utility.Editor
 {
-    internal class LayoutWindow
+    internal static class MainToolbarExtender
     {
-        private static List<LayoutTab> _tabs = new List<LayoutTab>()
-        {
-            new LayoutTab("layouts/test1.wlt"),
-            new LayoutTab("layouts/test2.wlt"),
-            new LayoutTab("layouts/test3.wlt"),
-        };
-
         private static ScriptableObject mainToolbar;
 
         [InitializeOnLoadMethod]
@@ -28,24 +19,13 @@ namespace QuickEye.Utility.Editor
                     SetupToolbar();
             };
         }
-
+        
         private static void SetupToolbar()
         {
             mainToolbar = ReflectionHelper.GetMainToolbar();
             var root = ReflectionHelper.GetToolbarRoot();
             var left = root.Q("ToolbarZoneLeftAlign");
-            CreateTabGroup(left);
-        }
-
-        private static void CreateTabGroup(VisualElement root)
-        {
-            var group = new TabGroup();
-            group.AddToClassList("unity-toolbar-button");
-            foreach (var tab in _tabs)
-            {
-                group.Add(tab);
-            }
-            root.Add(group);
+            EditorApplication.delayCall += () => left.Insert(2,new LayoutToolbar());
         }
     }
 }
