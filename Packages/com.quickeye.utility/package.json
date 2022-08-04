@@ -1,7 +1,7 @@
 {
   "name": "com.quickeye.utility",
   "displayName": "QuickEye Utility",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "author": "Quick Eye",
   "type": "library",
   "dependencies": {

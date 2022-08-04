@@ -50,6 +50,11 @@ Data types, GUI Controls and Property Drawers related to time.
 
 ## Editor
 
+### Custom Editor Window Title Settings
+
+<img src="Documentation~/CustomWindowTitle.jpeg" width="50%">
+
+
 ### `EditorColorPalette` and Editor Color Palette Window
 #### Open from context menu: _Window/Editor Color Palette_
 
