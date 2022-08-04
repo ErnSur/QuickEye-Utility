@@ -52,7 +52,7 @@ Data types, GUI Controls and Property Drawers related to time.
 
 ### Custom Editor Window Title Settings
 
-<img src="Documentation~/CustomWindowTitle.jpeg" width="50%">
+<img src="Documentation~/CustomWindowTitle.jpeg" width="100%">
 
 
 ### `EditorColorPalette` and Editor Color Palette Window
