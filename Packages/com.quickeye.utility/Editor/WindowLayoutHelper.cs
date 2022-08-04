@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -13,7 +14,7 @@ namespace QuickEye.Utility.Editor
             var get = type.GetField("get", BindingFlags.Public | BindingFlags.Static);
             return get.GetValue(null) as ScriptableObject;
         }
-        
+
         public static VisualElement GetToolbarRoot()
         {
             var obj = GetMainToolbar();
@@ -23,9 +24,20 @@ namespace QuickEye.Utility.Editor
             return result;
         }
     }
+
     public static class WindowLayoutHelper
     {
-        public static void LoadLayout(string path) => EditorUtility.LoadWindowLayout(path);
+        public static string ProjectLayoutsPath => "UserSettings/Layouts";
+
+        public static void LoadLayout(string path)
+        {
+            //LoadWindowLayout(string path, bool newProjectLayoutWasCreated, bool setLastLoadedLayoutName, bool keepMainWindow)
+            var type = typeof(EditorWindow).Assembly.GetType("UnityEditor.WindowLayout");
+            var method = type.GetMethod("LoadWindowLayout",
+                new Type[] { typeof(string), typeof(bool), typeof(bool), typeof(bool) });
+            method.Invoke(null, new object[] { path, false, true, true });
+            //EditorUtility.LoadWindowLayout(path);
+        }
 
         public static void SaveLayout(string path)
         {
