@@ -10,7 +10,7 @@ namespace QuickEye.Utility.Editor
     {
         private static ScriptableObject mainToolbar;
 
-        [InitializeOnLoadMethod]
+        //[InitializeOnLoadMethod]
         public static void Reg()
         {
             EditorApplication.update += () =>
@@ -25,7 +25,7 @@ namespace QuickEye.Utility.Editor
             mainToolbar = ReflectionHelper.GetMainToolbar();
             var root = ReflectionHelper.GetToolbarRoot();
             var left = root.Q("ToolbarZoneLeftAlign");
-            EditorApplication.delayCall += () => left.Insert(2,new LayoutToolbar());
+            //EditorApplication.delayCall += () => left.Insert(2,new LayoutToolbar());
         }
     }
 }

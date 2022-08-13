@@ -1,9 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" quick-eye="QuickEye.UIToolkit" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Packages/com.quickeye.utility/Editor/Resources/com.quickeye.utility/LayoutTabView.style.uss?fileID=7433441132597879392&amp;guid=df769351ef8434cdeb67eb4effbfd9bf&amp;type=3#LayoutTabView.style" />
     <ui:VisualElement style="flex-direction: row; height: 20px; border-top-left-radius: 3px; border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px;">
-        <QuickEye.UIToolkit.TabGroup style="flex-grow: 1;">
-            <QuickEye.UIToolkit.Tab text="Sample Tab" />
-        </QuickEye.UIToolkit.TabGroup>
+        <QuickEye.UIToolkit.TabGroup style="flex-grow: 1;" />
         <ui:Button tabindex="-1" text="+" display-tooltip-when-elided="true" name="add-button" focusable="false" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; height: 21px; width: 24px; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; -unity-font-style: bold; font-size: 18px; -unity-text-align: lower-center; background-color: rgb(56, 56, 56); border-top-left-radius: 3px; border-bottom-left-radius: 0; border-top-right-radius: 3px; border-bottom-right-radius: 0; border-bottom-width: 0; border-top-color: rgb(36, 36, 36); border-right-width: 1px; border-left-width: 1px; overflow: visible;" />
     </ui:VisualElement>
 </ui:UXML>

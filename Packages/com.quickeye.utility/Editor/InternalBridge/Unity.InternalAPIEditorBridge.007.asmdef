@@ -2,7 +2,8 @@
     "name": "Unity.InternalAPIEditorBridge.007",
     "rootNamespace": "",
     "references": [
-        "GUID:d96e38596e93e4008af839c613c57161"
+        "GUID:d96e38596e93e4008af839c613c57161",
+        "GUID:9861c8596b4de1544a09a56d39ef2572"
     ],
     "includePlatforms": [
         "Editor"

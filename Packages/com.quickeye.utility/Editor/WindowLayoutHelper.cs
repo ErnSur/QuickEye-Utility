@@ -25,6 +25,7 @@ namespace QuickEye.Utility.Editor
         }
     }
 
+    [Obsolete]
     public static class WindowLayoutHelper
     {
         public static string ProjectLayoutsPath => "UserSettings/Layouts";

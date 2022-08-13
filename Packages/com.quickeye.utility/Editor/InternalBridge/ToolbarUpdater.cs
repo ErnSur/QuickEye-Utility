@@ -1,10 +1,7 @@
 using System;
 using UnityEditor;
-using UnityEditor.PackageManager.UI;
 using UnityEditor.ShortcutManagement;
 using UnityEditor.Toolbars;
-using UnityEditor.UIElements;
-using UnityEditor.UIElements.StyleSheets;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -15,7 +12,6 @@ namespace QuickEye.Utility.Editor.WindowTitle
         [InitializeOnLoadMethod]
         private static void UpdateToolbar()
         {
-            Debug.Log($"MES: {EditorUIService.instance != null}");
             EditorUIService.instance = new CustomEditorUIService(EditorUIService.instance);
         }
     }
@@ -57,31 +53,8 @@ namespace QuickEye.Utility.Editor.WindowTitle
             var rootVe = base.CreateRoot();
             var leftContainer = rootVe.Q("ToolbarZoneLeftAlign");
             var leftToolbar = new EditorToolbar(null, leftContainer,
-                DropdownExample.id);
+                LayoutToolbarElement.id);
             return rootVe;
-        }
-    }
-    
-    [EditorToolbarElement(id, typeof(DefaultMainToolbar))]
-    class DropdownExample : EditorToolbarDropdown
-    {
-        public const string id = "ExampleToolbar/Dropdown";
-
-        static string dropChoice = null;
-
-        public DropdownExample()
-        {
-            text = "Axis";
-            clicked += ShowDropdown;
-        }
-
-        void ShowDropdown()
-        {
-            var menu = new GenericMenu();
-            menu.AddItem(new GUIContent("X"), dropChoice == "X", () => { text = "X"; dropChoice = "X"; });
-            menu.AddItem(new GUIContent("Y"), dropChoice == "Y", () => { text = "Y"; dropChoice = "Y"; });
-            menu.AddItem(new GUIContent("Z"), dropChoice == "Z", () => { text = "Z"; dropChoice = "Z"; });
-            menu.ShowAsContext();
         }
     }
 }
