@@ -2,7 +2,7 @@ using System;
 using UnityEditor;
 using UnityEditor.ShortcutManagement;
 using UnityEditor.Toolbars;
-using UnityEngine;
+using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
 namespace QuickEye.Utility.Editor.WindowTitle
@@ -48,12 +48,17 @@ namespace QuickEye.Utility.Editor.WindowTitle
     
     class CustomMainToolbar : DefaultMainToolbar
     {
+        // TODO: find all types with EditorToolbarElement attribute that target "ToolbarType" and add them here
         protected override VisualElement CreateRoot()
         {
             var rootVe = base.CreateRoot();
             var leftContainer = rootVe.Q("ToolbarZoneLeftAlign");
+           UIElementsEditorUtility.AddDefaultEditorStyleSheets(rootVe);
             var leftToolbar = new EditorToolbar(null, leftContainer,
-                LayoutToolbarElement.id);
+                LayoutToolbarElement.id
+                //DropDownToggleElement.id,
+                //DropDownElement.id
+                );
             return rootVe;
         }
     }
