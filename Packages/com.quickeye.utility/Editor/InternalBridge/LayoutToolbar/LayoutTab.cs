@@ -7,34 +7,38 @@ namespace QuickEye.Utility.Editor
 {
     public class LayoutTab : TabDropdown
     {
-        public readonly string LayoutName;
+        public readonly string LayoutTabName;
         private static string _currentLayoutLayoutName;
 
-        public LayoutTab(string layoutName)
+        public LayoutTab(string layoutTabName)
         {
-            LayoutName = layoutName;
-            Text = layoutName;
+            LayoutTabName = layoutTabName;
+            Text = layoutTabName;
 
             BeforeMenuShow += menu =>
             {
-                menu.AddItem("Rename",false,()=>{ Debug.Log($"MES: Rename");});
+                menu.AddItem("Rename", false, OnRename);
                 menu.AddSeparator("");
-                menu.AddItem("Delete",false,()=>{LayoutTabManager.DeleteLayout(LayoutName);});
+                menu.AddItem("Delete", false, OnDelete);
             };
 
             this.RegisterValueChangedCallback(e =>
             {
-                if (LayoutTabManager.GetLastLoadedLayout() != LayoutName)
+                if (LayoutTabManager.GetLastLoadedLayoutName() != LayoutTabName)
                 {
-                    
-                    LayoutTabManager.LoadLayout(LayoutName);
-                    // TabLayoutManager.SaveLayout(_currentLayoutLayoutName);
-                    // _currentLayoutLayoutName = layoutName;
-                    // if (!File.Exists(layoutName))
-                    //     WindowLayoutHelper.SaveLayout(_currentLayoutLayoutName);
-                    // WindowLayoutHelper.LoadLayout(_currentLayoutLayoutName);
+                    LayoutTabManager.LoadLayout(LayoutTabName);
                 }
             });
+        }
+
+        private void OnDelete()
+        {
+            LayoutTabManager.DeleteLayout(LayoutTabName);
+        }
+
+        private void OnRename()
+        {
+            RenameWindowLayout.ShowWindow(LayoutTabName);
         }
     }
 }
