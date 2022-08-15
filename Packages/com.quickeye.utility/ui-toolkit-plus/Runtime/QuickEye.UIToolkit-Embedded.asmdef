@@ -1,0 +1,22 @@
+{
+    "name": "QuickEye.UIToolkit-Embedded",
+    "rootNamespace": "QuickEye.UIToolkit",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "!USING_PACKAGE"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.quickeye.ui-toolkit-plus",
+            "expression": "",
+            "define": "USING_PACKAGE"
+        }
+    ],
+    "noEngineReferences": false
+}
