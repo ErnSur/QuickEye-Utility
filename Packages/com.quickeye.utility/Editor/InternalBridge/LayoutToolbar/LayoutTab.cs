@@ -1,14 +1,12 @@
-using System.IO;
 using QuickEye.UIToolkit;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace QuickEye.Utility.Editor
 {
     public class LayoutTab : TabDropdown
     {
-        public readonly string LayoutTabName;
         private static string _currentLayoutLayoutName;
+        public readonly string LayoutTabName;
 
         public LayoutTab(string layoutTabName)
         {
@@ -25,9 +23,7 @@ namespace QuickEye.Utility.Editor
             this.RegisterValueChangedCallback(e =>
             {
                 if (LayoutTabManager.GetLastLoadedLayoutName() != LayoutTabName)
-                {
                     LayoutTabManager.LoadLayout(LayoutTabName);
-                }
             });
         }
 
