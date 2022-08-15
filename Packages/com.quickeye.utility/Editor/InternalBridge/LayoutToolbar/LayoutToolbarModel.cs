@@ -16,14 +16,15 @@ namespace QuickEye.Utility.Editor
             tabNames.Add(tabName);
             return true;
         }
-        
-        public string ToJson() => JsonUtility.ToJson(this, true);
-        public static LayoutToolbarModel FromJson(string json) => JsonUtility.FromJson<LayoutToolbarModel>(json);
-    }
 
-    [Serializable]
-    public class LayoutTabModel
-    {
-        public string name;
+        public string ToJson()
+        {
+            return JsonUtility.ToJson(this, true);
+        }
+
+        public static LayoutToolbarModel FromJson(string json)
+        {
+            return JsonUtility.FromJson<LayoutToolbarModel>(json);
+        }
     }
 }

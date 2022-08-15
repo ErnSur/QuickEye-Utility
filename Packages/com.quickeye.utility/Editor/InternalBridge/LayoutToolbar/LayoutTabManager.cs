@@ -1,38 +1,32 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using UnityEditor;
 
 namespace QuickEye.Utility.Editor
 {
-    // TODO: Create tab files with guid as filename
-
     public static class LayoutTabManager
     {
         public const string LayoutsPath = "UserSettings/Layouts/Tabs/";
         public const string LayoutsConfigPath = LayoutsPath + "config.json";
-        public static event Action LayoutRenamed;
-        public static event Action LayoutDeleted;
 
-        private static LayoutToolbarModel _config;
+        private static readonly LayoutToolbarModel _Config;
 
         static LayoutTabManager()
         {
             if (!Directory.Exists(LayoutsPath))
-            {
                 Directory.CreateDirectory(LayoutsPath);
-            }
 
             if (!File.Exists(LayoutsConfigPath))
-            {
                 File.WriteAllText(LayoutsConfigPath, new LayoutToolbarModel().ToJson(), Encoding.UTF8);
-            }
 
-            _config = LayoutToolbarModel.FromJson(File.ReadAllText(LayoutsConfigPath, Encoding.UTF8));
+            _Config = LayoutToolbarModel.FromJson(File.ReadAllText(LayoutsConfigPath, Encoding.UTF8));
         }
+
+        public static event Action LayoutRenamed;
+        public static event Action LayoutDeleted;
 
         public static string GetLastLoadedLayoutName()
         {
@@ -41,27 +35,20 @@ namespace QuickEye.Utility.Editor
 
         public static string[] GetTabLayouts()
         {
-            return _config.tabNames.ToArray();
+            return _Config.tabNames.ToArray();
         }
 
-        public static string[] GetTabLayoutFiles()
+        private static void SaveToJson()
         {
-            return Directory.GetFiles(LayoutsPath).Where(p => p.EndsWith("wlt"))
-                .Select(Path.GetFileNameWithoutExtension).ToArray();
-        }
-
-        public static void SaveToJson()
-        {
-            var json = _config.ToJson();
+            var json = _Config.ToJson();
             File.WriteAllText(LayoutsConfigPath, json);
         }
 
         public static void SaveLayout(string name)
         {
-            //                 WindowLayout.ReloadWindowLayoutMenu();
             Toolbar.lastLoadedLayoutName = name;
             WindowLayout.SaveWindowLayout(NameToLayoutPath(name));
-            _config.Add(name);
+            _Config.Add(name);
             SaveToJson();
         }
 
@@ -73,12 +60,12 @@ namespace QuickEye.Utility.Editor
 
         private static bool IsTabLayout(string layoutName)
         {
-            return _config.tabNames.Contains(layoutName);
+            return _Config.tabNames.Contains(layoutName);
         }
 
         public static void DeleteLayout(string name)
         {
-            _config.tabNames.Remove(name);
+            _Config.tabNames.Remove(name);
             File.Delete(NameToLayoutPath(name));
             SaveToJson();
             LayoutDeleted?.Invoke();
@@ -89,12 +76,10 @@ namespace QuickEye.Utility.Editor
             try
             {
                 File.Move(NameToLayoutPath(oldName), NameToLayoutPath(newName));
-                _config.tabNames[_config.tabNames.IndexOf(oldName)] = newName;
+                _Config.tabNames[_Config.tabNames.IndexOf(oldName)] = newName;
                 SaveToJson();
                 if (GetLastLoadedLayoutName() == oldName)
-                {
                     SaveLayout(newName);
-                }
                 LayoutRenamed?.Invoke();
                 return true;
             }
@@ -112,33 +97,14 @@ namespace QuickEye.Utility.Editor
 
         public static void UpdateTabOrder(List<string> tabNames)
         {
-            CollectionAssert.AreEquivalent(_config.tabNames,tabNames);
-            _config.tabNames = tabNames;
+            CollectionAssert.AreEquivalent(_Config.tabNames, tabNames);
+            _Config.tabNames = tabNames;
             SaveToJson();
         }
 
-        private static string NameToLayoutPath(string name) => Path.Combine(LayoutsPath, $"{name}.wlt");
-
-        private static bool IsFileLocked(FileInfo file)
+        private static string NameToLayoutPath(string name)
         {
-            try
-            {
-                using (FileStream stream = file.Open(FileMode.Open, FileAccess.Read, FileShare.None))
-                {
-                    stream.Close();
-                }
-            }
-            catch (IOException)
-            {
-                //the file is unavailable because it is:
-                //still being written to
-                //or being processed by another thread
-                //or does not exist (has already been processed)
-                return true;
-            }
-
-            //file is not locked
-            return false;
+            return Path.Combine(LayoutsPath, $"{name}.wlt");
         }
     }
 }

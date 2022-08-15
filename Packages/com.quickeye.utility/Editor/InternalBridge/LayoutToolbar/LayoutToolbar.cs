@@ -49,7 +49,8 @@ namespace QuickEye.Utility.Editor
                 if (layoutDropdown == null)
                     return;
 
-                layoutDropdown.RegisterCallback<PointerDownEvent>(evt => { LayoutTabManager.TrySaveCurrentTabLayout(); });
+                layoutDropdown.RegisterCallback<PointerDownEvent>(
+                    evt => { LayoutTabManager.TrySaveCurrentTabLayout(); });
                 var clickable = layoutDropdown.clickable;
                 layoutDropdown.RemoveManipulator(clickable);
                 layoutDropdown.AddManipulator(clickable);
@@ -62,9 +63,7 @@ namespace QuickEye.Utility.Editor
             var newName = "New Tab";
             var index = 0;
             while (names.Contains(newName))
-            {
                 newName = $"New Tab {++index}";
-            }
 
             return newName;
         }
@@ -73,9 +72,7 @@ namespace QuickEye.Utility.Editor
         {
             _group.Clear();
             foreach (var layoutName in LayoutTabManager.GetTabLayouts())
-            {
                 AddTab(layoutName);
-            }
         }
 
         private void AddTab(string layoutName)

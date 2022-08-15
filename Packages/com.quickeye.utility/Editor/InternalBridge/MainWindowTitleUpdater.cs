@@ -1,6 +1,4 @@
-﻿using System;
-using System.Reflection;
-using UnityEditor;
+﻿using UnityEditor;
 
 namespace QuickEye.Utility.Editor.WindowTitle
 {
@@ -12,9 +10,7 @@ namespace QuickEye.Utility.Editor.WindowTitle
             EditorApplication.updateMainWindowTitle += descriptor =>
             {
                 if (WindowTitleSettings.EnableCustomTitle)
-                {
                     descriptor.title = WindowTitleSettings.WindowTitle;
-                }
             };
         }
     }

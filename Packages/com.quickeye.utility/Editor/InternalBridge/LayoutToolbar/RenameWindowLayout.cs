@@ -1,9 +1,6 @@
-using System.IO;
 using System.Linq;
 using UnityEditor;
-using UnityEditor.ShortcutManagement;
 using UnityEngine;
-using Directory = UnityEditor.ShortcutManagement.Directory;
 
 namespace QuickEye.Utility.Editor
 {
