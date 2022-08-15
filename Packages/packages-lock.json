@@ -1,19 +1,5 @@
 {
   "dependencies": {
-    "com.bedtime.editor-history": {
-      "version": "https://github.com/BedtimeDigitalGames/Unity-Editor-History.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "749d89b37b76a1f5055dc5dc473c1a606861d207"
-    },
-    "com.quickeye.icon-browser": {
-      "version": "https://github.com/ErnSur/unity-editor-icons.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "ae113cf24025069bf92191ce0ecbd93ddb512365"
-    },
     "com.quickeye.utility": {
       "version": "file:com.quickeye.utility",
       "depth": 0,
@@ -21,6 +7,15 @@
       "dependencies": {
         "com.unity.settings-manager": "2.0.1"
       }
+    },
+    "com.unity.collab-proxy": {
+      "version": "1.17.0",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.services.core": "1.0.1"
+      },
+      "url": "https://packages.unity.com"
     },
     "com.unity.ext.nunit": {
       "version": "1.0.6",
@@ -54,6 +49,24 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.unity.nuget.newtonsoft-json": {
+      "version": "3.0.2",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.services.core": {
+      "version": "1.4.0",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.unitywebrequest": "1.0.0",
+        "com.unity.nuget.newtonsoft-json": "3.0.2",
+        "com.unity.modules.androidjni": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.settings-manager": {
       "version": "2.0.1",
       "depth": 1,
@@ -81,6 +94,18 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.unity.timeline": {
+      "version": "1.6.4",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.director": "1.0.0",
+        "com.unity.modules.animation": "1.0.0",
+        "com.unity.modules.audio": "1.0.0",
+        "com.unity.modules.particlesystem": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.ugui": {
       "version": "1.0.0",
       "depth": 0,
@@ -89,22 +114,6 @@
         "com.unity.modules.ui": "1.0.0",
         "com.unity.modules.imgui": "1.0.0"
       }
-    },
-    "com.unity.ui.builder": {
-      "version": "2.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {}
-    },
-    "com.unity.xr.legacyinputhelpers": {
-      "version": "2.1.9",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.modules.vr": "1.0.0",
-        "com.unity.modules.xr": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",
