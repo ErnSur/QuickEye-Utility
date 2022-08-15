@@ -14,12 +14,6 @@
       "dependencies": {},
       "hash": "ae113cf24025069bf92191ce0ecbd93ddb512365"
     },
-    "com.quickeye.ui-toolkit-plus": {
-      "version": "file:/Users/ernestsurys/Repos/ErnSur/UI-Toolkit-Plus/Packages/com.quickeye.ui-toolkit-plus",
-      "depth": 0,
-      "source": "local",
-      "dependencies": {}
-    },
     "com.quickeye.utility": {
       "version": "file:com.quickeye.utility",
       "depth": 0,
