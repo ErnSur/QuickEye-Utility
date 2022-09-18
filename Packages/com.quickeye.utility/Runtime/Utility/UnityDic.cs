@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace QuickEye.Utility
 {
+#if ODIN_INSPECTOR
+    [Sirenix.OdinInspector.DrawWithUnity]
+#endif
     [Serializable]
     public class UnityDic<TKey, TValue> : IDictionary<TKey, TValue>, ISerializationCallbackReceiver
     {
@@ -15,31 +18,34 @@ namespace QuickEye.Utility
         public Dictionary<TKey, TValue> Storage { get; private set; } = new Dictionary<TKey, TValue>();
         private IDictionary<TKey, TValue> Dic => Storage;
 
-
         void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
-            var duplicates = list.Where(kvp => kvp.duplicatedKey).ToArray();
+            var duplicates = list.Where(kvp => kvp.eo_duplicatedKey).ToArray();
             list.Clear();
             list.AddRange(Dic.Select(kvp => new KvP(kvp.Key, kvp.Value)));
             list.AddRange(duplicates);
         }
 
+        // After edit
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
             Dic.Clear();
             foreach (var kvp in list)
             {
                 var key = kvp.Key;
-                if (key != null && !ContainsKey(key))
+                var canAddKey = key != null && !ContainsKey(key);
+                Debug.Log($"Key: {canAddKey}:{kvp.Value}");
+                if (canAddKey)
                 {
                     Dic.Add(key, kvp.Value);
-                    kvp.duplicatedKey = false;
                 }
-                else
-                {
-                    kvp.duplicatedKey = true;
-                }
+#if UNITY_EDITOR
+                kvp.eo_duplicatedKey = !canAddKey;
+#endif
             }
+#if !UNITY_EDITOR
+            list.Clear();
+#endif
         }
 
         public TValue this[TKey key]
@@ -93,7 +99,7 @@ namespace QuickEye.Utility
             Dic.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => Dic.GetEnumerator();
-        
+
         [Serializable]
         internal class KvP
         {
@@ -101,13 +107,15 @@ namespace QuickEye.Utility
             public TValue Value;
 #if UNITY_EDITOR
             [SerializeField, HideInInspector]
-            internal bool duplicatedKey;
+            internal bool eo_index;
+
+            [SerializeField, HideInInspector]
+            internal bool eo_duplicatedKey;
 #endif
             public KvP(TKey key, TValue value)
             {
                 Key = key;
                 Value = value;
-                duplicatedKey = false;
             }
 
             public void Deconstruct(out TKey key, out TValue value)
