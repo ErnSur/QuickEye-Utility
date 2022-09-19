@@ -2,6 +2,7 @@
   "name": "com.quickeye.utility",
   "displayName": "QuickEye Utility",
   "version": "2.3.0",
+  "unity": "2020.3",
   "author": "Quick Eye",
   "type": "library",
   "dependencies": {
@@ -22,6 +23,11 @@
       "displayName": "UI - Character Selection Screen",
       "description": "UI scene example utilizing lib features.",
       "path": "Samples~/CharacterCreationScreen"
+    },
+    {
+      "displayName": "New Serializable Types",
+      "description": "Serializable dictionary and other new types editable from inspector.",
+      "path": "Samples~/SerializableTypes"
     }
   ]
 }

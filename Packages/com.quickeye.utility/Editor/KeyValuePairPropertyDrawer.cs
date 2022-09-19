@@ -104,12 +104,15 @@ namespace QuickEye.Utility.Editor
         /// </summary>
         private static float GetHeightOffsetFor(SerializedProperty property)
         {
-            return property.propertyType switch
+            switch (property.propertyType)
             {
-                SerializedPropertyType.Vector4 when !EditorGUIUtility.wideMode => -LineHeightWithSpacing,
-                SerializedPropertyType.Rect or SerializedPropertyType.RectInt => -LineHeightWithSpacing,
-                _ => 0
-            };
+                case SerializedPropertyType.Vector4 when !EditorGUIUtility.wideMode:
+                case SerializedPropertyType.Rect:
+                case SerializedPropertyType.RectInt:
+                    return -LineHeightWithSpacing;
+                default:
+                    return 0;
+            }
         }
 
         private static bool ShouldHideFoldoutProperty(SerializedProperty property)
@@ -120,17 +123,17 @@ namespace QuickEye.Utility.Editor
 
         private static bool GetWideModeFor(SerializedProperty property)
         {
-            return property.propertyType is SerializedPropertyType.Bounds or SerializedPropertyType.BoundsInt
-                or SerializedPropertyType.Vector4;
+            return property.propertyType == SerializedPropertyType.Bounds ||
+                   property.propertyType == SerializedPropertyType.BoundsInt ||
+                   property.propertyType == SerializedPropertyType.Vector4;
         }
 
         private static bool CanHaveFoldout(SerializedProperty prop)
         {
-            return prop.propertyType is
-                SerializedPropertyType.Generic or
-                SerializedPropertyType.Vector4 or
-                SerializedPropertyType.Bounds or
-                SerializedPropertyType.BoundsInt;
+            return prop.propertyType == SerializedPropertyType.Generic ||
+                   prop.propertyType == SerializedPropertyType.Vector4 ||
+                   prop.propertyType == SerializedPropertyType.Bounds ||
+                   prop.propertyType == SerializedPropertyType.BoundsInt;
         }
     }
 }

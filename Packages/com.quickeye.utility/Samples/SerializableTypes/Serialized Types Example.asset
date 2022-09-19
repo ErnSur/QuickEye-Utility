@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf2378d872e2d4d2fbe5b2350b83d490, type: 3}
+  m_Name: Serialized Types Example
+  m_EditorClassIdentifier: 
+  pokemonTypeWeakness:
+    list:
+    - key: 2
+      value: 4
+      eo_duplicatedKey: 0
+    - key: 4
+      value: 8
+      eo_duplicatedKey: 0
+    - key: 8
+      value: 18
+      eo_duplicatedKey: 0
+    - key: 16
+      value: 2
+      eo_duplicatedKey: 0
+    - key: 16
+      value: 0
+      eo_duplicatedKey: 1
+  buffDuration:
+    arrayElementName: 07:04:2
+    ticks: 254600000000
+  clockTime:
+    arrayElementName: 23:59:59.9999999
+    ticks: 863999999999
+  userBirthday:
+    arrayElementName: 10/7/1995
+    dayNumber: 728483
+  lastLogin:
+    arrayElementName: 19/8/2022 +Time
+    date:
+      arrayElementName: 19/8/2022
+      dayNumber: 738385
+    time:
+      arrayElementName: 19:24
+      ticks: 698400000000
