@@ -1,12 +1,8 @@
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
 namespace QuickEye.Utility.Editor
 {
-    // TODO:
-    // docs
-    // draw default foldout prop drawer if reflection fails
     [CustomPropertyDrawer(typeof(UnityDictionary<,>))]
     public class UnityDictionaryPropertyDrawer : PropertyDrawer
     {
