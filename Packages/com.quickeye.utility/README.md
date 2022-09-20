@@ -1,7 +1,6 @@
 <img src="Documentation~/eyeLogo.png" align="right" width="11%" />
 
 # QuickEye Utility
-> Not all of the features are documented
 
 ### `UnityDictionary` Serialized and editable
 
@@ -26,22 +25,29 @@ Data types, GUI Controls and Property Drawers related to time.
 ## Editor
 
 ### Custom Editor Window Title Settings
+> 1. Go to: Edit > Preferences (Windows) or Unity > Preferences (macOS)
+> 2. Select **Window Title** from sidebar
+
+Modify Unity Editor main window title to include information relevant for you!
 
 <img src="Documentation~/CustomWindowTitle.jpeg" width="100%">
 
+### Duplicate Window Action
+> - Open from context menu: _Window/Duplicate Window_
+> - Shortcut: Shift+Ctrl+D (Windows) or Shift+Cmd+D (macOS)
+
+Handy tool when you need to open another inspector to compare or drag and drop data.
+It will duplicate focused editor window, lock it (in case of inspector or project browser) and position it directly next to the original one.
+
+<img src="Documentation~/DuplicateWindow.gif" width="100%">
 
 ### `EditorColorPalette` and Editor Color Palette Window
-#### Open from context menu: _Window/Editor Color Palette_
+> - Open from context menu: _Window/Editor Color Palette_
+> - Use `QuickEye.Utility.Editor.EditorColorPalette` class to access colors from code.
 
 Browser for color values used by Unity Editor. 
 
 <img  src="Documentation~/EditorColorPalette.png" width="50%">
-
-### Duplicate Window Action `Window/Duplicate Window`
-Handy tool when you need to open another inspector to compare or drag and drop data.
-`Window/Duplicate Window` context menu action or shortcut "Shift+Ctrl+D" will duplicate focused editor window, lock it (in case of inspector or project browser) and position it directly next to the original one.
-
-<img src="Documentation~/DuplicateWindow.gif" width="100%">
 
 ## More Classes
 
