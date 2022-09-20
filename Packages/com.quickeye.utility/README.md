@@ -3,36 +3,11 @@
 # QuickEye Utility
 > Not all of the features are documented
 
-### `SingletonMonoBehaviour<T>`
+### `UnityDictionary` Serialized and editable
 
+New type and property drawer to serialize and edit dictionaries in inspector.
 
-<img  src="Documentation~/PrefabLabel.png"  align="right" width="50%">
-
-`MonoBehaviour` Singleton implementation.
-* Allows to define singleton prefabs when used with `SingletonAssetAttribute`
-* Takes into account some common problems of many singleton implementations that are out there.
-
-### `SingletonScriptableObject<T>`
-
-`ScriptableObject` Singleton implementation.
-
-* Automatically create scriptable object asset when used with `SingletonAssetAttribute` and `CreateAssetAutomatically`
-* Create `SettingsProvider` quickly with `SettingsProviderAttribute` and `SingletonAssetAttribute`
-
-### `Container` and `PoolContainer`
-
-A serializable object that holds a prefab and a `Transform` reference, implements `IList<T>`.
-`AddNew` method creates a new instance of prefab inside the transform. Because of `IList<T>`, it functions as a
-collection with additional behavior of easy object instantiation.
-`PoolContainer` has the same interface but uses object pooling. Cuts much of the boilerplate code with UI scripting.
-
-### `GameObjectPool`
-
-Object pool pattern implementation with Unity specific API.
-
-* Serializable, can be configured from editor.
-* Prototype as prefab.
-* Configurable transform parent.
+![](Documentation~/SerializedDictionary.jpg)
 
 ### Time Serialization Types
 
@@ -61,3 +36,43 @@ Data types, GUI Controls and Property Drawers related to time.
 Browser for color values used by Unity Editor. 
 
 <img  src="Documentation~/EditorColorPalette.png" width="50%">
+
+### Duplicate Window Action `Window/Duplicate Window`
+Handy tool when you need to open another inspector to compare or drag and drop data.
+`Window/Duplicate Window` context menu action or shortcut "Shift+Ctrl+D" will duplicate focused editor window, lock it (in case of inspector or project browser) and position it directly next to the original one.
+
+<img src="Documentation~/DuplicateWindow.gif" width="100%">
+
+## More Classes
+
+### `SingletonMonoBehaviour<T>`
+
+
+<img  src="Documentation~/PrefabLabel.png"  align="right" width="50%">
+
+`MonoBehaviour` Singleton implementation.
+* Allows to define singleton prefabs when used with `SingletonAssetAttribute`
+* Takes into account some common problems of many singleton implementations that are out there.
+
+
+### `SingletonScriptableObject<T>`
+
+`ScriptableObject` Singleton implementation.
+
+* Automatically create scriptable object asset when used with `SingletonAssetAttribute` and `CreateAssetAutomatically`
+* Create `SettingsProvider` quickly with `SettingsProviderAttribute` and `SingletonAssetAttribute`
+
+### `Container` and `PoolContainer`
+
+A serializable object that holds a prefab and a `Transform` reference, implements `IList<T>`.
+`AddNew` method creates a new instance of prefab inside the transform. Because of `IList<T>`, it functions as a
+collection with additional behavior of easy object instantiation.
+`PoolContainer` has the same interface but uses object pooling. Cuts much of the boilerplate code with UI scripting.
+
+### `GameObjectPool`
+
+Object pool pattern implementation with Unity specific API.
+
+* Serializable, can be configured from editor.
+* Prototype as prefab.
+* Configurable transform parent.
