@@ -5,12 +5,8 @@ using UnityEngine;
 namespace QuickEye.Utility
 {
     [Serializable]
-    public struct UnityDateOnly : IComparable, IComparable<UnityDateOnly>, IEquatable<UnityDateOnly>, ISerializationCallbackReceiver
+    public struct UnityDateOnly : IComparable, IComparable<UnityDateOnly>, IEquatable<UnityDateOnly>
     {
-#if UNITY_EDITOR
-        [SerializeField, HideInInspector]
-        private string arrayElementName;
-#endif
         [SerializeField]
         private int dayNumber;
 
@@ -285,17 +281,6 @@ namespace QuickEye.Utility
             IFormatProvider provider)
         {
             return GetEquivalentDateTime().ToString(format, provider);
-        }
-
-        void ISerializationCallbackReceiver.OnBeforeSerialize()
-        {
-        }
-
-        void ISerializationCallbackReceiver.OnAfterDeserialize()
-        {
-#if UNITY_EDITOR
-            arrayElementName = GetEquivalentDateTime().ToString("d/M/yyyy");
-#endif
         }
     }
 }

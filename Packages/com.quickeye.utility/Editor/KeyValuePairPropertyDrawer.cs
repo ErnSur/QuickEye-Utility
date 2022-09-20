@@ -21,7 +21,7 @@ namespace QuickEye.Utility.Editor
         {
             keyProp = property.FindPropertyRelative(nameof(UnityDictionary<int, int>.KvP.key));
             valueProp = property.FindPropertyRelative(nameof(UnityDictionary<int, int>.KvP.value));
-            duplicateProp = property.FindPropertyRelative(nameof(UnityDictionary<int, int>.KvP.eo_duplicatedKey));
+            duplicateProp = property.FindPropertyRelative(nameof(UnityDictionary<int, int>.KvP.duplicatedKey));
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)

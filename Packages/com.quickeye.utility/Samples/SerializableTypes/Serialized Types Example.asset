@@ -16,33 +16,27 @@ MonoBehaviour:
     list:
     - key: 2
       value: 4
-      eo_duplicatedKey: 0
+      duplicatedKey: 0
     - key: 4
       value: 8
-      eo_duplicatedKey: 0
+      duplicatedKey: 0
     - key: 8
       value: 18
-      eo_duplicatedKey: 0
+      duplicatedKey: 0
     - key: 16
       value: 2
-      eo_duplicatedKey: 0
+      duplicatedKey: 0
     - key: 16
       value: 0
-      eo_duplicatedKey: 1
+      duplicatedKey: 1
   buffDuration:
-    arrayElementName: 07:04:2
     ticks: 254600000000
   clockTime:
-    arrayElementName: 23:59:59.9999999
     ticks: 863999999999
   userBirthday:
-    arrayElementName: 10/7/1995
     dayNumber: 728483
   lastLogin:
-    arrayElementName: 19/8/2022 +Time
     date:
-      arrayElementName: 19/8/2022
       dayNumber: 738385
     time:
-      arrayElementName: 19:24
       ticks: 698400000000

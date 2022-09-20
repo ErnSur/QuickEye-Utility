@@ -5,9 +5,6 @@ using UnityEngine;
 
 namespace QuickEye.Utility
 {
-#if ODIN_INSPECTOR
-    [Sirenix.OdinInspector.DrawWithUnity]
-#endif
     [Serializable]
     public class UnityDictionary<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
     {
@@ -19,7 +16,7 @@ namespace QuickEye.Utility
 #if UNITY_EDITOR
             var duplicates = list
                 .Select((kvp, i) => (index: i, kvp))
-                .Where(t => t.kvp.eo_duplicatedKey).ToArray();
+                .Where(t => t.kvp.duplicatedKey).ToArray();
 #endif
             var newPairs = this.Select(kvp => new KvP(kvp.Key, kvp.Value));
             list.Clear();
@@ -39,9 +36,8 @@ namespace QuickEye.Utility
                 var canAddKey = key != null && !ContainsKey(key);
                 if (canAddKey)
                     Add(key, kvp.value);
-#if UNITY_EDITOR
-                kvp.eo_duplicatedKey = !canAddKey;
-#endif
+
+                kvp.duplicatedKey = !canAddKey;
             }
 #if !UNITY_EDITOR
             list.Clear();
@@ -53,10 +49,10 @@ namespace QuickEye.Utility
         {
             public TKey key;
             public TValue value;
-#if UNITY_EDITOR
+
             [SerializeField, HideInInspector]
-            internal bool eo_duplicatedKey;
-#endif
+            internal bool duplicatedKey;
+
             public KvP(TKey key, TValue value)
             {
                 this.key = key;
