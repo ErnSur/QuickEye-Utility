@@ -1,5 +1,4 @@
 ﻿#if UNITY_SETTINGS_MANAGER
-using System;
 using System.Reflection;
 using UnityEditor;
 using UnityEditor.SettingsManagement;

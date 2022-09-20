@@ -4,12 +4,8 @@ using UnityEngine;
 namespace QuickEye.Utility
 {
     [Serializable]
-    public struct UnityTimeSpan : ISerializationCallbackReceiver
+    public struct UnityTimeSpan
     {
-#if UNITY_EDITOR
-        [SerializeField, HideInInspector]
-        private string arrayElementName;
-#endif
         [SerializeField]
         private long ticks;
 
@@ -67,16 +63,5 @@ namespace QuickEye.Utility
         public bool Equals(UnityTimeSpan other) => ticks == other.ticks;
         public override bool Equals(object obj) => obj is UnityTimeSpan other && Equals(other);
         public override int GetHashCode() => ticks.GetHashCode();
-
-        void ISerializationCallbackReceiver.OnBeforeSerialize()
-        {
-        }
-
-        void ISerializationCallbackReceiver.OnAfterDeserialize()
-        {
-#if UNITY_EDITOR
-            arrayElementName = TimeSpan.ToString("c").TrimEnd('0','.',':');
-#endif
-        }
     }
 }

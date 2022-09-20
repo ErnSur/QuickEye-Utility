@@ -9,7 +9,7 @@ namespace QuickEye.Utility.Editor
 {
     public static class DuplicateWindowMenuItem
     {
-        [MenuItem("Window/Duplicate window %#D", priority = 10)]
+        [MenuItem("Window/Duplicate Window %#D", priority = 10)]
         public static void DuplicateWindow()
         {
             var window = EditorWindow.focusedWindow;

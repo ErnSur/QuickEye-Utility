@@ -4,12 +4,8 @@ using UnityEngine;
 namespace QuickEye.Utility
 {
     [Serializable]
-    public struct UnityDateTime : ISerializationCallbackReceiver
+    public struct UnityDateTime 
     {
-#if UNITY_EDITOR
-        [SerializeField, HideInInspector]
-        private string arrayElementName;
-#endif
         [SerializeField]
         private UnityDateOnly date;
 
@@ -60,18 +56,5 @@ namespace QuickEye.Utility
         public bool Equals(UnityDateTime other) => (date, time) == (other.date, other.time);
         public override bool Equals(object obj) => obj is UnityDateTime other && Equals(other);
         public override int GetHashCode() => Ticks.GetHashCode();
-
-        void ISerializationCallbackReceiver.OnBeforeSerialize()
-        {
-        }
-
-        void ISerializationCallbackReceiver.OnAfterDeserialize()
-        {
-#if UNITY_EDITOR
-            arrayElementName = DateTime.ToString("d/M/yyyy");
-            if (DateTime.TimeOfDay != TimeSpan.Zero)
-                arrayElementName += " +Time";
-#endif
-        }
     }
 }
