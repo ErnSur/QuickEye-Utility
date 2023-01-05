@@ -28,7 +28,7 @@ namespace QuickEye.Utility.Editor
 
         public static bool TryGetEntry(Object editorTarget, out AssetMetadata assetMetadata)
         {
-            if (NullTargetResults.Contains(editorTarget))
+            if (editorTarget == null || NullTargetResults.Contains(editorTarget))
             {
                 assetMetadata = null;
                 return false;
