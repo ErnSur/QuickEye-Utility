@@ -22,6 +22,9 @@ namespace QuickEye.Utility
         private static T _instance;
         public static T Instance => GetInstance();
 
+        /// <summary>
+        /// MonoBehaviour's Awake Message. When overriden, class descendants need to call the base implementation of it to keep singleton behavior. 
+        /// </summary>
         protected virtual void Awake() => Initialize();
 
         private void Initialize()
@@ -37,6 +40,9 @@ namespace QuickEye.Utility
             _instance = (T)this;
         }
 
+        /// <summary>
+        /// MonoBehaviour's OnDestroy Message. When overriden, class descendants need to call the base implementation of it to keep singleton behavior. 
+        /// </summary>
         protected virtual void OnDestroy()
         {
             if (_instance != this)
