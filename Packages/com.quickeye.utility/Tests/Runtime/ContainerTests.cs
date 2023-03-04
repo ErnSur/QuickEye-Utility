@@ -95,7 +95,6 @@ namespace QuickEye.Utility.Tests
             for (var i = 0; i < _containerTransform.childCount; i++)
             {
                 var child = _containerTransform.GetChild(i);
-                Debug.Log($"c {i}");
                 Assert.IsFalse(child.gameObject.activeSelf);
             }
 

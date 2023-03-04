@@ -15,7 +15,7 @@ namespace QuickEye.Utility.Editor
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            var ticksProp = property.FindPropertyRelative("ticks");
+            var ticksProp = property.FindPropertyRelative("_ticks");
 
             label = BeginProperty(position, label, property);
             BeginChangeCheck();
