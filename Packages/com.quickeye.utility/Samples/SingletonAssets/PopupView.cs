@@ -1,26 +1,18 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace QuickEye.Utility.Samples.SingletonAssets
 {
     /// <summary>
-    /// If you add `SingletonAsset` the singleton instance will instantiate a prefab from relevant resource path
-    /// In this case it will instantiate a prefab under: Resources/Popup View
+    /// Adding `SingletonAsset` attribute to the singleton class will add a new behaviour.
+    /// First call to the `PopupView.Instance` will instantiate a prefab from path used in attribute (relative to any folder called "Resources")
+    /// In this case it will instantiate a prefab that is located at: Resources/Popup View.prefab
     /// </summary>
     [SingletonAsset("Popup View")]
     public class PopupView : SingletonMonoBehaviour<PopupView>
     {
         [SerializeField]
         private Text label;
-
-        private void Start()
-        {
-            // we are using another singleton instance- "UIStyles"
-            // `UIStyles` singleton is different from `PopupView` in that it is a `ScriptableObject` singleton
-            // and `PopupView` is a `MonoBehaviour` singleton.
-            label.color = UIStyles.Instance.popupTextColor;
-        }
 
         public void SetMessage(string message)
         {

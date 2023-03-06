@@ -5,13 +5,16 @@ namespace QuickEye.Utility.Samples.SingletonAssets
 {
     public class DemoController : MonoBehaviour
     {
-        [SerializeField]
-        private UIStyles uiStyles;
-        
         private void Awake()
         {
-            uiStyles = UIStyles.Instance;
+            // PopupView class is a MonoBehaviour Singleton
             PopupView.Instance.SetMessage($"Hello {Environment.UserName}!");
+            
+            // Example usage of different types of ScriptableObjectSingletons:
+            var s1 = SingletonWithoutAnAsset.Instance;
+            var s2 = SingletonWithOptionalAsset.Instance;
+            var s3 = SingletonWithMandatoryAsset.Instance;
+            var s4 = ProjectSettingsAsset.Instance;
         }
     }
 }

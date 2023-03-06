@@ -33,7 +33,7 @@ Modify Unity Editor main window title to include information relevant for you!
 <img src="Documentation~/CustomWindowTitle.jpeg" width="100%">
 
 ### Duplicate Window Action
-> - Open from context menu: _Window/Duplicate Window_
+> - Open from menu bar: _Window/Duplicate Window_
 > - Shortcut: Shift+Ctrl+D (Windows) or Shift+Cmd+D (macOS)
 
 Handy tool when you need to open another inspector to compare or drag and drop data.
@@ -42,7 +42,7 @@ It will duplicate focused editor window, lock it (in case of inspector or projec
 <img src="Documentation~/DuplicateWindow.gif" width="100%">
 
 ### `EditorColorPalette` and Editor Color Palette Window
-> - Open from context menu: _Window/Editor Color Palette_
+> - Open from menu bar: _Window/Editor Color Palette_
 > - Use `QuickEye.Utility.Editor.EditorColorPalette` class to access colors from code.
 
 Browser for color values used by Unity Editor. 
