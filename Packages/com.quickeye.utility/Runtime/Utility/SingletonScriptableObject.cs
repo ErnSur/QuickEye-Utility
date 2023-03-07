@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace QuickEye.Utility
 {
@@ -10,7 +11,7 @@ namespace QuickEye.Utility
     /// If class also has `SingletonAsset` attribute, an asset has to be present at relevant path, unless a `SingletonAssetAttribute.Mandatory` is set to false.
     /// </summary>
     /// <typeparam name="T">Type of the singleton instance</typeparam>
-    public abstract class SingletonScriptableObject<T> : SingletonScriptableObject
+    public abstract class SingletonScriptableObject<T> : SingletonScriptableObject, ISingletonScriptableObject
         where T : SingletonScriptableObject<T>
     {
         private static T _instance;
@@ -22,6 +23,8 @@ namespace QuickEye.Utility
                 _instance = GetOrCreateInstance<T>();
             return _instance;
         }
+
+        Object ISingletonScriptableObject.GetInstance() => GetInstance();
     }
     
     public abstract class SingletonScriptableObject : ScriptableObject
@@ -71,6 +74,11 @@ namespace QuickEye.Utility
             obj = Resources.Load<T>(attr.ResourcesPath);
             return obj != null;
         }
+    }
+
+    public interface ISingletonScriptableObject
+    {
+        public Object GetInstance();
     }
 
     public class EditorAssetFactoryException : Exception
