@@ -1,6 +1,6 @@
 {
     "name": "QuickEye.EventSystem",
-    "rootNamespace": "",
+    "rootNamespace": "QuickEye",
     "references": [
         "GUID:07ccd62b4443d194480040cde09607cc"
     ],

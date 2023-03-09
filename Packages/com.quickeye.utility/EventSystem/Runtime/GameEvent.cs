@@ -1,8 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 
-namespace QuickEye.Utility
+namespace QuickEye.EventSystem
 {
     public abstract class GameEvent<TArgs> : GameEventBase, IInvokable
     {

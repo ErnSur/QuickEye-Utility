@@ -1,8 +1,4 @@
-using QuickEye.Utility;
-using UnityEngine;
-using UnityEngine.Events;
-
-namespace QuickEye.Utility
+namespace QuickEye.EventSystem
 {
     interface IEvent{}
 }

@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using QuickEye.Utility;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace QuickEye.Utility.Editor
+namespace QuickEye.EventSystem.Editor
 {
     public class EventViewer : EditorWindow
     {

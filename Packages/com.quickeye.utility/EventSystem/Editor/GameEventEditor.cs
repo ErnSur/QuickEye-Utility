@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
+using QuickEye.Utility;
+using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-namespace QuickEye.Utility.Editor
+namespace QuickEye.EventSystem.Editor
 {
-    using UnityEditor;
-
     [CustomEditor(typeof(GameEventBase), true)]
-    public class GameEventEditor : Editor
+    public class GameEventEditor : UnityEditor.Editor
     {
         SerializedProperty descriptionProp;
         SerializedProperty eventProp;

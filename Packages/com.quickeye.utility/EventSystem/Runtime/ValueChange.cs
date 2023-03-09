@@ -1,6 +1,6 @@
 using System;
 
-namespace QuickEye.Utility
+namespace QuickEye.EventSystem
 {
     [Serializable]
     public struct ValueChange<T>

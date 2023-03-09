@@ -1,6 +1,7 @@
+using QuickEye.Utility;
 using UnityEngine.Events;
 
-namespace QuickEye.Utility
+namespace QuickEye.EventSystem
 {
     public class SingletonEvent<T> : GameEvent where T : SingletonEvent<T>
     {

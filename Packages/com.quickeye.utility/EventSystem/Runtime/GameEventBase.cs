@@ -1,7 +1,6 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
-namespace QuickEye.Utility
+namespace QuickEye.EventSystem
 {
     public abstract class GameEventBase : ScriptableObject
     {

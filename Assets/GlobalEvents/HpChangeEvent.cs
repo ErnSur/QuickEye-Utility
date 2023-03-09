@@ -1,3 +1,4 @@
+using QuickEye.EventSystem;
 using QuickEye.Utility;
 
 namespace Samples.GlobalEvents

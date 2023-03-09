@@ -1,9 +1,8 @@
 using System;
 using UnityEditor;
-using UnityEngine.Events;
 using UnityEngine.UIElements;
 
-namespace QuickEye.Utility.Editor
+namespace QuickEye.EventSystem.Editor
 {
     //[CustomPropertyDrawer(typeof(UnityEvent<>),true)]
     public class CustomEventDrawer : UnityEditorInternal.UnityEventDrawer
