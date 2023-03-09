@@ -31,7 +31,6 @@ namespace UnityOne.Editor.EditorGUIExtension
         public SingletonHeaderDrawer(UnityEditor.Editor editor, SingletonAssetCache.AssetMetadata metadata) :
             base(editor)
         {
-            Debug.Log($"Created post header drawer for {metadata.Asset}");
             _metadata = metadata;
         }
 
@@ -42,9 +41,14 @@ namespace UnityOne.Editor.EditorGUIExtension
             using (new GUILayout.HorizontalScope())
             {
                 var iconContent = new GUIContent(GetGuiContent(hasCorrectPath, resPath));
-                iconContent.text = "Singleton Asset";
-                using (new EditorGUIUtility.IconSizeScope(new Vector2(17, 17)))
-                    GUILayout.Label(iconContent, GUILayout.ExpandWidth(false));
+                var style = new GUIStyle(EditorStyles.label);
+                iconContent.text = " Singleton Asset";
+                //style.imagePosition = im
+                using (new EditorGUIUtility.IconSizeScope(new Vector2(16, 16)))
+                    GUILayout.Label(iconContent, style, GUILayout.ExpandWidth(false));
+
+                //iconContent.image = null;
+                //GUILayout.Label(iconContent, GUILayout.ExpandWidth(false));
                 GUI.enabled = false;
                 EditorGUILayout.TextField($"*/Resources/{resPath}");
                 GUI.enabled = true;

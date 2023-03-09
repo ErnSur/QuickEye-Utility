@@ -9,22 +9,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a6a949167894ed5aa5876c61786846c, type: 3}
-  m_Name: Died Event
+  m_Script: {fileID: 11500000, guid: b5c9a9454b32417e9774926db70217c2, type: 3}
+  m_Name: Hp Change Event
   m_EditorClassIdentifier: 
   developerDescription: 
+  _lastPayload: 0
   _event:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 11400000}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
+        m_TargetAssemblyTypeName: QuickEye.Utility.GameEventBase, QuickEye.EventSystem
+        m_MethodName: Print
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: hello
           m_BoolArgument: 0
         m_CallState: 2

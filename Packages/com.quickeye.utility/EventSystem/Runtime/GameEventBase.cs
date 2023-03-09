@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace QuickEye.Utility
 {
@@ -7,8 +8,15 @@ namespace QuickEye.Utility
 #if UNITY_EDITOR
         [TextArea]
         [SerializeField]
-        string _developerDescription;
+        protected internal string developerDescription;
 #endif
-        public bool WasRaised;
+        protected bool wasInvoked;
+        public bool WasInvoked => wasInvoked;
+    }
+    
+    // just for polymorphic method invocation in Editor 
+    internal interface IInvokable
+    {
+        void RepeatLastInvoke();
     }
 }

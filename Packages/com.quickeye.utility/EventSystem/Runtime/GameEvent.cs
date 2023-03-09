@@ -4,7 +4,7 @@ using UnityEngine.Serialization;
 
 namespace QuickEye.Utility
 {
-    public abstract class GameEvent<TArgs> : GameEventBase
+    public abstract class GameEvent<TArgs> : GameEventBase, IInvokable
     {
         [SerializeField]
         TArgs _lastPayload;
@@ -15,7 +15,7 @@ namespace QuickEye.Utility
         public UnityEvent<TArgs> Event => _event;
         public TArgs LastPayload => _lastPayload;
 
-        public void Register(UnityAction<TArgs> callback)
+        public void Subscribe(UnityAction<TArgs> callback)
         {
 #if UNITY_EDITOR
             UnityEditor.Events.UnityEventTools.AddPersistentListener(Event, callback);
@@ -24,7 +24,7 @@ namespace QuickEye.Utility
 #endif
         }
 
-        public void Unregister(UnityAction<TArgs> callback)
+        public void Unsubscribe(UnityAction<TArgs> callback)
         {
 #if UNITY_EDITOR
             UnityEditor.Events.UnityEventTools.RemovePersistentListener(Event, callback);
@@ -33,20 +33,23 @@ namespace QuickEye.Utility
 #endif
         }
 
-        public void Trigger(TArgs payload)
+        public void Invoke(TArgs payload)
         {
             Event?.Invoke(_lastPayload = payload);
-            WasRaised = true;
+            wasInvoked = true;
         }
+
+        void IInvokable.RepeatLastInvoke() => Invoke(_lastPayload);
     }
 
-    public abstract class GameEvent : GameEventBase
+    public abstract class GameEvent : GameEventBase, IInvokable
     {
         [SerializeField]
         UnityEvent _event = new UnityEvent();
+
         public UnityEvent Event => _event;
 
-        public void Register(UnityAction callback)
+        public void Subscribe(UnityAction callback)
         {
 #if UNITY_EDITOR
             UnityEditor.Events.UnityEventTools.AddPersistentListener(Event, callback);
@@ -55,7 +58,7 @@ namespace QuickEye.Utility
 #endif
         }
 
-        public void Unregister(UnityAction callback)
+        public void Unsubscribe(UnityAction callback)
         {
 #if UNITY_EDITOR
             UnityEditor.Events.UnityEventTools.RemovePersistentListener(Event, callback);
@@ -64,10 +67,12 @@ namespace QuickEye.Utility
 #endif
         }
 
-        public void Trigger()
+        public void Invoke()
         {
             Event?.Invoke();
-            WasRaised = true;
+            wasInvoked = true;
         }
+
+        void IInvokable.RepeatLastInvoke() => Invoke();
     }
 }

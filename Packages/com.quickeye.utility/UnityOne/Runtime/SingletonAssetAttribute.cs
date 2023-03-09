@@ -19,9 +19,7 @@ namespace QuickEye.Utility
         /// By default `true`.
         /// </summary>
         public bool Mandatory { get; set; } = true;
-
         public bool UseTypeNameAsFileName { get; set; }
-        public bool UseForChildren { get; }
 
         /// <summary>
         /// Path at which singleton asset should be found. Relative to the Resources folder.
@@ -36,15 +34,7 @@ namespace QuickEye.Utility
         /// </param>
         public SingletonAssetAttribute(string resourcesPath)
         {
-            if (UseForChildren)
-                UseTypeNameAsFileName = true;
             ResourcesPath = TrimPath(resourcesPath, "Resources");
-        }
-
-        public SingletonAssetAttribute(string resourcesPath, bool useForChildren) : this(resourcesPath)
-        {
-            UseForChildren = useForChildren;
-            UseTypeNameAsFileName = true;
         }
 
         public string GetResourcesPath(Type owner)

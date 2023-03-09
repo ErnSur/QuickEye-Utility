@@ -51,7 +51,7 @@ namespace UnityOne.Editor.EditorGUIExtension
 
         private static bool TryGetAndCacheTargetEntry(Object target, out AssetMetadata assetMetadata)
         {
-            var singletonAsset = GetSingleton(target);
+            var singletonAsset = GetSingletonOrNull(target);
             if (singletonAsset == null)
             {
                 assetMetadata = null;
@@ -79,9 +79,7 @@ namespace UnityOne.Editor.EditorGUIExtension
         static bool TryLoadSingletonScriptableObject(string path, out Object asset)
         {
             asset = AssetDatabase.LoadAssetAtPath<Object>(path);
-            // Checking for SingletonAssetAttribute directly on type because there can be singleton assets that do not derive from SingletonScriptableObject
-            // User can use ScriptableObjectSingletonFactory alone
-            return asset != null && asset.GetType().GetCustomAttribute<SingletonAssetAttribute>() != null;
+            return asset != null && IsSingletonScriptableObjectAsset(asset);
         }
 
         static bool TryGetSingletonPrefab(string path, out Object prefab)
@@ -90,9 +88,16 @@ namespace UnityOne.Editor.EditorGUIExtension
             return prefab != null && prefab.GetType().GetCustomAttribute<SingletonAssetAttribute>() != null;
         }
 
-        private static Object GetSingleton(Object obj)
+        private static bool IsSingletonScriptableObjectAsset(Object asset)
         {
-            if (obj is SingletonScriptableObject)
+            // Checking for SingletonAssetAttribute directly on type because there can be singleton assets that do not derive from SingletonScriptableObject
+            // User can use ScriptableObjectSingletonFactory alone
+            return asset.GetType().GetCustomAttribute<SingletonAssetAttribute>() != null;
+        }
+
+        private static Object GetSingletonOrNull(Object obj)
+        {
+            if (IsSingletonScriptableObjectAsset(obj))
                 return obj;
             if (obj is AssetImporter)
             {

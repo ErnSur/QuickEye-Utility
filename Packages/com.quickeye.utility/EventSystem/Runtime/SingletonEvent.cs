@@ -1,5 +1,3 @@
-using System.Runtime.CompilerServices;
-using UnityEngine;
 using UnityEngine.Events;
 
 namespace QuickEye.Utility
@@ -12,19 +10,19 @@ namespace QuickEye.Utility
             ? _instance
             : _instance = SingletonScriptableObjectFactory.LoadOrCreateInstance<T>();
 
-        public new static void Register(UnityAction callback)
+        public new static void Subscribe(UnityAction callback)
         {
-            ((GameEvent)Instance).Register(callback);
+            ((GameEvent)Instance).Subscribe(callback);
         }
 
-        public new static void Unregister(UnityAction callback)
+        public new static void Unsubscribe(UnityAction callback)
         {
-            ((GameEvent)Instance).Unregister(callback);
+            ((GameEvent)Instance).Unsubscribe(callback);
         }
 
-        public new static void Trigger()
+        public new static void Invoke()
         {
-            ((GameEvent)Instance).Trigger();
+            ((GameEvent)Instance).Invoke();
         }
     }
 
@@ -36,21 +34,21 @@ namespace QuickEye.Utility
             ? _instance
             : _instance = SingletonScriptableObjectFactory.LoadOrCreateInstance<T>();
 
-        public new static bool WasRaised => ((GameEvent<TArg>)Instance).WasRaised;
+        public new static bool WasInvoked => ((GameEvent<TArg>)Instance).WasInvoked;
         public new static TArg LastPayload => ((GameEvent<TArg>)Instance).LastPayload;
-        public new static void Register(UnityAction<TArg> callback)
+        public new static void Subscribe(UnityAction<TArg> callback)
         {
-            ((GameEvent<TArg>)Instance).Register(callback);
+            ((GameEvent<TArg>)Instance).Subscribe(callback);
         }
 
-        public new static void Unregister(UnityAction<TArg> callback)
+        public new static void Unsubscribe(UnityAction<TArg> callback)
         {
-            ((GameEvent<TArg>)Instance).Unregister(callback);
+            ((GameEvent<TArg>)Instance).Unsubscribe(callback);
         }
 
-        public new static void Trigger(TArg payload)
+        public new static void Invoke(TArg payload)
         {
-            ((GameEvent<TArg>)Instance).Trigger(payload);
+            ((GameEvent<TArg>)Instance).Invoke(payload);
         }
     }
 }
