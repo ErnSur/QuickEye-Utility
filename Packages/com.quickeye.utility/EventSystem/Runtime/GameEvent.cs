@@ -16,19 +16,19 @@ namespace QuickEye.EventSystem
 
         public void Subscribe(UnityAction<TArgs> callback)
         {
-#if UNITY_EDITOR
-            UnityEditor.Events.UnityEventTools.AddPersistentListener(Event, callback);
-#else
             Event.AddListener(callback);
+#if UNITY_EDITOR
+            //UnityEditor.Events.UnityEventTools.AddPersistentListener(Event, callback);
+#else
 #endif
         }
 
         public void Unsubscribe(UnityAction<TArgs> callback)
         {
-#if UNITY_EDITOR
-            UnityEditor.Events.UnityEventTools.RemovePersistentListener(Event, callback);
-#else
             Event.RemoveListener(callback);
+#if UNITY_EDITOR
+            //UnityEditor.Events.UnityEventTools.RemovePersistentListener(Event, callback);
+#else
 #endif
         }
 
@@ -36,6 +36,12 @@ namespace QuickEye.EventSystem
         {
             Event?.Invoke(_lastPayload = payload);
             wasInvoked = true;
+        }
+        protected override void ResetValues()
+        {
+            base.ResetValues();
+            _event = new UnityEvent<TArgs>();
+            _lastPayload = default;
         }
 
         void IInvokable.RepeatLastInvoke() => Invoke(_lastPayload);
@@ -50,19 +56,19 @@ namespace QuickEye.EventSystem
 
         public void Subscribe(UnityAction callback)
         {
-#if UNITY_EDITOR
-            UnityEditor.Events.UnityEventTools.AddPersistentListener(Event, callback);
-#else
             Event.AddListener(callback);
+#if UNITY_EDITOR
+            //UnityEditor.Events.UnityEventTools.AddPersistentListener(Event, callback);
+#else
 #endif
         }
 
         public void Unsubscribe(UnityAction callback)
         {
-#if UNITY_EDITOR
-            UnityEditor.Events.UnityEventTools.RemovePersistentListener(Event, callback);
-#else
             Event.RemoveListener(callback);
+#if UNITY_EDITOR
+            //UnityEditor.Events.UnityEventTools.RemovePersistentListener(Event, callback);
+#else
 #endif
         }
 
@@ -70,6 +76,12 @@ namespace QuickEye.EventSystem
         {
             Event?.Invoke();
             wasInvoked = true;
+        }
+
+        protected override void ResetValues()
+        {
+            base.ResetValues();
+            _event = new UnityEvent();
         }
 
         void IInvokable.RepeatLastInvoke() => Invoke();
