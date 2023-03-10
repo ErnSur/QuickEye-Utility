@@ -24,7 +24,17 @@ namespace UnityOne.Editor.EditorGUIExtension
         {
             if (!CachedGuidResults.TryGetValue(guid, out assetMetadata))
                 CacheResult(guid);
+            InvalidateCacheEntry(guid, assetMetadata);
             return assetMetadata != null;
+        }
+
+        static void InvalidateCacheEntry(string guid, AssetMetadata assetMetadata)
+        {
+            if (assetMetadata != null && assetMetadata.Asset == null)
+            {
+                CachedGuidResults.Remove(guid);
+                CacheResult(guid);
+            }
         }
 
         public static bool TryGetEntry(Object editorTarget, out AssetMetadata assetMetadata)

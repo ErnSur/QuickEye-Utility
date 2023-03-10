@@ -14,19 +14,12 @@ namespace QuickEye.EventSystem
         protected bool wasInvoked;
 
         public bool WasInvoked => wasInvoked;
-
-        [ContextMenu("Update Hide Flags")]
-        void SetDontSaveInEditor()
-        {
-            hideFlags = HideFlags.DontSaveInEditor;
-        }
-
+        
         protected virtual void OnEnable() => ResetValues();
         protected virtual void OnDisable() => ResetValues();
 
         protected virtual void ResetValues()
         {
-            SetDontSaveInEditor();
             wasInvoked = false;
         }
     }
