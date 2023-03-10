@@ -16,7 +16,7 @@ namespace QuickEye.EventSystem
         public bool WasInvoked => wasInvoked;
 
         [ContextMenu("Update Hide Flags")]
-        void Awake()
+        void SetDontSaveInEditor()
         {
             hideFlags = HideFlags.DontSaveInEditor;
         }
@@ -26,6 +26,7 @@ namespace QuickEye.EventSystem
 
         protected virtual void ResetValues()
         {
+            SetDontSaveInEditor();
             wasInvoked = false;
         }
     }

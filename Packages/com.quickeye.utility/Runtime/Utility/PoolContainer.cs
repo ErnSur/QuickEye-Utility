@@ -3,6 +3,12 @@ using UnityEngine;
 
 namespace QuickEye.Utility
 {
+    /// <summary>
+    /// AddNew - get object from pool
+    /// Remove - Returns object to pool
+    /// Clear - returns all objects to pool
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     [Serializable]
     public class PoolContainer<T> : Container<T>, ISerializationCallbackReceiver
         where T : Component
