@@ -1,6 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
 using UnityEngine;
 
 namespace QuickEye.Utility
@@ -10,6 +11,16 @@ namespace QuickEye.Utility
     {
         [SerializeField]
         private List<KvP> list = new List<KvP>();
+        
+        public UnityDictionary() { }
+        public UnityDictionary(IDictionary<TKey, TValue> dictionary) : base(dictionary) { }
+        public UnityDictionary(IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey> comparer) : base(dictionary, comparer) { }
+        public UnityDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection) : base(collection) { }
+        public UnityDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection, IEqualityComparer<TKey> comparer) : base(collection, comparer) { }
+        public UnityDictionary(IEqualityComparer<TKey> comparer) : base(comparer) { }
+        public UnityDictionary(int capacity) : base(capacity) { }
+        public UnityDictionary(int capacity, IEqualityComparer<TKey> comparer) : base(capacity, comparer) { }
+        protected UnityDictionary(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
         void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
