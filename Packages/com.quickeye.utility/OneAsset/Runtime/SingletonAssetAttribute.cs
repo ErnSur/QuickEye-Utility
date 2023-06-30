@@ -1,5 +1,5 @@
 using System;
-using UnityEditor;
+using System.Text;
 
 namespace QuickEye.Utility
 {
@@ -40,11 +40,10 @@ namespace QuickEye.Utility
         public string GetResourcesPath(Type owner)
         {
             return UseTypeNameAsFileName
-                ? $"{ResourcesPath}/{ObjectNames.NicifyVariableName(owner.Name)}".TrimStart('/')
+                ? $"{ResourcesPath}/{NicifyClassName(owner.Name)}".TrimStart('/')
                 : ResourcesPath;
         }
-
-
+        
         private static string TrimPath(string path, string startDir)
         {
             path = path.TrimStart('/');
@@ -55,6 +54,54 @@ namespace QuickEye.Utility
             }
 
             return path;
+        }
+        
+        public static string NicifyClassName(string input)
+        {
+            var result = new StringBuilder(input.Length*2);
+
+            var prevIsLetter = false;
+            var prevIsLetterUpper = false;
+            var prevIsDigit = false;
+            var prevIsStartOfWord = false;
+            var prevIsNumberWord = false;
+
+            var firstCharIndex = 0;
+            if (input.StartsWith('_'))
+                firstCharIndex = 1;
+            else if (input.StartsWith("m_"))
+                firstCharIndex = 2;
+
+            for (var i = input.Length - 1; i >= firstCharIndex; i--)
+            {
+                var currentChar = input[i];
+                var currIsLetter = char.IsLetter(currentChar);
+                if (i == firstCharIndex && currIsLetter)
+                    currentChar = char.ToUpper(currentChar);
+                var currIsLetterUpper = char.IsUpper(currentChar);
+                var currIsDigit = char.IsDigit(currentChar);
+                var currIsSpacer = currentChar == ' ' || currentChar == '_';
+
+                var addSpace = (currIsLetter && !currIsLetterUpper && prevIsLetterUpper) ||
+                               (currIsLetter && prevIsLetterUpper && prevIsStartOfWord) ||
+                               (currIsDigit && prevIsStartOfWord) ||
+                               (!currIsDigit && prevIsNumberWord) ||
+                               (currIsLetter && !currIsLetterUpper && prevIsDigit);
+
+                if (!currIsSpacer && addSpace)
+                {
+                    result.Insert(0, ' ');
+                }
+
+                result.Insert(0, currentChar);
+                prevIsStartOfWord = currIsLetter && currIsLetterUpper && prevIsLetter && !prevIsLetterUpper;
+                prevIsNumberWord = currIsDigit && prevIsLetter && !prevIsLetterUpper;
+                prevIsLetterUpper = currIsLetter && currIsLetterUpper;
+                prevIsLetter = currIsLetter;
+                prevIsDigit = currIsDigit;
+            }
+
+            return result.ToString();
         }
     }
 }
