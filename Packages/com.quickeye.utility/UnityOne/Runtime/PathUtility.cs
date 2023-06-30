@@ -21,6 +21,7 @@ namespace QuickEye.Utility
             return folders.First() == folderName ? path : Path.Combine(folderName, path);
         }
 
+        // TODO: enforce forward slashes
         public static string EnsurePathEndsWith(string folderName, string path)
         {
             var cleanPath = Path.Combine(Path.GetDirectoryName(path) ?? "", Path.GetFileName(path));

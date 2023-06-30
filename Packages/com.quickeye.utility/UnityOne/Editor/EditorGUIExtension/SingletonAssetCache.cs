@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using QuickEye.Utility;
 using UnityEditor;
 using Object = UnityEngine.Object;
 
-namespace QuickEye.Utility.Editor
+namespace UnityOne.Editor.EditorGUIExtension
 {
     internal static class SingletonAssetCache
     {
@@ -23,7 +24,17 @@ namespace QuickEye.Utility.Editor
         {
             if (!CachedGuidResults.TryGetValue(guid, out assetMetadata))
                 CacheResult(guid);
+            InvalidateCacheEntry(guid, assetMetadata);
             return assetMetadata != null;
+        }
+
+        static void InvalidateCacheEntry(string guid, AssetMetadata assetMetadata)
+        {
+            if (assetMetadata != null && assetMetadata.Asset == null)
+            {
+                CachedGuidResults.Remove(guid);
+                CacheResult(guid);
+            }
         }
 
         public static bool TryGetEntry(Object editorTarget, out AssetMetadata assetMetadata)
@@ -50,7 +61,7 @@ namespace QuickEye.Utility.Editor
 
         private static bool TryGetAndCacheTargetEntry(Object target, out AssetMetadata assetMetadata)
         {
-            var singletonAsset = GetSingleton(target);
+            var singletonAsset = GetSingletonOrNull(target);
             if (singletonAsset == null)
             {
                 assetMetadata = null;
@@ -60,26 +71,43 @@ namespace QuickEye.Utility.Editor
             assetMetadata = CachedEditorTargets[target] = new AssetMetadata(singletonAsset);
             return true;
         }
-
+        
         private static void CacheResult(string guid)
         {
+            if (guid == string.Empty)
+                return;
             var path = AssetDatabase.GUIDToAssetPath(guid);
-            Object singleton = AssetDatabase.LoadAssetAtPath<SingletonScriptableObject>(path);
-            if (singleton == null)
-                singleton = AssetDatabase.LoadAssetAtPath<SingletonMonoBehaviour>(path);
 
-            AssetMetadata assetMetadata = null;
-            if (singleton != null)
-            {
-                assetMetadata = new AssetMetadata(singleton);
-            }
+            var isSingletonAsset =
+                TryLoadSingletonScriptableObject(path, out var asset) || TryGetSingletonPrefab(path, out asset);
 
+            var assetMetadata = isSingletonAsset ? new AssetMetadata(asset) : null;
+            // Should set null value if guid does not point to a singleton asset
             CachedGuidResults[guid] = assetMetadata;
         }
 
-        private static Object GetSingleton(Object obj)
+        static bool TryLoadSingletonScriptableObject(string path, out Object asset)
         {
-            if (obj is SingletonScriptableObject)
+            asset = AssetDatabase.LoadAssetAtPath<Object>(path);
+            return asset != null && IsSingletonScriptableObjectAsset(asset);
+        }
+
+        static bool TryGetSingletonPrefab(string path, out Object prefab)
+        {
+            prefab = AssetDatabase.LoadAssetAtPath<SingletonMonoBehaviour>(path);
+            return prefab != null && prefab.GetType().GetCustomAttribute<SingletonAssetAttribute>() != null;
+        }
+
+        private static bool IsSingletonScriptableObjectAsset(Object asset)
+        {
+            // Checking for SingletonAssetAttribute directly on type because there can be singleton assets that do not derive from SingletonScriptableObject
+            // User can use ScriptableObjectSingletonFactory alone
+            return asset.GetType().GetCustomAttribute<SingletonAssetAttribute>() != null;
+        }
+
+        private static Object GetSingletonOrNull(Object obj)
+        {
+            if (IsSingletonScriptableObjectAsset(obj))
                 return obj;
             if (obj is AssetImporter)
             {
@@ -94,32 +122,30 @@ namespace QuickEye.Utility.Editor
         public class AssetMetadata
         {
             public readonly Object Asset;
-            public readonly SingletonAssetAttribute SingletonAssetAttribute;
-            public readonly CreateAssetAutomaticallyAttribute CreateAssetAutomaticallyAttribute;
 
-            public bool IsInLoadablePath => ToResourcesRelativePath(AssetDatabase.GetAssetPath(Asset)) == ResourcesPath;
-            public string ResourcesPath => SingletonAssetAttribute?.ResourcesPath;
-            public string FullAssetPath => CreateAssetAutomaticallyAttribute?.FullAssetPath;
+            public readonly SingletonAssetAttribute SingletonAssetAttribute;
+            public string ResourcesPath { get; }
+            public bool IsInLoadablePath => IsInResourcesPath(AssetDatabase.GetAssetPath(Asset), ResourcesPath);
 
             public AssetMetadata(Object asset)
             {
                 Asset = asset;
                 var type = asset.GetType();
                 SingletonAssetAttribute = type.GetCustomAttribute<SingletonAssetAttribute>();
-                CreateAssetAutomaticallyAttribute = type.GetCustomAttribute<CreateAssetAutomaticallyAttribute>();
+                ResourcesPath = SingletonAssetAttribute.GetResourcesPath(type);
             }
         }
 
-        private static string ToResourcesRelativePath(string path)
+        /// <summary>
+        /// both arguments need to use forward slashes
+        /// </summary>
+        private static bool IsInResourcesPath(string assetPath, string resourcesRelativePath)
         {
-            if (string.IsNullOrEmpty(path))
-                return null;
-            path = Path.GetFullPath(path);
-            path = Path.Combine(Path.GetDirectoryName(path) ?? "", Path.GetFileNameWithoutExtension(path));
-
-            var resourcesFolder = $"{Path.DirectorySeparatorChar}Resources{Path.DirectorySeparatorChar}";
-            var index = path.IndexOf(resourcesFolder, StringComparison.InvariantCulture);
-            return index == -1 ? null : path.Substring(index + resourcesFolder.Length);
+            if (string.IsNullOrEmpty(assetPath))
+                return false;
+            var extension = Path.GetExtension(assetPath);
+            return assetPath.EndsWith("Resources/" + resourcesRelativePath + extension,
+                StringComparison.InvariantCulture);
         }
     }
 }
