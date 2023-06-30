@@ -6,7 +6,7 @@ using QuickEye.Utility;
 using UnityEditor;
 using Object = UnityEngine.Object;
 
-namespace UnityOne.Editor.EditorGUIExtension
+namespace OneAsset.Editor.EditorGUIExtension
 {
     internal static class SingletonAssetCache
     {

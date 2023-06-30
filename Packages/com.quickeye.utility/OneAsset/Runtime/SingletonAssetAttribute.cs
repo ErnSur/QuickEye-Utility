@@ -7,7 +7,7 @@ namespace QuickEye.Utility
     /// Allows singleton instances to load from an asset.
     /// Can be used on <see cref="SingletonMonoBehaviour{T}"/> and <see cref="SingletonScriptableObject{T}"/>.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public sealed class SingletonAssetAttribute : Attribute
     {
         private string ResourcesPath { get; }

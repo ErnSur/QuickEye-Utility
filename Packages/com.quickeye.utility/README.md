@@ -49,24 +49,13 @@ Browser for color values used by Unity Editor.
 
 <img  src="Documentation~/EditorColorPalette.png" width="50%">
 
-## More Classes
+## One-Asset
 
-### `SingletonMonoBehaviour<T>`
+[Dedicated documentation](./OneAsset/README.md)
 
+<img  src="Documentation~/SingletonUI.png" width="70%">
 
-<img  src="Documentation~/PrefabLabel.png"  align="right" width="50%">
-
-`MonoBehaviour` Singleton implementation.
-* Allows to define singleton prefabs when used with `SingletonAssetAttribute`
-* Takes into account some common problems of many singleton implementations that are out there.
-
-
-### `SingletonScriptableObject<T>`
-
-`ScriptableObject` Singleton implementation.
-
-* Automatically create scriptable object asset when used with `SingletonAssetAttribute` and `CreateAssetAutomatically`
-* Create `SettingsProvider` quickly with `SettingsProviderAttribute` and `SingletonAssetAttribute`
+## Other
 
 ### `Container` and `PoolContainer`
 

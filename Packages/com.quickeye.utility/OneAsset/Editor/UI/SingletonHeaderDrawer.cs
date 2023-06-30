@@ -1,7 +1,8 @@
+using OneAsset.Editor.UI;
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityOne.Editor.EditorGUIExtension
+namespace OneAsset.Editor.EditorGUIExtension
 {
     using static SingletonGUI;
 

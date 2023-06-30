@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OneAsset.Editor.EditorGUIExtension;
 using UnityEditor;
 
-namespace UnityOne.Editor.EditorGUIExtension
+namespace OneAsset.Editor.UI
 {
     [InitializeOnLoad]
     internal static class PersistentPostHeaderManager

@@ -1,15 +1,15 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityOne.Editor.EditorGUIExtension
+namespace OneAsset.Editor.EditorGUIExtension
 {
     internal static class SingletonGUI
     {
         private const string LinkedIcon =
-            "Packages/com.quickeye.utility/Editor/Icons/Linked.png";
+            "Packages/com.quickeye.utility/OneAsset/Editor/Icons/Linked.png";
 
         private const string UnlinkedIcon =
-            "Packages/com.quickeye.utility/Editor/Icons/Unlinked.png";
+            "Packages/com.quickeye.utility/OneAsset/Editor/Icons/Unlinked.png";
         
         public static GUIContent GetGuiContent(bool isCorrectPath, string resourcesPath)
         {
