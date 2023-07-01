@@ -1,0 +1,18 @@
+{
+    "name": "QuickEye.EventSystem.Editor",
+    "rootNamespace": "QuickEye",
+    "references": [
+        "GUID:0c6840cda6e6c9848b0e623a0e4061ed",
+        "GUID:07ccd62b4443d194480040cde09607cc",
+        "GUID:d96e38596e93e4008af839c613c57161"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
