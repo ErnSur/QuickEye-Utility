@@ -22,6 +22,13 @@ Data types, GUI Controls and Property Drawers related to time.
 
 `System.DateTime` and .NET 6s `System.DateOnly` equivalents.
 
+## One-Asset
+
+A set of classes and editor UI improvements aimed to improve workflows that expect single instances of assets.
+[Dedicated documentation](./OneAsset/README.md)
+
+<img  src="Documentation~/SingletonUI.png" width="70%">
+
 ## Editor
 
 ### Custom Editor Window Title Settings
@@ -48,13 +55,6 @@ It will duplicate focused editor window, lock it (in case of inspector or projec
 Browser for color values used by Unity Editor. 
 
 <img  src="Documentation~/EditorColorPalette.png" width="50%">
-
-## One-Asset
-
-A set of classes and editor UI improvements aimed to improve workflows that expect single instances of assets.
-[Dedicated documentation](./OneAsset/README.md)
-
-<img  src="Documentation~/SingletonUI.png" width="70%">
 
 ## Other
 
