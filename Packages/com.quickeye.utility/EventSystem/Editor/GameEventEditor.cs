@@ -19,7 +19,7 @@ namespace QuickEye.EventSystem.Editor
         /// <summary>
         /// null means: Mixed Values
         /// </summary>
-        bool? WasInvoked => Targets.Any(v => v != Target.WasInvoked) ? null : Target.WasInvoked;
+        bool? WasInvoked => Targets.Any(eventBase => eventBase.WasInvoked != Target.WasInvoked) ? (bool?)null : Target.WasInvoked;
 
         GameEventBase Target => (GameEventBase)target;
         IEnumerable<GameEventBase> Targets => targets.Cast<GameEventBase>();
