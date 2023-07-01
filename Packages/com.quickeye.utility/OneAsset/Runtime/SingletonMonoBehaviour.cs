@@ -86,9 +86,10 @@ namespace QuickEye.Utility
             var attr = typeof(T).GetCustomAttribute<SingletonAssetAttribute>();
             if (attr != null)
             {
-                var prefab = Resources.Load<T>(attr.ResourcesPath);
+                var resourcesPath = attr.GetResourcesPath(typeof(T));
+                var prefab = Resources.Load<T>(resourcesPath);
                 if (prefab == null)
-                    throw new SingletonAssetIsMissingException(attr.ResourcesPath, typeof(T));
+                    throw new SingletonAssetIsMissingException(resourcesPath, typeof(T));
                 obj = Instantiate(prefab);
                 obj.name = typeof(T).Name;
                 return true;
