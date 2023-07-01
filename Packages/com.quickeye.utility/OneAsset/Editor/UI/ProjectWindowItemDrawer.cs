@@ -20,6 +20,7 @@ namespace OneAsset.Editor.EditorGUIExtension
         {
             EditorApplication.projectWindowItemOnGUI += ProjectWindowItemOnGUI;
         }
+
         private static void ProjectWindowItemOnGUI(string guid, Rect rect)
         {
             if (!SingletonAssetCache.TryGetEntry(guid, out var metadata) ||
@@ -37,7 +38,8 @@ namespace OneAsset.Editor.EditorGUIExtension
             var projectItemLabelContent = new GUIContent(Path.GetFileNameWithoutExtension(path));
             var linkedIconRect = IMGUIUtility.CalculateRectAfterLabelText(rect, projectItemLabelContent, true);
             var linkedIcon = GetGuiContent(meta.IsInLoadablePath, meta.ResourcesPath);
-            GUI.Label(linkedIconRect, linkedIcon, IconLabelStyle);
+            using (new EditorGUIUtility.IconSizeScope(new Vector2(16, 16)))
+                GUI.Label(linkedIconRect, linkedIcon, IconLabelStyle);
         }
 
         private static void DrawProjectGridItem(Rect rect, SingletonAssetCache.AssetMetadata meta)

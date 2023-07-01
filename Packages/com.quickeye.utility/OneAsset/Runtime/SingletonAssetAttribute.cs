@@ -67,7 +67,7 @@ namespace QuickEye.Utility
             var prevIsNumberWord = false;
 
             var firstCharIndex = 0;
-            if (input.StartsWith('_'))
+            if (input.StartsWith("_"))
                 firstCharIndex = 1;
             else if (input.StartsWith("m_"))
                 firstCharIndex = 2;

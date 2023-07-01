@@ -61,7 +61,7 @@ namespace OneAsset.Tests.Editor
             yield return "SD2A";
             yield return "2 A2 a";
         }
-        
+
         private static IEnumerable<string> GetTestCases2()
         {
             var str = "m_AAA02_";
