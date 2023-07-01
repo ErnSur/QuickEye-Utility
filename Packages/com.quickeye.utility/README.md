@@ -51,6 +51,7 @@ Browser for color values used by Unity Editor.
 
 ## One-Asset
 
+A set of classes and editor UI improvements aimed to improve workflows that expect single instances of assets.
 [Dedicated documentation](./OneAsset/README.md)
 
 <img  src="Documentation~/SingletonUI.png" width="70%">
