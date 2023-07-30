@@ -15,6 +15,19 @@ A set of classes and editor UI improvements aimed to improve workflows that expe
   - Singleton Asset path field in the inspector header
 <img  src="../Documentation~/SingletonUI.png" align="center" width="70%">
 
+## Is it really a Singleton? ...No
+
+By definition a singleton is a class which:
+- Has only one instance 
+- Provides a global (static) access to this instance
+
+This implementation allows for:
+- Destroying singleton instances
+  - Destroyed instance will be recreated on next access to the global instance (MyClass.Instance)
+  - This makes it easier to do a cleanup for integration tests
+- Storing multiple assets of the singleton class
+  - Only the one that has the correct singleton path will be loaded
+  - TODO: see what about other cases
 
 ## `SingletonMonoBehaviour<T>`
 
