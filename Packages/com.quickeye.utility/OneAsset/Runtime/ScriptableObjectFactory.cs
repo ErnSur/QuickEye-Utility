@@ -10,7 +10,7 @@ namespace QuickEye.Utility
         internal static TryCreateAsset CreateAssetAction;
 
         /// <summary>
-        /// <para>Creates a new instance of T while respecting the rules of following attributes:</para>
+        /// <para>Load or create an instance of T while respecting the rules of following attributes:</para>
         /// <para>If T has a <see cref="SingletonAssetAttribute"/></para>
         /// <para>Try to load and return an asset from the <see cref="SingletonAssetAttribute"/> path. If no asset was found at the path, create and return a new instance of T.</para>
         /// <para>If T has a <see cref="SingletonAssetAttribute"/> and <see cref="CreateAssetAutomaticallyAttribute"/></para>
