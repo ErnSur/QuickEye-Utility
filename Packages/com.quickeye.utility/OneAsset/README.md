@@ -20,13 +20,13 @@ A set of classes and editor UI improvements aimed to improve workflows that requ
 
 ## UnityEngine.Object and a Singleton pattern (Disclaimer)
 
-By definition a singleton is a class which:
-- Has only one instance 
+By definition, a singleton is a class that:
+- Has only one instance
 - Provides a global (static) access to this instance
 
-Despite the singleton term used throught this pacakge it may be benefitial not to associate this implementation with the standard singleton pattern.
-This is for the reason that the `UnityEngine.Object` (base class of `MonoBehaviour` and `ScriptableObject`) allows for creation and destruction of any object, at any time, from any place.
 
+Despite the "singleton" term used throughout this package it may be beneficial not to associate this implementation with the standard singleton pattern.
+This is for the reason that the `UnityEngine.Object` (base class of `MonoBehaviour` and `ScriptableObject`) allows for the creation and destruction of any object, at any time, from any place.
 That means the following is possible and legal:
 ```c#
 // Destroy a singeton
@@ -36,7 +36,8 @@ UnityEngine.Object.Destroy(singletonInstance);
 // Create a instance of a singleton class outise it
 var i = ScriptableObject.CreateInstance<SingletonSo>();
 ```
-> For more details on exact behavior of singleton loading look at the XML documentation and tests. **See**: _SingletonScriptableObjectTests.cs_ and _ScriptableObjectFactory.cs_ 
+> For more details on exact behavior of singleton loading look at the XML documentation and tests.
+> **See**: _SingletonScriptableObjectTests.cs_ and _ScriptableObjectFactory.cs_ 
 
 ## `SingletonMonoBehaviour<T>`
 
