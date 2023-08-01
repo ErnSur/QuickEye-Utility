@@ -1,9 +1,12 @@
 # One-Asset
-> Extended singleton solution
+> Solution for smart asset loading
 
-A set of classes and editor UI improvements aimed to improve workflows that expect single instances of assets.
+A set of classes and editor UI improvements aimed to improve workflows that require asset loading.
 
 **Package contains**:
+- `ScriptableObjectFactory` Creates or loads Scriptable Objects by respecting the rules and options of following attributes:
+  - `SingletonAssetAttribute` - Load asset from path
+  - `CreateAssetAutomaticallyAttribute` - Create an asset if it doesn't exist
 - Abstract class that can be inherited to get a singleton behaviour
   - `SingletonMonoBehaviour<T>`
   - `SingletonScriptableObject<T>`
@@ -15,6 +18,25 @@ A set of classes and editor UI improvements aimed to improve workflows that expe
   - Singleton Asset path field in the inspector header
 <img  src="../Documentation~/SingletonUI.png" align="center" width="70%">
 
+## UnityEngine.Object and a Singleton pattern (Disclaimer)
+
+By definition a singleton is a class which:
+- Has only one instance 
+- Provides a global (static) access to this instance
+
+Despite the singleton term used throught this pacakge it may be benefitial not to associate this implementation with the standard singleton pattern.
+This is for the reason that the `UnityEngine.Object` (base class of `MonoBehaviour` and `ScriptableObject`) allows for creation and destruction of any object, at any time, from any place.
+
+That means the following is possible and legal:
+```c#
+// Destroy a singeton
+var singletonInstance = MySingleton.Instance;
+UnityEngine.Object.Destroy(singletonInstance);
+
+// Create a instance of a singleton class outise it
+var i = ScriptableObject.CreateInstance<SingletonSo>();
+```
+> For more details on exact behavior of singleton loading look at the XML documentation and tests. **See**: _SingletonScriptableObjectTests.cs_ and _ScriptableObjectFactory.cs_ 
 
 ## `SingletonMonoBehaviour<T>`
 

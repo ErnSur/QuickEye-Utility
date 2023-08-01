@@ -5,10 +5,21 @@ using Object = UnityEngine.Object;
 
 namespace QuickEye.Utility
 {
-    public static class SingletonScriptableObjectFactory
+    public static class ScriptableObjectFactory
     {
         internal static TryCreateAsset CreateAssetAction;
 
+        /// <summary>
+        /// <para>Load or create an instance of T while respecting the rules of following attributes:</para>
+        /// <para>If T has a <see cref="SingletonAssetAttribute"/></para>
+        /// <para>Try to load and return an asset from the <see cref="SingletonAssetAttribute"/> path. If no asset was found at the path, create and return a new instance of T.</para>
+        /// <para>If T has a <see cref="SingletonAssetAttribute"/> and <see cref="CreateAssetAutomaticallyAttribute"/></para>
+        /// <para>Try to load and return an asset from the <see cref="SingletonAssetAttribute"/> path. If no asset was found at the path and code is running in the editor, create a new asset at <see cref="CreateAssetAutomaticallyAttribute"/> path. Otherwise create and return a new instance of T.</para>
+        /// </summary>
+        /// <typeparam name="T"><see cref="ScriptableObject"/> type</typeparam>
+        /// <returns>New instance of T, </returns>
+        /// <exception cref="SingletonAssetIsMissingException">Thrown when T has a <see cref="SingletonAssetAttribute.Mandatory"/> flag set to true and no asset was found at path provided</exception>
+        /// <exception cref="EditorAssetFactoryException">Thrown only in editor, when T has a <see cref="CreateAssetAutomaticallyAttribute"/> and there was an issue with <see cref="UnityEditor.AssetDatabase"/> action</exception>
         public static T LoadOrCreateInstance<T>() where T : ScriptableObject
         {
             // Try to load asset from `SingletonAssetAttribute` path
@@ -20,8 +31,8 @@ namespace QuickEye.Utility
             // Throw Exception if class has `SingletonAssetAttribute` and asset instance is mandatory 
             var att = typeof(T).GetCustomAttribute<SingletonAssetAttribute>();
             if (att?.Mandatory == true)
-                throw new Exception($"Singleton of type: {typeof(T).FullName} was requested, but it requires an asset that is not in the project.");
-            // Create and return singleton instance
+                throw new SingletonAssetIsMissingException(typeof(T), att.GetResourcesPath(typeof(T)));
+            // Create and return a new instance
             var obj = ScriptableObject.CreateInstance<T>();
             obj.name = typeof(T).Name;
             return obj;
@@ -61,12 +72,4 @@ namespace QuickEye.Utility
             return obj != null;
         }
     }
-
-    public class EditorAssetFactoryException : Exception
-    {
-        public EditorAssetFactoryException(Type type, Exception innerException) : base(
-            $"Editor failed to create singleton asset of type:\n{type.FullName}.", innerException) { }
-    }
-
-    internal delegate void TryCreateAsset(ScriptableObject scriptableObject);
 }

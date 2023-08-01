@@ -1,7 +1,7 @@
 {
   "name": "com.quickeye.utility",
   "displayName": "QuickEye Utility",
-  "version": "3.1.0",
+  "version": "4.0.0",
   "unity": "2020.3",
   "author": "Quick Eye",
   "type": "library",
@@ -30,5 +30,5 @@
       "path": "Samples~/SerializableTypes"
     }
   ],
-  "description": "New Serializable Types:\n- `UnityDictionary`\n- `UnityTimeSpan`\n- `UnityDateOnly`\n- `UnityDateTime`\n\nSingletons:\n- `SingletonMonoBehaviour<T>`\n- `SingletonScriptableObject<T>`\n\nOther:\n- `GameObjectPool`\n- `RepeatingInt`"
+  "description": "New Serializable Types:\n- `UnityDictionary`\n- `UnityTimeSpan`\n- `UnityDateOnly`\n- `UnityDateTime`\n\nOneAsset:\n- `ScriptableObjectFactory`\n- `SingletonMonoBehaviour<T>`\n- `SingletonScriptableObject<T>`\n\nOther:\n- `GameObjectPool`\n- `RepeatingInt`"
 }

@@ -11,7 +11,7 @@ namespace QuickEye.Utility.Editor
         [InitializeOnLoadMethod]
         private static void RegisterCallback()
         {
-            SingletonScriptableObjectFactory.CreateAssetAction += CreateAsset;
+            ScriptableObjectFactory.CreateAssetAction += CreateAsset;
         }
 
         // This can crash the editor if it would occur at editor startup (pre 2021.2.0a15)

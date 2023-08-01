@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using UnityEngine;
 
 namespace QuickEye.Utility
@@ -20,6 +19,15 @@ namespace QuickEye.Utility
     public class SingletonMonoBehaviour<T> : SingletonMonoBehaviour where T : SingletonMonoBehaviour<T>
     {
         private static T _instance;
+
+        /// <summary>
+        /// <para>Returns a instance of T.</para>
+        /// <para>If no instance of the T exists, it will create a new one.</para>
+        /// <para>If multiple instances of T exist, the first one executing the <see cref="Awake"/> will be preserved while the rest will self destruct on their <see cref="Awake"/>.</para>
+        /// <para>If the only instance of T will be destroyed, the new one will be created on the next access to this property.</para>
+        /// <para>If T has a <see cref="SingletonAssetAttribute"/> the instance will be loaded from a prefab asset.</para>
+        /// </summary>
+        /// <exception cref="SingletonAssetIsMissingException">Thrown when T has a <see cref="SingletonAssetAttribute"/> but no asset was found at path provided</exception>
         public static T Instance => GetInstance();
 
         /// <summary>
@@ -41,7 +49,7 @@ namespace QuickEye.Utility
         }
 
         /// <summary>
-        /// MonoBehaviour's OnDestroy Message. When overriden, class descendants need to call the base implementation of it to keep singleton behavior. 
+        /// MonoBehaviour's OnDestroy Message. When overriden, class descendants need to call the base implementation of it to keep singleton behavior.
         /// </summary>
         protected virtual void OnDestroy()
         {
@@ -68,7 +76,7 @@ namespace QuickEye.Utility
                 return null;
             if (_instance == null)
                 _instance = CreateInstance();
-            
+
             return _instance;
         }
 
@@ -89,42 +97,13 @@ namespace QuickEye.Utility
                 var resourcesPath = attr.GetResourcesPath(typeof(T));
                 var prefab = Resources.Load<T>(resourcesPath);
                 if (prefab == null)
-                    throw new SingletonAssetIsMissingException(resourcesPath, typeof(T));
+                    throw new SingletonAssetIsMissingException(typeof(T), resourcesPath);
                 obj = Instantiate(prefab);
                 obj.name = typeof(T).Name;
                 return true;
             }
 
             return obj = null;
-        }
-    }
-
-    public class SingletonAlreadyExistsException : Exception
-    {
-        internal SingletonAlreadyExistsException(SingletonMonoBehaviour obj) : base(
-            $"Singleton of type {obj.GetType()} already exists. Destroying \"{GetGameObjectPath(obj.gameObject)}\"")
-        {
-        }
-
-        private static string GetGameObjectPath(GameObject obj)
-        {
-            var path = $"/{obj.name}";
-            while (obj.transform.parent != null)
-            {
-                obj = obj.transform.parent.gameObject;
-                path = $"/{obj.name}{path}";
-            }
-
-            path = $"{obj.scene.name}{path}";
-            return path;
-        }
-    }
-
-    public class SingletonAssetIsMissingException : Exception
-    {
-        internal SingletonAssetIsMissingException(string assetPath, Type componentType) : base(
-            $"Prefab at : {assetPath} has no {componentType.Name} component.")
-        {
         }
     }
 }
