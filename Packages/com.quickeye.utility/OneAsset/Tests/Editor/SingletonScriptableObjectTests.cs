@@ -1,8 +1,8 @@
 using NUnit.Framework;
-using QuickEye.Utility;
+using OneAsset;
 using UnityEngine;
 
-namespace OneAsset.Tests.Editor
+namespace OneAsset.Editor.Tests
 {
     [TestOf(typeof(SingletonScriptableObject<>))]
     public class SingletonScriptableObjectTests

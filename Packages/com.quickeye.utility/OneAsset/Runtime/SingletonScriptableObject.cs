@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 
-namespace QuickEye.Utility
+namespace OneAsset
 {
     /// <summary>
     /// Adds singleton behaviour to descendant classes.
     /// Loads or creates instance of T when Instance property is used.
-    /// Can be combined with <see cref="SingletonAssetAttribute"/>, <see cref="CreateAssetAutomaticallyAttribute"/> and <see cref="SettingsProviderAssetAttribute"/>
+    /// Can be combined with <see cref="LoadFromAssetAttribute"/>, <see cref="CreateAssetAutomaticallyAttribute"/> and <see cref="SettingsProviderAssetAttribute"/>
     /// </summary>
     /// <typeparam name="T">Type of the singleton instance</typeparam>
     public abstract class SingletonScriptableObject<T> : SingletonScriptableObject

@@ -1,5 +1,5 @@
 using System.IO;
-using QuickEye.Utility.Editor;
+using OneAsset.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,6 +10,9 @@ namespace OneAsset.Editor.EditorGUIExtension
     [InitializeOnLoad]
     internal static class ProjectWindowItemDrawer
     {
+        private static Color WindowBackground => EditorGUIUtility.isProSkin
+            ? new Color32(0x38, 0x38, 0x38, 255)
+            : new Color32(0xC8, 0xC8, 0xC8, 255);
         private static GUIStyle IconLabelStyle => new GUIStyle(EditorStyles.label)
         {
             margin = new RectOffset(),
@@ -23,8 +26,8 @@ namespace OneAsset.Editor.EditorGUIExtension
 
         private static void ProjectWindowItemOnGUI(string guid, Rect rect)
         {
-            if (!SingletonAssetCache.TryGetEntry(guid, out var metadata) ||
-                metadata.SingletonAssetAttribute == null)
+            if (!LoadFromAssetCache.TryGetEntry(guid, out var metadata) ||
+                metadata.LoadFromAssetAttribute == null)
                 return;
             if (rect.height > EditorGUIUtility.singleLineHeight)
                 DrawProjectGridItem(rect, metadata);
@@ -33,16 +36,16 @@ namespace OneAsset.Editor.EditorGUIExtension
         }
 
 
-        private static void DrawProjectItem(Rect rect, string path, SingletonAssetCache.AssetMetadata meta)
+        private static void DrawProjectItem(Rect rect, string path, AssetMetadata meta)
         {
             var projectItemLabelContent = new GUIContent(Path.GetFileNameWithoutExtension(path));
-            var linkedIconRect = IMGUIUtility.CalculateRectAfterLabelText(rect, projectItemLabelContent, true);
+            var linkedIconRect = CalculateRectAfterLabelText(rect, projectItemLabelContent, true);
             var linkedIcon = GetGuiContent(meta.IsInLoadablePath, meta.ResourcesPath);
             using (new EditorGUIUtility.IconSizeScope(new Vector2(16, 16)))
                 GUI.Label(linkedIconRect, linkedIcon, IconLabelStyle);
         }
 
-        private static void DrawProjectGridItem(Rect rect, SingletonAssetCache.AssetMetadata meta)
+        private static void DrawProjectGridItem(Rect rect, AssetMetadata meta)
         {
             var content = GetGuiContent(meta.IsInLoadablePath, meta.ResourcesPath);
             var iconRect = new Rect(rect)
@@ -52,12 +55,29 @@ namespace OneAsset.Editor.EditorGUIExtension
 
             using (new EditorGUIUtility.IconSizeScope(iconRect.size))
             {
-                GUI.color = EditorColorPalette.Current.WindowBackground;
+                GUI.color = WindowBackground;
                 using (new EditorGUIUtility.IconSizeScope(iconRect.size + Vector2.one))
                     GUI.Label(iconRect, EditorGUIUtility.IconContent("Folder On Icon"), IconLabelStyle);
                 GUI.color = Color.white;
                 GUI.Label(iconRect, content, IconLabelStyle);
             }
+        }
+        
+        private static Rect CalculateRectAfterLabelText(Rect rect, GUIContent content, bool hasIcon)
+        {
+            var labelTextSize = new GUIStyle("label").CalcSize(content);
+            var itemLabel = new Rect(rect)
+            {
+                width = labelTextSize.x
+            };
+            if (hasIcon)
+                itemLabel.width += 16;
+            var linkedIconRect = new Rect(rect)
+            {
+                x = itemLabel.xMax + 2,
+                xMax = rect.xMax
+            };
+            return linkedIconRect;
         }
     }
 }

@@ -5,7 +5,7 @@ A set of classes and editor UI improvements aimed to improve workflows that requ
 
 **Package contains**:
 - `ScriptableObjectFactory` Creates or loads Scriptable Objects by respecting the rules and options of following attributes:
-  - `SingletonAssetAttribute` - Load asset from path
+  - `LoadFromAssetAttribute` - Load asset from path
   - `CreateAssetAutomaticallyAttribute` - Create an asset if it doesn't exist
 - Abstract class that can be inherited to get a singleton behaviour
   - `SingletonMonoBehaviour<T>`
@@ -16,7 +16,7 @@ A set of classes and editor UI improvements aimed to improve workflows that requ
 - Extended editor UI for singleton assets:
   - Custom icons and tooltips in the project browser 
   - Singleton Asset path field in the inspector header
-<img  src="../Documentation~/SingletonUI.png" align="center" width="70%">
+<img  src="./Documentation~/SingletonUI.png" align="center" width="70%">
 
 ## UnityEngine.Object and a Singleton pattern (Disclaimer)
 
@@ -45,11 +45,11 @@ var i = ScriptableObject.CreateInstance<SingletonSo>();
 Takes into account some common problems of many singleton implementations that are out there.
 
 Options:
-- Load instance from a prefab asset by adding a `SingletonAssetAttribute` attribute
+- Load instance from a prefab asset by adding a `LoadFromAssetAttribute` attribute
 
 Example:
 ```c#
-[SingletonAsset("Popup View")]
+[LoadFromAsset("Popup View")]
 public class PopupView : SingletonMonoBehaviour<PopupView> { }
 void UseExample()
 {
@@ -64,18 +64,18 @@ void UseExample()
 `ScriptableObject` Singleton implementation.
 
 Options:
-- Automatically create scriptable object asset (if it doesn't exists already) when used with `SingletonAssetAttribute` and `CreateAssetAutomatically`
-- Create a [SettingsProvider](https://docs.unity3d.com/ScriptReference/SettingsProvider.html) just by adding `SettingsProviderAttribute` and `SingletonAssetAttribute`
+- Automatically create scriptable object asset (if it doesn't exists already) when used with `LoadFromAssetAttribute` and `CreateAssetAutomatically`
+- Create a [SettingsProvider](https://docs.unity3d.com/ScriptReference/SettingsProvider.html) just by adding `SettingsProviderAttribute` and `LoadFromAssetAttribute`
 
 
 Example:
 ```c#
-    // SingletonAssetAttribute will make the `SuperSdkSettings.Instance` load the scriptable object from
+    // LoadFromAssetAttribute will make the `SuperSdkSettings.Instance` load the scriptable object from
     // resources path: "*Resources/Super SDK Settings"
     // `Mandatory = true` option will make sure to show error messages if the asset is missing at this path.
-    [SingletonAsset("Super SDK Settings", Mandatory = true)]
+    [LoadFromAsset("Super SDK Settings", Mandatory = true)]
     // `CreateAssetAutomatically` Attribute turns on a system that will create scriptable object file at specific path
-    // if it cannot be loaded from path specified in `SingletonAsset` attribute
+    // if it cannot be loaded from path specified in `LoadFromAsset` attribute
     // in this example it will create asset with path: "Assets/Settings/Super SDK Settings"
     [CreateAssetAutomatically("Assets/Settings/")]
     // The `SettingsProviderAsset` will create a new UI settings tab with name "Super SDK" in the Project Settings window

@@ -4,7 +4,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace QuickEye.Utility.Editor
+namespace OneAsset.Editor
 {
     internal static class ScriptableSingletonAssetFactory
     {
@@ -14,8 +14,6 @@ namespace QuickEye.Utility.Editor
             ScriptableObjectFactory.CreateAssetAction += CreateAsset;
         }
 
-        // This can crash the editor if it would occur at editor startup (pre 2021.2.0a15)
-        // https://fogbugz.unity3d.com/default.asp?1322299_jm6m9dvbph96nd5o
         private static void CreateAsset(ScriptableObject obj)
         {
             var fullAssetPath = GetFullAssetPath(obj.GetType());
@@ -31,9 +29,9 @@ namespace QuickEye.Utility.Editor
             var createAssetAtt = type.GetCustomAttribute<CreateAssetAutomaticallyAttribute>();
             if (createAssetAtt == null)
                 throw new Exception($"{type.FullName} is missing {nameof(CreateAssetAutomaticallyAttribute)}.");
-            var singletonAssetAtt = type.GetCustomAttribute<SingletonAssetAttribute>();
+            var singletonAssetAtt = type.GetCustomAttribute<LoadFromAssetAttribute>();
             if (singletonAssetAtt == null)
-                throw new Exception($"{type.FullName} is missing {nameof(SingletonAssetAttribute)}.");
+                throw new Exception($"{type.FullName} is missing {nameof(LoadFromAssetAttribute)}.");
 
             var pathStart = PathUtility.EnsurePathStartsWith("Assets", createAssetAtt.ResourcesFolderPath);
             pathStart = PathUtility.EnsurePathEndsWith("Resources", pathStart);

@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using UnityEngine;
 
-namespace QuickEye.Utility
+namespace OneAsset
 {
     // Execute Order allows us to execute Awake before all non-singletons
     // This allows other scripts to access initialized singletons in their awake methods.
@@ -25,9 +25,9 @@ namespace QuickEye.Utility
         /// <para>If no instance of the T exists, it will create a new one.</para>
         /// <para>If multiple instances of T exist, the first one executing the <see cref="Awake"/> will be preserved while the rest will self destruct on their <see cref="Awake"/>.</para>
         /// <para>If the only instance of T will be destroyed, the new one will be created on the next access to this property.</para>
-        /// <para>If T has a <see cref="SingletonAssetAttribute"/> the instance will be loaded from a prefab asset.</para>
+        /// <para>If T has a <see cref="LoadFromAssetAttribute"/> the instance will be loaded from a prefab asset.</para>
         /// </summary>
-        /// <exception cref="SingletonAssetIsMissingException">Thrown when T has a <see cref="SingletonAssetAttribute"/> but no asset was found at path provided</exception>
+        /// <exception cref="AssetIsMissingException">Thrown when T has a <see cref="LoadFromAssetAttribute"/> but no asset was found at path provided</exception>
         public static T Instance => GetInstance();
 
         /// <summary>
@@ -91,13 +91,13 @@ namespace QuickEye.Utility
 
         private static bool TryInstantiatePrefab(out T obj)
         {
-            var attr = typeof(T).GetCustomAttribute<SingletonAssetAttribute>();
+            var attr = typeof(T).GetCustomAttribute<LoadFromAssetAttribute>();
             if (attr != null)
             {
                 var resourcesPath = attr.GetResourcesPath(typeof(T));
                 var prefab = Resources.Load<T>(resourcesPath);
                 if (prefab == null)
-                    throw new SingletonAssetIsMissingException(typeof(T), resourcesPath);
+                    throw new AssetIsMissingException(typeof(T), resourcesPath);
                 obj = Instantiate(prefab);
                 obj.name = typeof(T).Name;
                 return true;

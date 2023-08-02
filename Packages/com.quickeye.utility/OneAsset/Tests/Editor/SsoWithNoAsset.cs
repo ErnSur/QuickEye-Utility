@@ -1,6 +1,6 @@
-using QuickEye.Utility;
+using OneAsset;
 
-namespace OneAsset.Tests.Editor
+namespace OneAsset.Editor.Tests
 {
     internal class SsoWithNoAsset : SingletonScriptableObject<SsoWithNoAsset>
     {

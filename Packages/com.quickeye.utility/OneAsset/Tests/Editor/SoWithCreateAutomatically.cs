@@ -1,10 +1,10 @@
-using QuickEye.Utility;
+using OneAsset;
 using UnityEngine;
 
-namespace OneAsset.Tests.Editor
+namespace OneAsset.Editor.Tests
 {
     [CreateAssetAutomatically(PathToResourcesDirectory)]
-    [SingletonAsset(PathToAssetInResourcesDirectory)]
+    [LoadFromAsset(PathToAssetInResourcesDirectory)]
     internal class SoWithCreateAutomatically : ScriptableObject
     {
         public const string RootTestAssetsDirectory = "Assets/com.quickeye.one-asset.tests/";

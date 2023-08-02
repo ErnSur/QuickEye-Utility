@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace QuickEye.Utility
+namespace OneAsset
 {
     internal delegate void TryCreateAsset(ScriptableObject scriptableObject);
 }

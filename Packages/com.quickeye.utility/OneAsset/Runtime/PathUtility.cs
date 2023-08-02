@@ -1,7 +1,7 @@
 using System.IO;
 using System.Linq;
 
-namespace QuickEye.Utility
+namespace OneAsset
 {
     internal static class PathUtility
     {

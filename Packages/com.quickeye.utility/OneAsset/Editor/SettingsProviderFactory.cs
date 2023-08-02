@@ -4,7 +4,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace QuickEye.Utility.Editor
+namespace OneAsset.Editor
 {
     internal static class SettingsProviderFactory
     {
@@ -14,7 +14,7 @@ namespace QuickEye.Utility.Editor
             var providers = from assembly in AppDomain.CurrentDomain.GetAssemblies()
                 from type in assembly.GetTypes()
                 where Attribute.IsDefined(type, typeof(SettingsProviderAssetAttribute))
-                where Attribute.IsDefined(type, typeof(SingletonAssetAttribute))
+                where Attribute.IsDefined(type, typeof(LoadFromAssetAttribute))
                 where typeof(SingletonScriptableObject).IsAssignableFrom(type)
                 let settingsAssetAttribute = type.GetCustomAttribute<SettingsProviderAssetAttribute>()
                 select CreateSettingsProvider(settingsAssetAttribute.SettingsWindowPath, type);

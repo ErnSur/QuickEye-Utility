@@ -1,3 +1,4 @@
+using OneAsset;
 using UnityEngine;
 
 namespace QuickEye.Utility.Samples.SingletonAssets

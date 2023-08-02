@@ -24,7 +24,7 @@ Data types, GUI Controls and Property Drawers related to time.
 
 ## One-Asset
 
-A set of classes and editor UI improvements aimed to improve workflows that expect single instances of assets.
+A set of classes and editor UI improvements aimed to improve workflows that require asset loading.
 [Dedicated documentation](./OneAsset/README.md)
 
 <img  src="Documentation~/SingletonUI.png" width="70%">

@@ -2,18 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using QuickEye.Utility;
+using OneAsset;
 
-namespace OneAsset.Tests.Editor
+namespace OneAsset.Editor.Tests
 {
-    public class SingletonAssetAttributeTests
+    [TestOf(typeof(LoadFromAssetAttribute))]
+    public class LoadFromAssetTests
     {
         [TestCaseSource(nameof(GetTestCases))]
         [TestCaseSource(nameof(GetTestCases2))]
         public void Should_OutputMatchUnityEditorMethod_When_NicifyClassName(string input)
         {
             var expected = UnityEditor.ObjectNames.NicifyVariableName(input);
-            var actual = SingletonAssetAttribute.NicifyClassName(input);
+            var actual = LoadFromAssetAttribute.NicifyClassName(input);
             Assert.AreEqual(expected, actual);
         }
 

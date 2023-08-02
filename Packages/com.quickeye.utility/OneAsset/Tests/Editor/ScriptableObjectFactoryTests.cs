@@ -1,10 +1,10 @@
 using System.IO;
 using NUnit.Framework;
-using QuickEye.Utility;
+using OneAsset;
 using UnityEditor;
 using UnityEngine;
 
-namespace OneAsset.Tests.Editor
+namespace OneAsset.Editor.Tests
 {
     [TestOf(typeof(ScriptableObjectFactory))]
     public class ScriptableObjectFactoryTests
@@ -15,6 +15,13 @@ namespace OneAsset.Tests.Editor
         public void OneTimeSetup()
         {
             _singletonAsset = Resources.Load<SoWithAsset>(SoWithAsset.ResourcesPath);
+            Assert.NotNull(_singletonAsset);
+        }
+        
+        [OneTimeTearDown]
+        public void OneTimeTearDown()
+        {
+            AssetDatabase.Refresh();
         }
 
         [SetUp]
@@ -34,13 +41,14 @@ namespace OneAsset.Tests.Editor
         {
             var result = ScriptableObjectFactory.LoadOrCreateInstance<SoWithAsset>();
 
+            Assert.NotNull(result);
             Assert.AreEqual(_singletonAsset, result);
         }
 
         [Test]
         public void Should_Throw_When_TypeHasMandatorySingletonAttributeButAssetIsMissing()
         {
-            Assert.Throws<SingletonAssetIsMissingException>(() =>
+            Assert.Throws<AssetIsMissingException>(() =>
             {
                 ScriptableObjectFactory.LoadOrCreateInstance<SoWithMissingAsset>();
             });

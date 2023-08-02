@@ -1,10 +1,10 @@
 using System;
 
-namespace QuickEye.Utility
+namespace OneAsset
 {
     /// <summary>
     /// Enables a system that will create scriptable object file at specific path
-    /// if it cannot be loaded from its resources path. Must be combined with <see cref="SingletonAssetAttribute"/>
+    /// if it cannot be loaded from its resources path. Must be combined with <see cref="LoadFromAssetAttribute"/>
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public sealed class CreateAssetAutomaticallyAttribute : Attribute

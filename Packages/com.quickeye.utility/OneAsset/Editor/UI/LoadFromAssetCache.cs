@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using QuickEye.Utility;
 using UnityEditor;
 using Object = UnityEngine.Object;
 
 namespace OneAsset.Editor.EditorGUIExtension
 {
-    internal static class SingletonAssetCache
+    internal static class LoadFromAssetCache
     {
         private static readonly Dictionary<string, AssetMetadata> CachedGuidResults =
             new Dictionary<string, AssetMetadata>();
@@ -61,14 +60,14 @@ namespace OneAsset.Editor.EditorGUIExtension
 
         private static bool TryGetAndCacheTargetEntry(Object target, out AssetMetadata assetMetadata)
         {
-            var singletonAsset = GetSingletonOrNull(target);
-            if (singletonAsset == null)
+            var loadableAsset = GetLoadableAssetOrNull(target);
+            if (loadableAsset == null)
             {
                 assetMetadata = null;
                 return false;
             }
 
-            assetMetadata = CachedEditorTargets[target] = new AssetMetadata(singletonAsset);
+            assetMetadata = CachedEditorTargets[target] = new AssetMetadata(loadableAsset);
             return true;
         }
         
@@ -79,35 +78,33 @@ namespace OneAsset.Editor.EditorGUIExtension
             var path = AssetDatabase.GUIDToAssetPath(guid);
 
             var isSingletonAsset =
-                TryLoadSingletonScriptableObject(path, out var asset) || TryGetSingletonPrefab(path, out asset);
+                TryLoadLoadableScriptableObject(path, out var asset) || TryGetSingletonPrefab(path, out asset);
 
             var assetMetadata = isSingletonAsset ? new AssetMetadata(asset) : null;
             // Should set null value if guid does not point to a singleton asset
             CachedGuidResults[guid] = assetMetadata;
         }
 
-        static bool TryLoadSingletonScriptableObject(string path, out Object asset)
+        private static bool TryLoadLoadableScriptableObject(string path, out Object asset)
         {
             asset = AssetDatabase.LoadAssetAtPath<Object>(path);
-            return asset != null && IsSingletonScriptableObjectAsset(asset);
+            return asset != null && HasLoadFromAssetAttribute(asset);
         }
 
-        static bool TryGetSingletonPrefab(string path, out Object prefab)
+        private static bool TryGetSingletonPrefab(string path, out Object prefab)
         {
             prefab = AssetDatabase.LoadAssetAtPath<SingletonMonoBehaviour>(path);
-            return prefab != null && prefab.GetType().GetCustomAttribute<SingletonAssetAttribute>() != null;
+            return prefab != null && prefab.GetType().GetCustomAttribute<LoadFromAssetAttribute>() != null;
         }
 
-        private static bool IsSingletonScriptableObjectAsset(Object asset)
+        private static bool HasLoadFromAssetAttribute(Object asset)
         {
-            // Checking for SingletonAssetAttribute directly on type because there can be singleton assets that do not derive from SingletonScriptableObject
-            // User can use ScriptableObjectSingletonFactory alone
-            return asset.GetType().GetCustomAttribute<SingletonAssetAttribute>() != null;
+            return asset.GetType().GetCustomAttribute<LoadFromAssetAttribute>() != null;
         }
 
-        private static Object GetSingletonOrNull(Object obj)
+        private static Object GetLoadableAssetOrNull(Object obj)
         {
-            if (IsSingletonScriptableObjectAsset(obj))
+            if (HasLoadFromAssetAttribute(obj))
                 return obj;
             if (obj is AssetImporter)
             {
@@ -119,33 +116,35 @@ namespace OneAsset.Editor.EditorGUIExtension
             return null;
         }
 
-        public class AssetMetadata
-        {
-            public readonly Object Asset;
-
-            public readonly SingletonAssetAttribute SingletonAssetAttribute;
-            public string ResourcesPath { get; }
-            public bool IsInLoadablePath => IsInResourcesPath(AssetDatabase.GetAssetPath(Asset), ResourcesPath);
-
-            public AssetMetadata(Object asset)
-            {
-                Asset = asset;
-                var type = asset.GetType();
-                SingletonAssetAttribute = type.GetCustomAttribute<SingletonAssetAttribute>();
-                ResourcesPath = SingletonAssetAttribute.GetResourcesPath(type);
-            }
-        }
+        
 
         /// <summary>
         /// both arguments need to use forward slashes
         /// </summary>
-        private static bool IsInResourcesPath(string assetPath, string resourcesRelativePath)
+        public static bool IsInResourcesPath(string assetPath, string resourcesRelativePath)
         {
             if (string.IsNullOrEmpty(assetPath))
                 return false;
             var extension = Path.GetExtension(assetPath);
             return assetPath.EndsWith("Resources/" + resourcesRelativePath + extension,
                 StringComparison.InvariantCulture);
+        }
+    }
+    
+    public class AssetMetadata
+    {
+        public readonly Object Asset;
+
+        public readonly LoadFromAssetAttribute LoadFromAssetAttribute;
+        public string ResourcesPath { get; }
+        public bool IsInLoadablePath => LoadFromAssetCache.IsInResourcesPath(AssetDatabase.GetAssetPath(Asset), ResourcesPath);
+
+        public AssetMetadata(Object asset)
+        {
+            Asset = asset;
+            var type = asset.GetType();
+            LoadFromAssetAttribute = type.GetCustomAttribute<LoadFromAssetAttribute>();
+            ResourcesPath = LoadFromAssetAttribute.GetResourcesPath(type);
         }
     }
 }

@@ -1,12 +1,11 @@
-using QuickEye.Utility;
+using OneAsset;
 using UnityEngine;
 
-namespace OneAsset.Tests.Editor
+namespace OneAsset.Editor.Tests
 {
-    [CreateAssetMenu]
-    [SingletonAsset(ResourcesPath)]
+    [LoadFromAsset(ResourcesPath)]
     internal class SoWithAsset : ScriptableObject
     {
-        public const string ResourcesPath = "com.quickeye.utility.tests/Sso With Asset";
+        public const string ResourcesPath = "com.quickeye.utility.tests/So With Asset";
     }
 }

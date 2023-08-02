@@ -1,9 +1,9 @@
-using QuickEye.Utility;
+using OneAsset;
 using UnityEngine;
 
-namespace OneAsset.Tests.Editor
+namespace OneAsset.Editor.Tests
 {
-    [SingletonAsset("non/exising/path", Mandatory = false)]
+    [LoadFromAsset("non/exising/path", Mandatory = false)]
     internal class SoWithNonMandatoryMissingAsset : ScriptableObject
     {
     }

@@ -3,7 +3,7 @@ using System.Reflection;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace QuickEye.Utility
+namespace OneAsset
 {
     public static class ScriptableObjectFactory
     {
@@ -11,14 +11,14 @@ namespace QuickEye.Utility
 
         /// <summary>
         /// <para>Load or create an instance of T while respecting the rules of following attributes:</para>
-        /// <para>If T has a <see cref="SingletonAssetAttribute"/></para>
-        /// <para>Try to load and return an asset from the <see cref="SingletonAssetAttribute"/> path. If no asset was found at the path, create and return a new instance of T.</para>
-        /// <para>If T has a <see cref="SingletonAssetAttribute"/> and <see cref="CreateAssetAutomaticallyAttribute"/></para>
-        /// <para>Try to load and return an asset from the <see cref="SingletonAssetAttribute"/> path. If no asset was found at the path and code is running in the editor, create a new asset at <see cref="CreateAssetAutomaticallyAttribute"/> path. Otherwise create and return a new instance of T.</para>
+        /// <para>If T has a <see cref="LoadFromAssetAttribute"/></para>
+        /// <para>Try to load and return an asset from the <see cref="LoadFromAssetAttribute"/> path. If no asset was found at the path, create and return a new instance of T.</para>
+        /// <para>If T has a <see cref="LoadFromAssetAttribute"/> and <see cref="CreateAssetAutomaticallyAttribute"/></para>
+        /// <para>Try to load and return an asset from the <see cref="LoadFromAssetAttribute"/> path. If no asset was found at the path and code is running in the editor, create a new asset at <see cref="CreateAssetAutomaticallyAttribute"/> path. Otherwise create and return a new instance of T.</para>
         /// </summary>
         /// <typeparam name="T"><see cref="ScriptableObject"/> type</typeparam>
         /// <returns>New instance of T, </returns>
-        /// <exception cref="SingletonAssetIsMissingException">Thrown when T has a <see cref="SingletonAssetAttribute.Mandatory"/> flag set to true and no asset was found at path provided</exception>
+        /// <exception cref="AssetIsMissingException">Thrown when T has a <see cref="LoadFromAssetAttribute.Mandatory"/> flag set to true and no asset was found at path provided</exception>
         /// <exception cref="EditorAssetFactoryException">Thrown only in editor, when T has a <see cref="CreateAssetAutomaticallyAttribute"/> and there was an issue with <see cref="UnityEditor.AssetDatabase"/> action</exception>
         public static T LoadOrCreateInstance<T>() where T : ScriptableObject
         {
@@ -29,9 +29,9 @@ namespace QuickEye.Utility
             if (TryCreateAsset<T>() && TryLoadFromResources(out asset))
                 return asset;
             // Throw Exception if class has `SingletonAssetAttribute` and asset instance is mandatory 
-            var att = typeof(T).GetCustomAttribute<SingletonAssetAttribute>();
+            var att = typeof(T).GetCustomAttribute<LoadFromAssetAttribute>();
             if (att?.Mandatory == true)
-                throw new SingletonAssetIsMissingException(typeof(T), att.GetResourcesPath(typeof(T)));
+                throw new AssetIsMissingException(typeof(T), att.GetResourcesPath(typeof(T)));
             // Create and return a new instance
             var obj = ScriptableObject.CreateInstance<T>();
             obj.name = typeof(T).Name;
@@ -63,7 +63,7 @@ namespace QuickEye.Utility
 
         private static bool TryLoadFromResources<T>(out T obj) where T : ScriptableObject
         {
-            var attr = typeof(T).GetCustomAttribute<SingletonAssetAttribute>();
+            var attr = typeof(T).GetCustomAttribute<LoadFromAssetAttribute>();
             if (attr == null)
                 return obj = null;
             var path = attr.GetResourcesPath(typeof(T));

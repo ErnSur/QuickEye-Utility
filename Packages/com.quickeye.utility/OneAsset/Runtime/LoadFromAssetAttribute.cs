@@ -1,19 +1,19 @@
 using System;
 using System.Text;
 
-namespace QuickEye.Utility
+namespace OneAsset
 {
     /// <summary>
-    /// Allows singleton instances to load from an asset.
-    /// Can be used on <see cref="SingletonMonoBehaviour{T}"/> and <see cref="SingletonScriptableObject{T}"/>.
+    /// Applies loading rules to <see cref="ScriptableObjectFactory"/> and <see cref="SingletonMonoBehaviour{T}"/>.
+    /// Can be used on <see cref="UnityEngine.ScriptableObject"/> and <see cref="UnityEngine.MonoBehaviour"/>
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public sealed class SingletonAssetAttribute : Attribute
+    public sealed class LoadFromAssetAttribute : Attribute
     {
         private string ResourcesPath { get; }
 
         /// <summary>
-        /// Relevant only for <see cref="SingletonScriptableObject{T}"/>:
+        /// Relevant only for <see cref="ScriptableObjectFactory"/>:
         /// If set to `true` singleton will throw an exception in case where there was no asset under `ResourcesPath`.
         /// If set to `false` singleton will dynamically create a new runtime instance if there is no asset present.
         /// By default `true`.
@@ -22,17 +22,17 @@ namespace QuickEye.Utility
         public bool UseTypeNameAsFileName { get; set; }
 
         /// <summary>
-        /// Path at which singleton asset should be found. Relative to the Resources folder.
-        /// Doesn't have to contain file name if UseTypeNameAsFileName is set to true.
+        /// Path at which asset should be found. Relative to the Resources folder.
+        /// Doesn't have to contain file name if <see cref="UseTypeNameAsFileName"/> is set to true.
         /// Enter prefab path in case of <see cref="SingletonMonoBehaviour{T}"/>
         /// </summary>
         /// <param name="resourcesPath">
         /// Path at which singleton asset should be found. Relative to the Resources folder.
         /// Doesn't have to contain file name if UseTypeNameAsFileName is set to true.
         /// Enter prefab path in case of <see cref="SingletonMonoBehaviour{T}"/>,
-        /// Enter asset path in case of <see cref="SingletonScriptableObject{T}"/>
+        /// Enter asset path in case of <see cref="UnityEngine.ScriptableObject"/>
         /// </param>
-        public SingletonAssetAttribute(string resourcesPath)
+        public LoadFromAssetAttribute(string resourcesPath)
         {
             ResourcesPath = TrimPath(resourcesPath, "Resources");
         }

@@ -1,12 +1,13 @@
-﻿using UnityEngine;
+﻿using OneAsset;
+using UnityEngine;
 
 namespace QuickEye.Utility.Samples.SingletonAssets
 {
     /// <summary>
     /// Creates a new Project Settings Window page using <see cref="SingletonScriptableObject"/>
-    /// with <see cref="SingletonAssetAttribute"/> and <see cref="SettingsProviderAssetAttribute"/>
+    /// with <see cref="LoadFromAssetAttribute"/> and <see cref="SettingsProviderAssetAttribute"/>
     /// </summary>
-    [SingletonAsset(ResourcesPath, Mandatory = true)]
+    [LoadFromAsset(ResourcesPath, Mandatory = true)]
     [CreateAssetAutomatically(AutoCreatePath)]
     [SettingsProviderAsset("Project/" + SettingsPageName)]
     public class ProjectSettingsAsset : SingletonScriptableObject<ProjectSettingsAsset>

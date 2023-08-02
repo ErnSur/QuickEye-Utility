@@ -1,6 +1,6 @@
 using System;
 
-namespace QuickEye.Utility
+namespace OneAsset
 {
     /// <summary>
     /// Creates a settings entry in Project Settings Window.

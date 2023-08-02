@@ -1,6 +1,6 @@
 using System;
 
-namespace QuickEye.Utility
+namespace OneAsset
 {
     public class EditorAssetFactoryException : Exception
     {
