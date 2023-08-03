@@ -1,4 +1,4 @@
-namespace OneAsset.Editor.EditorGUIExtension
+namespace OneAsset.Editor.UI
 {
     public abstract class PostHeaderDrawer
     {

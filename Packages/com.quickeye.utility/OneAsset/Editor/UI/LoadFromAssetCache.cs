@@ -5,7 +5,7 @@ using System.Reflection;
 using UnityEditor;
 using Object = UnityEngine.Object;
 
-namespace OneAsset.Editor.EditorGUIExtension
+namespace OneAsset.Editor.UI
 {
     internal static class LoadFromAssetCache
     {

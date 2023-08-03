@@ -1,6 +1,6 @@
 {
     "name": "OneAsset.Editor.Tests",
-    "rootNamespace": "",
+    "rootNamespace": "OneAsset.Editor.Tests",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",

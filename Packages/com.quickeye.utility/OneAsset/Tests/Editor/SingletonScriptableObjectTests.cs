@@ -1,5 +1,4 @@
 using NUnit.Framework;
-using OneAsset;
 using UnityEngine;
 
 namespace OneAsset.Editor.Tests

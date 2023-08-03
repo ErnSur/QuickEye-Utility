@@ -1,9 +1,8 @@
 using System.IO;
-using OneAsset.Editor;
 using UnityEditor;
 using UnityEngine;
 
-namespace OneAsset.Editor.EditorGUIExtension
+namespace OneAsset.Editor.UI
 {
     using static SingletonGUI;
 

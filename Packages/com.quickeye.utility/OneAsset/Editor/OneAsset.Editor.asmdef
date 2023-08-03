@@ -1,6 +1,6 @@
 {
     "name": "OneAsset.Editor",
-    "rootNamespace": "",
+    "rootNamespace": "OneAsset.Editor",
     "references": [
         "OneAsset"
     ],
