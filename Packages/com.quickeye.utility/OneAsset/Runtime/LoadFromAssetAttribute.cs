@@ -1,13 +1,15 @@
 using System;
 using System.Text;
+using UnityEditor;
 
 namespace OneAsset
 {
     /// <summary>
     /// Applies loading rules to <see cref="ScriptableObjectFactory"/> and <see cref="SingletonMonoBehaviour{T}"/>.
     /// Can be used on <see cref="UnityEngine.ScriptableObject"/> and <see cref="UnityEngine.MonoBehaviour"/>
+    /// Use multiple <see cref="LoadFromAssetAttribute"/> to look for the asset in multiple different paths.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
     public sealed class LoadFromAssetAttribute : Attribute
     {
         private string ResourcesPath { get; }
@@ -20,6 +22,12 @@ namespace OneAsset
         /// </summary>
         public bool Mandatory { get; set; } = true;
         public bool UseTypeNameAsFileName { get; set; }
+        
+        /// <summary>
+        /// Relevant for types with multiple <see cref="LoadFromAssetAttribute"/>.
+        /// Optional field to specify the order in which asset is searched for.
+        /// </summary>
+        public int Order { get; set; }
 
         /// <summary>
         /// Path at which asset should be found. Relative to the Resources folder.

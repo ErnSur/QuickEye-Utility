@@ -1,5 +1,6 @@
 using System.IO;
 using NUnit.Framework;
+using OneAsset.Editor.Tests.SampleAssets;
 using UnityEditor;
 using UnityEngine;
 
@@ -42,6 +43,17 @@ namespace OneAsset.Editor.Tests
 
             Assert.NotNull(result);
             Assert.AreEqual(_singletonAsset, result);
+        }
+        
+        [Test]
+        public void Should_LoadAssetInstanceWithLowestOrderPath_When_TypeHasMultipleAttributes()
+        {
+            var asset = Resources.Load<SoWithMultipleLoadPaths1>(SoWithMultipleLoadPaths1.FirstResourcesPath);
+            Assert.NotNull(asset);
+            
+            var actual = ScriptableObjectFactory.LoadOrCreateInstance<SoWithMultipleLoadPaths1>();
+
+            Assert.AreEqual(asset, actual);
         }
 
         [Test]

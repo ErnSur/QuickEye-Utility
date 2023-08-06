@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using UnityEditor;
 using Object = UnityEngine.Object;
 
@@ -77,11 +76,11 @@ namespace OneAsset.Editor.UI
                 return;
             var path = AssetDatabase.GUIDToAssetPath(guid);
 
-            var isSingletonAsset =
-                TryLoadLoadableScriptableObject(path, out var asset) || TryGetSingletonPrefab(path, out asset);
+            var isLoadableAsset = TryLoadLoadableScriptableObject(path, out var asset) 
+                                  || TryGetSingletonPrefab(path, out asset);
 
-            var assetMetadata = isSingletonAsset ? new AssetMetadata(asset) : null;
-            // Should set null value if guid does not point to a singleton asset
+            var assetMetadata = isLoadableAsset ? new AssetMetadata(asset) : null;
+            // Should set null value if guid does not point to a loadable asset
             CachedGuidResults[guid] = assetMetadata;
         }
 
@@ -91,15 +90,15 @@ namespace OneAsset.Editor.UI
             return asset != null && HasLoadFromAssetAttribute(asset);
         }
 
-        private static bool TryGetSingletonPrefab(string path, out Object prefab)
+        private static bool TryGetSingletonPrefab(string path, out Object singletonComponent)
         {
-            prefab = AssetDatabase.LoadAssetAtPath<SingletonMonoBehaviour>(path);
-            return prefab != null && prefab.GetType().GetCustomAttribute<LoadFromAssetAttribute>() != null;
+            singletonComponent = AssetDatabase.LoadAssetAtPath<SingletonMonoBehaviour>(path);
+            return singletonComponent != null && HasLoadFromAssetAttribute(singletonComponent);
         }
 
         private static bool HasLoadFromAssetAttribute(Object asset)
         {
-            return asset.GetType().GetCustomAttribute<LoadFromAssetAttribute>() != null;
+            return LoadFromAssetUtils.HasAttribute(asset.GetType());
         }
 
         private static Object GetLoadableAssetOrNull(Object obj)
@@ -116,8 +115,6 @@ namespace OneAsset.Editor.UI
             return null;
         }
 
-        
-
         /// <summary>
         /// both arguments need to use forward slashes
         /// </summary>
@@ -128,23 +125,6 @@ namespace OneAsset.Editor.UI
             var extension = Path.GetExtension(assetPath);
             return assetPath.EndsWith("Resources/" + resourcesRelativePath + extension,
                 StringComparison.InvariantCulture);
-        }
-    }
-    
-    public class AssetMetadata
-    {
-        public readonly Object Asset;
-
-        public readonly LoadFromAssetAttribute LoadFromAssetAttribute;
-        public string ResourcesPath { get; }
-        public bool IsInLoadablePath => LoadFromAssetCache.IsInResourcesPath(AssetDatabase.GetAssetPath(Asset), ResourcesPath);
-
-        public AssetMetadata(Object asset)
-        {
-            Asset = asset;
-            var type = asset.GetType();
-            LoadFromAssetAttribute = type.GetCustomAttribute<LoadFromAssetAttribute>();
-            ResourcesPath = LoadFromAssetAttribute.GetResourcesPath(type);
         }
     }
 }

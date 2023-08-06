@@ -91,19 +91,17 @@ namespace OneAsset
 
         private static bool TryInstantiatePrefab(out T obj)
         {
-            var attr = typeof(T).GetCustomAttribute<LoadFromAssetAttribute>();
-            if (attr != null)
-            {
-                var resourcesPath = attr.GetResourcesPath(typeof(T));
-                var prefab = Resources.Load<T>(resourcesPath);
-                if (prefab == null)
-                    throw new AssetIsMissingException(typeof(T), resourcesPath);
-                obj = Instantiate(prefab);
-                obj.name = typeof(T).Name;
-                return true;
-            }
-
-            return obj = null;
+            var attr = LoadFromAssetUtils.GetAttribute(typeof(T));
+            if (attr == null)
+                return obj = null;
+            
+            var resourcesPath = attr.GetResourcesPath(typeof(T));
+            var prefab = Resources.Load<T>(resourcesPath);
+            if (prefab == null)
+                throw new AssetIsMissingException(typeof(T), resourcesPath);
+            obj = Instantiate(prefab);
+            obj.name = typeof(T).Name;
+            return true;
         }
     }
 }

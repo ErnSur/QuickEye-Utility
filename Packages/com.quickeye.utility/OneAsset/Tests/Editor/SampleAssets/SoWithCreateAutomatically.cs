@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace OneAsset.Editor.Tests
+namespace OneAsset.Editor.Tests.SampleAssets
 {
     [CreateAssetAutomatically(PathToResourcesDirectory)]
     [LoadFromAsset(PathToAssetInResourcesDirectory)]
