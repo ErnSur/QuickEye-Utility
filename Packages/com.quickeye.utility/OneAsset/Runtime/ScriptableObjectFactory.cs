@@ -5,6 +5,11 @@ using Object = UnityEngine.Object;
 
 namespace OneAsset
 {
+    /// <summary>
+    /// <para>Load or create ScriptableObjects while respecting the rules of following attributes:</para>
+    /// <para><see cref="LoadFromAssetAttribute"/></para>
+    /// <para><see cref="CreateAssetAutomaticallyAttribute"/></para>
+    /// </summary>
     public static class ScriptableObjectFactory
     {
         internal static TryCreateAsset CreateAssetAction;
@@ -17,38 +22,62 @@ namespace OneAsset
         /// <para>Try to load and return an asset from the <see cref="LoadFromAssetAttribute"/> path. If no asset was found at the path and code is running in the editor, create a new asset at <see cref="CreateAssetAutomaticallyAttribute"/> path. Otherwise create and return a new instance of T.</para>
         /// </summary>
         /// <typeparam name="T"><see cref="ScriptableObject"/> type</typeparam>
-        /// <returns>New instance of T, </returns>
+        /// <returns>New instance of T</returns>
         /// <exception cref="AssetIsMissingException">Thrown when T has a <see cref="LoadFromAssetAttribute.Mandatory"/> flag set to true and no asset was found at path provided</exception>
         /// <exception cref="EditorAssetFactoryException">Thrown only in editor, when T has a <see cref="CreateAssetAutomaticallyAttribute"/> and there was an issue with <see cref="UnityEditor.AssetDatabase"/> action</exception>
         public static T LoadOrCreateInstance<T>() where T : ScriptableObject
         {
-            // Try to load asset from `SingletonAssetAttribute` path
-            if (TryLoadFromResources<T>(out var asset))
-                return asset;
-            // Try to create asset at `CreateAssetAutomaticallyAttribute` path
-            if (TryCreateAsset<T>() && TryLoadFromResources(out asset))
-                return asset;
-            // Throw Exception if class has `SingletonAssetAttribute` and asset instance is mandatory 
-            var att = typeof(T).GetCustomAttribute<LoadFromAssetAttribute>();
-            if (att?.Mandatory == true)
-                throw new AssetIsMissingException(typeof(T), att.GetResourcesPath(typeof(T)));
-            // Create and return a new instance
-            var obj = ScriptableObject.CreateInstance<T>();
-            obj.name = typeof(T).Name;
-            return obj;
+            return LoadOrCreateInstance(typeof(T)) as T;
         }
 
         /// <summary>
-        /// If in Editor, try to create an asset at path specified in `CreateAssetAutomaticallyAttribute`
+        /// <para>Load or create an instance of given type while respecting the rules of following attributes:</para>
+        /// <para>If given type has a <see cref="LoadFromAssetAttribute"/></para>
+        /// <para>Try to load and return an asset from the <see cref="LoadFromAssetAttribute"/> path. If no asset was found at the path, create and return a new instance of given type.</para>
+        /// <para>If given type has a <see cref="LoadFromAssetAttribute"/> and <see cref="CreateAssetAutomaticallyAttribute"/></para>
+        /// <para>Try to load and return an asset from the <see cref="LoadFromAssetAttribute"/> path. If no asset was found at the path and code is running in the editor, create a new asset at <see cref="CreateAssetAutomaticallyAttribute"/> path. Otherwise create and return a new instance of given type.</para>
         /// </summary>
-        private static bool TryCreateAsset<T>() where T : ScriptableObject
+        /// <returns>New ScriptableObject instance of given type</returns>
+        /// <exception cref="AssetIsMissingException">Thrown when given type has a <see cref="LoadFromAssetAttribute.Mandatory"/> flag set to true and no asset was found at path provided</exception>
+        /// <exception cref="EditorAssetFactoryException">Thrown only in editor, when given type has a <see cref="CreateAssetAutomaticallyAttribute"/> and there was an issue with <see cref="UnityEditor.AssetDatabase"/> action</exception>
+        public static ScriptableObject LoadOrCreateInstance(Type scriptableObjectType)
+        {
+            var loadFromAssetAttributes = LoadFromAssetUtils.GetAttributesInOrder(scriptableObjectType);
+            if(loadFromAssetAttributes.Length == 0)
+                return CreateInstance(scriptableObjectType);
+            // Try to load asset from `LoadFromAssetAttribute` path
+            if (TryLoadFromResources(scriptableObjectType, loadFromAssetAttributes, out var asset))
+                return asset;
+            // Try to create asset at `CreateAssetAutomaticallyAttribute` path
+            if (TryCreateAsset(scriptableObjectType) &&
+                TryLoadFromResources(scriptableObjectType, loadFromAssetAttributes, out asset))
+                return asset;
+            // Throw Exception if class has `LoadFromAssetAttribute` and asset instance is mandatory 
+            var highestPriorityAttribute = loadFromAssetAttributes[0];
+            if (highestPriorityAttribute.Mandatory)
+                throw new AssetIsMissingException(scriptableObjectType, highestPriorityAttribute.GetResourcesPath(scriptableObjectType));
+            // Create and return a new instance
+            return CreateInstance(scriptableObjectType);
+        }
+
+        private static ScriptableObject CreateInstance(Type scriptableObjectType)
+        {
+            var obj = ScriptableObject.CreateInstance(scriptableObjectType);
+            obj.name = scriptableObjectType.Name;
+            return obj;
+        }
+        
+        /// <summary>
+        /// If in Editor, try to create an asset at path specified in <see cref="CreateAssetAutomaticallyAttribute"/>
+        /// </summary>
+        private static bool TryCreateAsset(Type type)
         {
             if (!Application.isEditor || CreateAssetAction == null)
                 return false;
-            var att = typeof(T).GetCustomAttribute<CreateAssetAutomaticallyAttribute>();
+            var att = type.GetCustomAttribute<CreateAssetAutomaticallyAttribute>();
             if (att == null)
                 return false;
-            var obj = ScriptableObject.CreateInstance<T>();
+            var obj = ScriptableObject.CreateInstance(type);
             try
             {
                 CreateAssetAction(obj);
@@ -57,19 +86,23 @@ namespace OneAsset
             catch (Exception e)
             {
                 Object.DestroyImmediate(obj);
-                throw new EditorAssetFactoryException(typeof(T), e);
+                throw new EditorAssetFactoryException(type, e);
             }
         }
 
-        private static bool TryLoadFromResources<T>(out T obj) where T : ScriptableObject
+        private static bool TryLoadFromResources(Type type, LoadFromAssetAttribute[] attributes,
+            out ScriptableObject obj)
         {
-            var attr = typeof(T).GetCustomAttribute<LoadFromAssetAttribute>();
-            if (attr == null)
-                return obj = null;
-            var path = attr.GetResourcesPath(typeof(T));
+            foreach (var attribute in attributes)
+            {
+                var path = attribute.GetResourcesPath(type);
+                obj = Resources.Load(path, type) as ScriptableObject;
+                if (obj != null)
+                    return true;
+            }
 
-            obj = Resources.Load<T>(path);
-            return obj != null;
+            obj = null;
+            return false;
         }
     }
 }

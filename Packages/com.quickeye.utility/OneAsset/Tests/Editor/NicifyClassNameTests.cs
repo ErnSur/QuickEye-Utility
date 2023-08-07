@@ -5,8 +5,7 @@ using NUnit.Framework;
 
 namespace OneAsset.Editor.Tests
 {
-    [TestOf(typeof(LoadFromAssetAttribute))]
-    public class LoadFromAssetTests
+    public class NicifyClassNameTests
     {
         [TestCaseSource(nameof(GetTestCases))]
         [TestCaseSource(nameof(GetTestCases2))]

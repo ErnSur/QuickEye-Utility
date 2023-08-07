@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace OneAsset
 {
@@ -91,19 +90,29 @@ namespace OneAsset
 
         private static bool TryInstantiatePrefab(out T obj)
         {
-            var attr = typeof(T).GetCustomAttribute<LoadFromAssetAttribute>();
-            if (attr != null)
+            var loadFromAssetAttributes = LoadFromAssetUtils.GetAttributesInOrder(typeof(T));
+            if (loadFromAssetAttributes.Length == 0)
+            {
+                obj = null;
+                return false;
+            }
+
+            foreach (var attr in loadFromAssetAttributes)
             {
                 var resourcesPath = attr.GetResourcesPath(typeof(T));
                 var prefab = Resources.Load<T>(resourcesPath);
                 if (prefab == null)
-                    throw new AssetIsMissingException(typeof(T), resourcesPath);
+                    continue;
                 obj = Instantiate(prefab);
                 obj.name = typeof(T).Name;
                 return true;
             }
 
-            return obj = null;
+            var highestPriorityAttr = loadFromAssetAttributes[0];
+            if (highestPriorityAttr.Mandatory)
+                throw new AssetIsMissingException(typeof(T), highestPriorityAttr.GetResourcesPath(typeof(T)));
+            obj = null;
+            return false;
         }
     }
 }

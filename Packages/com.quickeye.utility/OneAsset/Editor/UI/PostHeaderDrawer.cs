@@ -1,6 +1,6 @@
 namespace OneAsset.Editor.UI
 {
-    public abstract class PostHeaderDrawer
+    internal abstract class PostHeaderDrawer
     {
         public UnityEditor.Editor Editor { get; private set; }
 
