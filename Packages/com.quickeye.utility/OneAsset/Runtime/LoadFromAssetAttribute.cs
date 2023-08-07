@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using UnityEditor;
 
 namespace OneAsset
 {
@@ -15,10 +14,10 @@ namespace OneAsset
         private string ResourcesPath { get; }
 
         /// <summary>
-        /// Relevant only for <see cref="ScriptableObjectFactory"/>:
-        /// If set to `true` singleton will throw an exception in case where there was no asset under `ResourcesPath`.
-        /// If set to `false` singleton will dynamically create a new runtime instance if there is no asset present.
-        /// By default `true`.
+        /// <para>Relevant only for <see cref="ScriptableObjectFactory"/></para>
+        /// <para>If set to true an exception will be thrown when trying to load missing asset.</para>
+        /// <para>If set to false a new <see cref="UnityEngine.ScriptableObject"/> instance will be created if there is no asset present.</para>
+        /// <para>By default: true</para>
         /// </summary>
         public bool Mandatory { get; set; } = true;
         
