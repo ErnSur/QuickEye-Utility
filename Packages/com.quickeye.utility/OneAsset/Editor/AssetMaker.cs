@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace OneAsset.Editor
 {
-    internal static class ScriptableSingletonAssetFactory
+    internal static class AssetMaker
     {
         [InitializeOnLoadMethod]
         private static void RegisterCallback()
