@@ -5,6 +5,11 @@ using Object = UnityEngine.Object;
 
 namespace OneAsset
 {
+    /// <summary>
+    /// <para>Load or create ScriptableObjects while respecting the rules of following attributes:</para>
+    /// <para><see cref="LoadFromAssetAttribute"/></para>
+    /// <para><see cref="CreateAssetAutomaticallyAttribute"/></para>
+    /// </summary>
     public static class ScriptableObjectFactory
     {
         internal static TryCreateAsset CreateAssetAction;
@@ -24,7 +29,7 @@ namespace OneAsset
         {
             return LoadOrCreateInstance(typeof(T)) as T;
         }
-        
+
         /// <summary>
         /// <para>Load or create an instance of given type while respecting the rules of following attributes:</para>
         /// <para>If given type has a <see cref="LoadFromAssetAttribute"/></para>
@@ -37,24 +42,33 @@ namespace OneAsset
         /// <exception cref="EditorAssetFactoryException">Thrown only in editor, when given type has a <see cref="CreateAssetAutomaticallyAttribute"/> and there was an issue with <see cref="UnityEditor.AssetDatabase"/> action</exception>
         public static ScriptableObject LoadOrCreateInstance(Type scriptableObjectType)
         {
-            // Try to load asset from `SingletonAssetAttribute` path
-            if (TryLoadFromResources(scriptableObjectType, out var asset))
+            var loadFromAssetAttributes = LoadFromAssetUtils.GetAttributesInOrder(scriptableObjectType);
+            if(loadFromAssetAttributes.Length == 0)
+                return CreateInstance(scriptableObjectType);
+            // Try to load asset from `LoadFromAssetAttribute` path
+            if (TryLoadFromResources(scriptableObjectType, loadFromAssetAttributes, out var asset))
                 return asset;
             // Try to create asset at `CreateAssetAutomaticallyAttribute` path
-            if (TryCreateAsset(scriptableObjectType) && TryLoadFromResources(scriptableObjectType, out asset))
+            if (TryCreateAsset(scriptableObjectType) &&
+                TryLoadFromResources(scriptableObjectType, loadFromAssetAttributes, out asset))
                 return asset;
-            // Throw Exception if class has `SingletonAssetAttribute` and asset instance is mandatory 
-            var att = LoadFromAssetUtils.GetAttribute(scriptableObjectType);
-            if (att?.Mandatory == true)
-                throw new AssetIsMissingException(scriptableObjectType, att.GetResourcesPath(scriptableObjectType));
+            // Throw Exception if class has `LoadFromAssetAttribute` and asset instance is mandatory 
+            var highestPriorityAttribute = loadFromAssetAttributes[0];
+            if (highestPriorityAttribute.Mandatory)
+                throw new AssetIsMissingException(scriptableObjectType, highestPriorityAttribute.GetResourcesPath(scriptableObjectType));
             // Create and return a new instance
+            return CreateInstance(scriptableObjectType);
+        }
+
+        private static ScriptableObject CreateInstance(Type scriptableObjectType)
+        {
             var obj = ScriptableObject.CreateInstance(scriptableObjectType);
             obj.name = scriptableObjectType.Name;
             return obj;
         }
-
+        
         /// <summary>
-        /// If in Editor, try to create an asset at path specified in `CreateAssetAutomaticallyAttribute`
+        /// If in Editor, try to create an asset at path specified in <see cref="CreateAssetAutomaticallyAttribute"/>
         /// </summary>
         private static bool TryCreateAsset(Type type)
         {
@@ -76,16 +90,19 @@ namespace OneAsset
             }
         }
 
-        private static bool TryLoadFromResources(Type type, out ScriptableObject obj)
+        private static bool TryLoadFromResources(Type type, LoadFromAssetAttribute[] attributes,
+            out ScriptableObject obj)
         {
-            var attr = LoadFromAssetUtils.GetAttribute(type);
-            if (attr == null)
-                return obj = null;
-            var path = attr.GetResourcesPath(type);
+            foreach (var attribute in attributes)
+            {
+                var path = attribute.GetResourcesPath(type);
+                obj = Resources.Load(path, type) as ScriptableObject;
+                if (obj != null)
+                    return true;
+            }
 
-            obj = Resources.Load(path, type) as ScriptableObject;
-            return obj != null;
+            obj = null;
+            return false;
         }
-
     }
 }

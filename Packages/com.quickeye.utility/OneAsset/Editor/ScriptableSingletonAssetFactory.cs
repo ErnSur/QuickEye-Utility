@@ -29,13 +29,13 @@ namespace OneAsset.Editor
             var createAssetAtt = type.GetCustomAttribute<CreateAssetAutomaticallyAttribute>();
             if (createAssetAtt == null)
                 throw new Exception($"{type.FullName} is missing {nameof(CreateAssetAutomaticallyAttribute)}.");
-            var singletonAssetAtt = type.GetCustomAttribute<LoadFromAssetAttribute>();
-            if (singletonAssetAtt == null)
+            var loadFromAssetAttribute = LoadFromAssetUtils.GetFirstAttribute(type);
+            if (loadFromAssetAttribute == null)
                 throw new Exception($"{type.FullName} is missing {nameof(LoadFromAssetAttribute)}.");
 
             var pathStart = PathUtility.EnsurePathStartsWith("Assets", createAssetAtt.ResourcesFolderPath);
             pathStart = PathUtility.EnsurePathEndsWith("Resources", pathStart);
-            var pathEnd = singletonAssetAtt.GetResourcesPath(type) + ".asset";
+            var pathEnd = loadFromAssetAttribute.GetResourcesPath(type) + ".asset";
             return $"{pathStart}/{pathEnd}";
         }
     }

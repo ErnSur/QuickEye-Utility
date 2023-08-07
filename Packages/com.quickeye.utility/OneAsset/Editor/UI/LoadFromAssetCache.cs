@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using UnityEditor;
 using Object = UnityEngine.Object;
 
@@ -113,18 +111,6 @@ namespace OneAsset.Editor.UI
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// both arguments need to use forward slashes
-        /// </summary>
-        public static bool IsInResourcesPath(string assetPath, string resourcesRelativePath)
-        {
-            if (string.IsNullOrEmpty(assetPath))
-                return false;
-            var extension = Path.GetExtension(assetPath);
-            return assetPath.EndsWith("Resources/" + resourcesRelativePath + extension,
-                StringComparison.InvariantCulture);
         }
     }
 }

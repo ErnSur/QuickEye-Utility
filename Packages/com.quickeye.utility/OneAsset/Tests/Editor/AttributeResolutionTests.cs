@@ -5,7 +5,8 @@ using OneAsset.Editor.Tests.SampleAssets;
 
 namespace OneAsset.Editor.Tests
 {
-    public class LoadFromAssetUtilsTests
+    [TestOf(typeof(LoadFromAssetUtils))]
+    public class AttributeResolutionTests
     {
         [Test]
         public void Should_GetAttributeWithLowestOrder_When_LoadFromAssetUtils()
@@ -14,7 +15,7 @@ namespace OneAsset.Editor.Tests
             var attributes = type.GetCustomAttributes<LoadFromAssetAttribute>().ToArray();
             var expected = attributes.Select(a => a.Order).Min();
 
-            var attr = LoadFromAssetUtils.GetAttribute(typeof(SoWithMultipleLoadPaths1));
+            var attr = LoadFromAssetUtils.GetFirstAttribute(typeof(SoWithMultipleLoadPaths1));
 
             Assert.AreEqual(expected, attr.Order);
         }

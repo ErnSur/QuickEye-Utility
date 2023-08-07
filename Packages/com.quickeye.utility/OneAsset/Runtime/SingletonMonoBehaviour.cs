@@ -91,7 +91,7 @@ namespace OneAsset
 
         private static bool TryInstantiatePrefab(out T obj)
         {
-            var attr = LoadFromAssetUtils.GetAttribute(typeof(T));
+            var attr = LoadFromAssetUtils.GetFirstAttribute(typeof(T));
             if (attr == null)
                 return obj = null;
             

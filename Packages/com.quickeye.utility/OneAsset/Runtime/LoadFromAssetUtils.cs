@@ -11,9 +11,14 @@ namespace OneAsset
             return type.GetCustomAttributes<LoadFromAssetAttribute>().Any();
         }
         
-        public static LoadFromAssetAttribute GetAttribute(Type type)
+        public static LoadFromAssetAttribute GetFirstAttribute(Type type)
         {
             return type.GetCustomAttributes<LoadFromAssetAttribute>().OrderBy(a => a.Order).FirstOrDefault();
+        }
+        
+        public static LoadFromAssetAttribute[] GetAttributesInOrder(Type type)
+        {
+            return type.GetCustomAttributes<LoadFromAssetAttribute>().OrderBy(a => a.Order).ToArray();
         }
     }
 }

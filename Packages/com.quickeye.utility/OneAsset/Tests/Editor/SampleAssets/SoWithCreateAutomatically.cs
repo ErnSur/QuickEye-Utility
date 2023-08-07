@@ -2,13 +2,15 @@ using UnityEngine;
 
 namespace OneAsset.Editor.Tests.SampleAssets
 {
-    [CreateAssetAutomatically(PathToResourcesDirectory)]
+    [CreateAssetAutomatically(SampleAssetsTempDirectory.TemporaryTestOnlyDirectory)]
     [LoadFromAsset(PathToAssetInResourcesDirectory)]
     internal class SoWithCreateAutomatically : ScriptableObject
     {
-        public const string RootTestAssetsDirectory = "Assets/com.quickeye.one-asset.tests/";
-        public const string PathToResourcesDirectory = RootTestAssetsDirectory + "Resources/";
-        public const string PathToAssetInResourcesDirectory = "com.quickeye.utility.tests/TestAsset";
-        public const string AbsoluteAssetPath = PathToResourcesDirectory + PathToAssetInResourcesDirectory + ".asset";
+        private const string PathToAssetInResourcesDirectory = "one-asset-tests/"+ nameof(SoWithCreateAutomatically);
+        public const string AbsoluteAssetPath = 
+            SampleAssetsTempDirectory.TemporaryTestOnlyDirectory 
+            + "Resources/" 
+            + PathToAssetInResourcesDirectory 
+            + ".asset";
     }
 }

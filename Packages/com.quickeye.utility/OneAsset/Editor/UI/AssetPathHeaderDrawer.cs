@@ -5,7 +5,6 @@ namespace OneAsset.Editor.UI
 {
     using static LoadableAssetGUI;
 
-    // TODO: If it matches secondary paths, show linked icon
     internal class AssetPathHeaderDrawer : PostHeaderDrawer
     {
         [InitializeOnLoadMethod]
@@ -24,7 +23,7 @@ namespace OneAsset.Editor.UI
             return editor.targets.Length == 1 &&
                    EditorUtility.IsPersistent(editor.target) &&
                    LoadFromAssetCache.TryGetEntry(editor.serializedObject.targetObject, out metadata) &&
-                   metadata.LoadFromAssetAttribute != null;
+                   metadata.LoadFromAssetAttributes.Length > 0;
         }
 
         private readonly AssetMetadata _metadata;
@@ -37,12 +36,14 @@ namespace OneAsset.Editor.UI
 
         public override void OnGUI()
         {
-            var resPath = _metadata.ResourcesPath;
-            var hasCorrectPath = _metadata.IsInLoadablePath;
+            var hasCorrectPath = _metadata.IsInLoadablePath(out var resPath);
+            if (!hasCorrectPath)
+                resPath = _metadata.FirstResourcesPath;
+
             using (new GUILayout.HorizontalScope())
             {
                 var path = $"Resources/{resPath}";
-                var labelContent = new GUIContent(GetGuiContent(hasCorrectPath, resPath));
+                var labelContent = new GUIContent(GetGuiContent(hasCorrectPath, resPath, _metadata.TypeName));
                 var labelStyle = new GUIStyle(EditorStyles.label);
                 labelStyle.margin.left += 2;
                 labelStyle.margin.right += 2;
