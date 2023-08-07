@@ -1,19 +1,19 @@
 ﻿using System;
 using UnityEngine;
 
-namespace QuickEye.Utility.Samples.SingletonAssets
+namespace QuickEye.Samples.SingletonAssets
 {
     public class DemoController : MonoBehaviour
     {
         private void Awake()
         {
-            // PopupView class is a MonoBehaviour Singleton
+            // PopupView class is a GameObject Singleton
             PopupView.Instance.SetMessage($"Hello {Environment.UserName}!");
             
-            // Example usage of different types of ScriptableObjectSingletons:
-            var s1 = SingletonWithoutAnAsset.Instance;
-            var s2 = SingletonWithOptionalAsset.Instance;
-            var s3 = SingletonWithMandatoryAsset.Instance;
+            // Example usage of different types of singletons:
+            var s1 = TypeWithoutAnAsset.Instance;
+            var s2 = TypeWithOptionalAsset.Instance;
+            var s3 = TypeWithMandatoryAsset.Instance;
             var s4 = ProjectSettingsAsset.Instance;
         }
     }

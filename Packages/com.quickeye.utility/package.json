@@ -30,5 +30,5 @@
       "path": "Samples~/SerializableTypes"
     }
   ],
-  "description": "New Serializable Types:\n- `UnityDictionary`\n- `UnityTimeSpan`\n- `UnityDateOnly`\n- `UnityDateTime`\n\nOneAsset:\n- `ScriptableObjectFactory`\n- `SingletonMonoBehaviour<T>`\n- `SingletonScriptableObject<T>`\n\nOther:\n- `GameObjectPool`\n- `RepeatingInt`"
+  "description": "New Serializable Types:\n- `UnityDictionary`\n- `UnityTimeSpan`\n- `UnityDateOnly`\n- `UnityDateTime`\n\nOneAsset:\n- `ScriptableObjectFactory`\n- `OneGameObject<T>`\n- `OneScriptableObject<T>`\n\nOther:\n- `GameObjectPool`\n- `RepeatingInt`"
 }

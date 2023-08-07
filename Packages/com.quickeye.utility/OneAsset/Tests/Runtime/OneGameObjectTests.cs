@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace OneAsset.Tests
 {
-    [TestOf(typeof(SingletonMonoBehaviour<>))]
-    public class SingletonMonoBehaviourTests
+    [TestOf(typeof(OneGameObject<>))]
+    public class OneGameObjectTests
     {
         private GameObjectWithoutPrefab _instance;
 

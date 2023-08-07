@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace OneAsset.Editor.Tests
 {
-    [TestOf(typeof(SingletonScriptableObject<>))]
-    public class SingletonScriptableObjectTests
+    [TestOf(typeof(OneScriptableObject<>))]
+    public class OneScriptableObjectTests
     {
         private SsoWithNoAsset _instance;
 

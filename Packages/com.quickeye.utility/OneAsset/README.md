@@ -8,14 +8,14 @@ A set of classes and editor UI improvements aimed to improve workflows that requ
   - `LoadFromAssetAttribute` - Load asset from path
   - `CreateAssetAutomaticallyAttribute` - Create an asset if it doesn't exist
 - Abstract class that can be inherited to get a singleton behaviour
-  - `SingletonMonoBehaviour<T>`
-  - `SingletonScriptableObject<T>`
+  - `OneGameObject<T>`
+  - `OneScriptableObject<T>`
 - Customize a singleton implementation with options like:
   - Load instance from a prefab or `ScriptableObject` asset
   - Create an asset automatically if it doesn't exist already
 - Extended editor UI for singleton assets:
   - Custom icons and tooltips in the project browser 
-  - Singleton Asset path field in the inspector header
+  - Asset load path field in the inspector header
 <img  src="./Documentation~/SingletonUI.png" align="center" width="70%">
 
 ## UnityEngine.Object and a Singleton pattern (Disclaimer)
@@ -34,12 +34,12 @@ var singletonInstance = MySingleton.Instance;
 UnityEngine.Object.Destroy(singletonInstance);
 
 // Create a instance of a singleton class outise it
-var i = ScriptableObject.CreateInstance<SingletonSo>();
+var i = ScriptableObject.CreateInstance<MySingleton>();
 ```
 > For more details on exact behavior of singleton loading look at the XML documentation and tests.
-> **See**: _SingletonScriptableObjectTests.cs_ and _ScriptableObjectFactory.cs_ 
+> **See**: _OneScriptableObjectTests.cs_ and _ScriptableObjectFactory.cs_ 
 
-## `SingletonMonoBehaviour<T>`
+## `OneGameObject<T>`
 
 `MonoBehaviour` Singleton implementation.
 Takes into account some common problems of many singleton implementations that are out there.
@@ -50,7 +50,7 @@ Options:
 Example:
 ```c#
 [LoadFromAsset("Popup View")]
-public class PopupView : SingletonMonoBehaviour<PopupView> { }
+public class PopupView : OneGameObject<PopupView> { }
 void UseExample()
 {
     // Calling `PopupView.Instance` will load a prefab from */Resources/Popup View.prefab
@@ -59,12 +59,12 @@ void UseExample()
 ```
 
 
-## `SingletonScriptableObject<T>`
+## `OneScriptableObject<T>`
 
 `ScriptableObject` Singleton implementation.
 
 Options:
-- Automatically create scriptable object asset (if it doesn't exists already) when used with `LoadFromAssetAttribute` and `CreateAssetAutomatically`
+- Automatically create scriptable object asset (if it doesn't exists already) when used with `LoadFromAssetAttribute` and `CreateAssetAutomaticallyAttribute`
 - Create a [SettingsProvider](https://docs.unity3d.com/ScriptReference/SettingsProvider.html) just by adding `SettingsProviderAttribute` and `LoadFromAssetAttribute`
 
 
@@ -81,7 +81,7 @@ Example:
     // The `SettingsProviderAsset` will create a new UI settings tab with name "Super SDK" in the Project Settings window
     // where users can edit this asset
     [SettingsProviderAsset("Project/Super SDK")]
-    public class SuperSdkSettings : SingletonScriptableObject<SuperSdkSettings>
+    public class SuperSdkSettings : OneScriptableObject<SuperSdkSettings>
     {
         public string AppKey;
     }
@@ -93,5 +93,5 @@ Import the "Usage of singleton classes" from [Package Manager Window](https://do
 ## Embedding this code in a package
 To avoid collisions with other packages with this code:
 - Make sure you delete the .meta files- use different guids for the scripts.
-- Encapsulate it with a assembly definition files or change the namespaces
-- Update absolute paths to icons in _OneAsset/Editor/UI/SingletonGUI.cs_
+- Change the name of assembly definition files and change the namespaces
+- Update absolute paths to icons in _OneAsset/Editor/UI/LoadableAssetGUI.cs_

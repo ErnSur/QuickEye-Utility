@@ -1,16 +1,16 @@
 ﻿using OneAsset;
 using UnityEngine;
 
-namespace QuickEye.Utility.Samples.SingletonAssets
+namespace QuickEye.Samples.SingletonAssets
 {
     /// <summary>
-    /// Creates a new Project Settings Window page using <see cref="SingletonScriptableObject"/>
+    /// Creates a new Project Settings Window page using <see cref="OneScriptableObject"/>
     /// with <see cref="LoadFromAssetAttribute"/> and <see cref="SettingsProviderAssetAttribute"/>
     /// </summary>
     [LoadFromAsset(ResourcesPath, Mandatory = true)]
     [CreateAssetAutomatically(AutoCreatePath)]
     [SettingsProviderAsset("Project/" + SettingsPageName)]
-    public class ProjectSettingsAsset : SingletonScriptableObject<ProjectSettingsAsset>
+    public class ProjectSettingsAsset : OneScriptableObject<ProjectSettingsAsset>
     {
         private const string ResourcesPath = nameof(ProjectSettingsAsset);
         private const string AutoCreatePath = "Assets/Samples/Settings/Resources/" + ResourcesPath;

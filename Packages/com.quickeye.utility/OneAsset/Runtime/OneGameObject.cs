@@ -2,20 +2,13 @@
 
 namespace OneAsset
 {
-    // Execute Order allows us to execute Awake before all non-singletons
-    // This allows other scripts to access initialized singletons in their awake methods.
-    [DefaultExecutionOrder(-10000)]
-    public abstract class SingletonMonoBehaviour : MonoBehaviour
-    {
-        protected static bool IsAppQuitting;
-
-        protected virtual void OnApplicationQuit()
-        {
-            IsAppQuitting = true;
-        }
-    }
-
-    public class SingletonMonoBehaviour<T> : SingletonMonoBehaviour where T : SingletonMonoBehaviour<T>
+    /// <summary>
+    /// Adds singleton behaviour to descendant classes.
+    /// Loads or creates instance of T when Instance property is used.
+    /// <para>Add <see cref="LoadFromAssetAttribute"/> to load instance from prefab asset.</para>
+    /// </summary>
+    /// <typeparam name="T">Type of the singleton instance</typeparam>
+    public class OneGameObject<T> : OneGameObject where T : OneGameObject<T>
     {
         private static T _instance;
 
@@ -60,8 +53,8 @@ namespace OneAsset
         private void ForceDontDestroyOnLoad()
         {
             // `Object.DontDestroyOnLoad` only works for root GameObjects
-            // That's why we want to leave parents that aren't singletons.
-            var singletonParents = GetComponentsInParent<SingletonMonoBehaviour>();
+            // That's why we want to leave parents that aren't OneGameObjects.
+            var singletonParents = GetComponentsInParent<OneGameObject>();
             if (singletonParents.Length <= 1)
                 transform.SetParent(null);
             DontDestroyOnLoad(gameObject);
@@ -113,6 +106,23 @@ namespace OneAsset
                 throw new AssetIsMissingException(typeof(T), highestPriorityAttr.GetResourcesPath(typeof(T)));
             obj = null;
             return false;
+        }
+    }
+    
+    /// <summary>
+    /// Non generic base class of <see cref="OneGameObject{T}"/>,
+    /// useful for non generic polymorphism.
+    /// </summary>
+    // Execute Order allows us to execute Awake before all non-singletons
+    // This allows other scripts to access initialized singletons in their awake methods.
+    [DefaultExecutionOrder(-10000)]
+    public abstract class OneGameObject : MonoBehaviour
+    {
+        protected static bool IsAppQuitting;
+
+        protected virtual void OnApplicationQuit()
+        {
+            IsAppQuitting = true;
         }
     }
 }

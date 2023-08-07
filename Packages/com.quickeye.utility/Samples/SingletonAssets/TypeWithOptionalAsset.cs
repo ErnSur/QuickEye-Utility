@@ -1,20 +1,20 @@
 using OneAsset;
 using UnityEngine;
 
-namespace QuickEye.Utility.Samples.SingletonAssets
+namespace QuickEye.Samples.SingletonAssets
 {
     /// <summary>
     /// Load Asset from Resources folder Example
     /// Singleton with path from which it should be loaded from.
     /// </summary>
     [LoadFromAsset(ResourcesPath, Mandatory = false)]
-    public class SingletonWithOptionalAsset : SingletonScriptableObject<SingletonWithOptionalAsset>
+    public class TypeWithOptionalAsset : OneScriptableObject<TypeWithOptionalAsset>
     {
-        private const string ResourcesPath = "SingletonAsset2";
+        private const string ResourcesPath = "no path (example of optional asset)";
 
         [TextArea]
         public string Description =
-            $"Call to `{nameof(SingletonWithOptionalAsset)}.Instance` will try to load an asset from Resources folder at path specified in `{nameof(LoadFromAssetAttribute)}.`" +
+            $"Call to `{nameof(TypeWithOptionalAsset)}.Instance` will try to load an asset from Resources folder at path specified in `{nameof(LoadFromAssetAttribute)}.`" +
             $"If there is no asset at that path and `{nameof(LoadFromAssetAttribute)}.{nameof(LoadFromAssetAttribute.Mandatory)}` is set to `true` it will throw an exception, otherwise it will create a new non-asset instance.";
     }
 }

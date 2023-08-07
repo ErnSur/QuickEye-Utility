@@ -5,7 +5,7 @@ namespace OneAsset
 {
     public class SingletonAlreadyExistsException : Exception
     {
-        internal SingletonAlreadyExistsException(SingletonMonoBehaviour obj) : base(
+        internal SingletonAlreadyExistsException(OneGameObject obj) : base(
             $"Singleton of type {obj.GetType()} already exists. Destroying \"{GetGameObjectPath(obj.gameObject)}\"")
         {
         }

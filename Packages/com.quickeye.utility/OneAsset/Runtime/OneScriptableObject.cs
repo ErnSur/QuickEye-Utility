@@ -8,8 +8,8 @@ namespace OneAsset
     /// Can be combined with <see cref="LoadFromAssetAttribute"/>, <see cref="CreateAssetAutomaticallyAttribute"/> and <see cref="SettingsProviderAssetAttribute"/>
     /// </summary>
     /// <typeparam name="T">Type of the singleton instance</typeparam>
-    public abstract class SingletonScriptableObject<T> : SingletonScriptableObject
-        where T : SingletonScriptableObject<T>
+    public abstract class OneScriptableObject<T> : OneScriptableObject
+        where T : OneScriptableObject<T>
     {
         private static T _instance;
         
@@ -29,10 +29,10 @@ namespace OneAsset
     
 
     /// <summary>
-    /// Non generic base class of <see cref="SingletonScriptableObject{T}"/>,
+    /// Non generic base class of <see cref="OneScriptableObject{T}"/>,
     /// useful for non generic polymorphism.
     /// </summary>
-    public abstract class SingletonScriptableObject : ScriptableObject
+    public abstract class OneScriptableObject : ScriptableObject
     {
     }
 }

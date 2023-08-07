@@ -75,7 +75,7 @@ namespace OneAsset.Editor.UI
             var path = AssetDatabase.GUIDToAssetPath(guid);
 
             var isLoadableAsset = TryLoadLoadableScriptableObject(path, out var asset) 
-                                  || TryGetSingletonPrefab(path, out asset);
+                                  || TryGetOneGameObjectPrefab(path, out asset);
 
             var assetMetadata = isLoadableAsset ? new AssetMetadata(asset) : null;
             // Should set null value if guid does not point to a loadable asset
@@ -88,10 +88,10 @@ namespace OneAsset.Editor.UI
             return asset != null && HasLoadFromAssetAttribute(asset);
         }
 
-        private static bool TryGetSingletonPrefab(string path, out Object singletonComponent)
+        private static bool TryGetOneGameObjectPrefab(string path, out Object component)
         {
-            singletonComponent = AssetDatabase.LoadAssetAtPath<SingletonMonoBehaviour>(path);
-            return singletonComponent != null && HasLoadFromAssetAttribute(singletonComponent);
+            component = AssetDatabase.LoadAssetAtPath<OneGameObject>(path);
+            return component != null && HasLoadFromAssetAttribute(component);
         }
 
         private static bool HasLoadFromAssetAttribute(Object asset)
@@ -106,7 +106,7 @@ namespace OneAsset.Editor.UI
             if (obj is AssetImporter)
             {
                 var path = AssetDatabase.GetAssetPath(obj);
-                obj = AssetDatabase.LoadAssetAtPath<SingletonMonoBehaviour>(path);
+                obj = AssetDatabase.LoadAssetAtPath<OneGameObject>(path);
                 return obj;
             }
 

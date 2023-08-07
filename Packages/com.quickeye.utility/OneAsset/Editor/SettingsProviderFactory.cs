@@ -15,7 +15,7 @@ namespace OneAsset.Editor
                 from type in assembly.GetTypes()
                 where Attribute.IsDefined(type, typeof(SettingsProviderAssetAttribute))
                 where Attribute.IsDefined(type, typeof(LoadFromAssetAttribute))
-                where typeof(SingletonScriptableObject).IsAssignableFrom(type)
+                where typeof(OneScriptableObject).IsAssignableFrom(type)
                 let settingsAssetAttribute = type.GetCustomAttribute<SettingsProviderAssetAttribute>()
                 select CreateSettingsProvider(settingsAssetAttribute.SettingsWindowPath, type);
 

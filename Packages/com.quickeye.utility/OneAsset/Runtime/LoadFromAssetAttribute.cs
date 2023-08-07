@@ -4,7 +4,7 @@ using System.Text;
 namespace OneAsset
 {
     /// <summary>
-    /// Applies loading rules to <see cref="ScriptableObjectFactory"/> and <see cref="SingletonMonoBehaviour{T}"/>.
+    /// Applies loading rules to <see cref="ScriptableObjectFactory"/> and <see cref="OneGameObject{T}"/>.
     /// Can be used on <see cref="UnityEngine.ScriptableObject"/> and <see cref="UnityEngine.MonoBehaviour"/>
     /// Use multiple <see cref="LoadFromAssetAttribute"/> to look for the asset in multiple different paths.
     /// </summary>
@@ -31,8 +31,8 @@ namespace OneAsset
         public int Priority { get; set; } = 1;
 
         /// <summary>
-        /// Defines a path at which asset can be found for <see cref="ScriptableObjectFactory"/> and <see cref="SingletonMonoBehaviour{T}"/>.
-        /// Valid on types derived from <see cref="UnityEngine.ScriptableObject"/> or <see cref="SingletonMonoBehaviour{T}"/>
+        /// Defines a path at which asset can be found for <see cref="ScriptableObjectFactory"/> and <see cref="OneGameObject{T}"/>.
+        /// Valid on types derived from <see cref="UnityEngine.ScriptableObject"/> or <see cref="OneGameObject{T}"/>
         /// </summary>
         /// <param name="resourcesPath">
         /// Path at which asset should be found. Relative to the Resources folder.

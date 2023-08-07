@@ -1,6 +1,6 @@
 namespace OneAsset.Tests.SampleAssets
 {
-    internal class GameObjectWithoutPrefab : SingletonMonoBehaviour<GameObjectWithoutPrefab>
+    internal class GameObjectWithoutPrefab : OneGameObject<GameObjectWithoutPrefab>
     {
     }
 }
