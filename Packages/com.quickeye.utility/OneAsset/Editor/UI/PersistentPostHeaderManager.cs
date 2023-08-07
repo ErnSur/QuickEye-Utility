@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEngine;
 
 namespace OneAsset.Editor.UI
 {
@@ -12,6 +13,8 @@ namespace OneAsset.Editor.UI
 
         private static readonly Dictionary<UnityEditor.Editor, List<PostHeaderDrawer>> DrawersWithTarget = new
             Dictionary<UnityEditor.Editor, List<PostHeaderDrawer>>();
+
+        private static bool _enableGui = true;
 
         static PersistentPostHeaderManager()
         {
@@ -31,18 +34,29 @@ namespace OneAsset.Editor.UI
 
         private static void OnPostHeaderGUI(UnityEditor.Editor editor)
         {
-            if (!DrawersWithTarget.ContainsKey(editor))
+            if (!_enableGui)
+                return;
+            try
             {
-                DrawersWithTarget.Add(editor, new List<PostHeaderDrawer>());
-                EditorCreated?.Invoke(editor);
-            }
+                if (!DrawersWithTarget.ContainsKey(editor))
+                {
+                    DrawersWithTarget.Add(editor, new List<PostHeaderDrawer>());
+                    EditorCreated?.Invoke(editor);
+                }
 
-            foreach (var drawer in DrawersWithTarget[editor])
+                foreach (var drawer in DrawersWithTarget[editor])
+                {
+                    drawer.OnGUI();
+                }
+
+                TryClearCache();
+            }
+            catch (Exception e)
             {
-                drawer.OnGUI();
+                _enableGui = false;
+                Debug.LogError($"PostHeaderGUI extension disabled. Exception: {e}");
+                throw;
             }
-
-            TryClearCache();
         }
 
         private static void TryClearCache()

@@ -1,10 +1,11 @@
+using System;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
 
 namespace OneAsset.Editor.UI
 {
-    using static SingletonGUI;
+    using static LoadableAssetGUI;
 
     [InitializeOnLoad]
     internal static class ProjectWindowItemDrawer
@@ -18,6 +19,8 @@ namespace OneAsset.Editor.UI
             padding = new RectOffset()
         };
 
+        private static bool _enableGui = true;
+
         static ProjectWindowItemDrawer()
         {
             EditorApplication.projectWindowItemOnGUI += ProjectWindowItemOnGUI;
@@ -25,13 +28,24 @@ namespace OneAsset.Editor.UI
 
         private static void ProjectWindowItemOnGUI(string guid, Rect rect)
         {
-            if (!LoadFromAssetCache.TryGetEntry(guid, out var metadata) ||
-                metadata.LoadFromAssetAttribute == null)
+            if (!_enableGui)
                 return;
-            if (rect.height > EditorGUIUtility.singleLineHeight)
-                DrawProjectGridItem(rect, metadata);
-            else
-                DrawProjectItem(rect, AssetDatabase.GUIDToAssetPath(guid), metadata);
+            try
+            {
+                if (!LoadFromAssetCache.TryGetEntry(guid, out var metadata) ||
+                    metadata.LoadFromAssetAttribute == null)
+                    return;
+                if (rect.height > EditorGUIUtility.singleLineHeight)
+                    DrawProjectGridItem(rect, metadata);
+                else
+                    DrawProjectItem(rect, AssetDatabase.GUIDToAssetPath(guid), metadata);
+            }
+            catch (Exception e)
+            {
+                _enableGui = false;
+                Debug.LogError($"Project Browser extension disabled. Exception: {e}");
+                throw;
+            }
         }
 
 

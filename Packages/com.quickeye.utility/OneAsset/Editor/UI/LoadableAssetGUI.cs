@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace OneAsset.Editor.UI
 {
-    internal static class SingletonGUI
+    internal static class LoadableAssetGUI
     {
         private const string LinkedIcon =
             "Packages/com.quickeye.utility/OneAsset/Editor/UI/Icons/Linked.png";
@@ -17,8 +17,8 @@ namespace OneAsset.Editor.UI
                 ? EditorGUIUtility.IconContent(LinkedIcon)
                 : EditorGUIUtility.IconContent(UnlinkedIcon);
             iconContent.tooltip = isCorrectPath
-                ? "Singleton Asset is loaded from this path"
-                : $"Singleton Asset is not in correct path:\n\"Resources/{resourcesPath}\"";
+                ? "Asset can be loaded from this path"
+                : $"Asset not in a load path:\n\"Resources/{resourcesPath}\"";
             return iconContent;
         }
     }
