@@ -8,7 +8,7 @@ namespace OneAsset.Editor.Tests
     public class MultipleLoadPathsTests
     {
         [Test]
-        public void Should_LoadAssetInstanceWithLowestOrderPath_When_TypeHasMultipleAttributes()
+        public void Should_LoadAssetInstanceWithHighestPriorityPath_When_TypeHasMultipleAttributes()
         {
             var asset = Resources.Load<SoWithMultipleLoadPaths1>(SoWithMultipleLoadPaths1.FirstResourcesPath);
             Assert.NotNull(asset);

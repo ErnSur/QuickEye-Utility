@@ -8,6 +8,6 @@ namespace OneAsset.Editor.Tests.SampleAssets
     internal class SoWithMultipleLoadPaths2 : ScriptableObject
     {
         public const string FirstResourcesPath = "no-path";
-        public const string SecondaryResourcesPath = "com.quickeye.utility.tests/SoWithMultipleLoadPaths 2";
+        public const string SecondaryResourcesPath = "one-asset-tests/SoWithMultipleLoadPaths 2";
     }
 }

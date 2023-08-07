@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using OneAsset.Tests.SampleAssets;
 using UnityEngine;
 
 namespace OneAsset.Tests
@@ -6,12 +7,12 @@ namespace OneAsset.Tests
     [TestOf(typeof(SingletonMonoBehaviour<>))]
     public class SingletonMonoBehaviourTests
     {
-        private SampleSingletonWithoutPrefab _instance;
+        private GameObjectWithoutPrefab _instance;
 
         [SetUp]
         public void SetUp()
         {
-            _instance = SampleSingletonWithoutPrefab.Instance;
+            _instance = GameObjectWithoutPrefab.Instance;
         }
 
         [TearDown]
@@ -29,7 +30,7 @@ namespace OneAsset.Tests
         [Test]
         public void Should_ReturnSameInstance_When_OneInstanceExists()
         {
-            var actual = SampleSingletonWithoutPrefab.Instance;
+            var actual = GameObjectWithoutPrefab.Instance;
             Assert.AreEqual(_instance, actual);
         }
 
@@ -38,23 +39,22 @@ namespace OneAsset.Tests
         {
             Object.DestroyImmediate(_instance);
 
-            Assert.NotNull(SampleSingletonWithoutPrefab.Instance);
+            Assert.NotNull(GameObjectWithoutPrefab.Instance);
         }
         
         [Test]
         public void Should_CreateNewInstanceFromPrefab_When_HasLoadFromAssetAttribute()
         {
             // Arrange
-            var prefab = Resources.Load<SampleSingletonWithPrefab>(SampleSingletonWithPrefab.ResourcesPath);
+            var prefab = Resources.Load<GameObjectWithPrefab>(GameObjectWithPrefab.ResourcesPath);
             Assert.NotNull(prefab);
 
             // Act
-            var instance = SampleSingletonWithPrefab.Instance;
+            var instance = GameObjectWithPrefab.Instance;
             
             // Assert
             Assert.AreNotEqual(prefab, instance);
-            // Mesh filter reference was serialized in prefab
-            Assert.NotNull(instance.MeshFilter);
+            GameObjectAssert.IsPrefabInstance(instance.gameObject);
         }
     }
 }

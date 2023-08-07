@@ -14,9 +14,7 @@ namespace OneAsset
         private string ResourcesPath { get; }
 
         /// <summary>
-        /// <para>Relevant only for <see cref="ScriptableObjectFactory"/></para>
-        /// <para>If set to true an exception will be thrown when trying to load missing asset.</para>
-        /// <para>If set to false a new <see cref="UnityEngine.ScriptableObject"/> instance will be created if there is no asset present.</para>
+        /// <para>If set to true a <see cref="AssetIsMissingException"/> will be thrown when trying to load missing asset.</para>
         /// <para>By default: true</para>
         /// </summary>
         public bool Mandatory { get; set; } = true;
