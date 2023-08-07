@@ -21,24 +21,25 @@ namespace OneAsset
         /// By default `true`.
         /// </summary>
         public bool Mandatory { get; set; } = true;
-        public bool UseTypeNameAsFileName { get; set; }
         
         /// <summary>
-        /// Relevant for types with multiple <see cref="LoadFromAssetAttribute"/>.
-        /// Optional field to specify the order in which asset is searched for.
+        /// When enabled, the path file name will be based on type name  
         /// </summary>
-        public int Order { get; set; }
+        public bool UseTypeNameAsFileName { get; set; }
 
         /// <summary>
-        /// Path at which asset should be found. Relative to the Resources folder.
-        /// Doesn't have to contain file name if <see cref="UseTypeNameAsFileName"/> is set to true.
-        /// Enter prefab path in case of <see cref="SingletonMonoBehaviour{T}"/>
+        /// Relevant for types with multiple <see cref="LoadFromAssetAttribute"/>.
+        /// Optional field to specify the order in which asset is searched for. Paths with higher priority are searched first
+        /// </summary>
+        public int Priority { get; set; } = 1;
+
+        /// <summary>
+        /// Defines a path at which asset can be found for <see cref="ScriptableObjectFactory"/> and <see cref="SingletonMonoBehaviour{T}"/>.
+        /// Valid on types derived from <see cref="UnityEngine.ScriptableObject"/> or <see cref="SingletonMonoBehaviour{T}"/>
         /// </summary>
         /// <param name="resourcesPath">
-        /// Path at which singleton asset should be found. Relative to the Resources folder.
-        /// Doesn't have to contain file name if UseTypeNameAsFileName is set to true.
-        /// Enter prefab path in case of <see cref="SingletonMonoBehaviour{T}"/>,
-        /// Enter asset path in case of <see cref="UnityEngine.ScriptableObject"/>
+        /// Path at which asset should be found. Relative to the Resources folder.
+        /// Doesn't have to contain file name if <see cref="UseTypeNameAsFileName"/> is set to true.
         /// </param>
         public LoadFromAssetAttribute(string resourcesPath)
         {

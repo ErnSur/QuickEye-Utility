@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
@@ -8,16 +9,16 @@ namespace OneAsset.Editor.Tests
     [TestOf(typeof(LoadFromAssetUtils))]
     public class AttributeResolutionTests
     {
-        [Test]
-        public void Should_GetAttributeWithLowestOrder_When_LoadFromAssetUtils()
+        [TestCase(typeof(SoWithMultipleLoadPaths1))]
+        [TestCase(typeof(SoWithMultipleLoadPaths2))]
+        public void Should_GetAttributeWithHighestPriority_When_LoadFromAssetUtils(Type type)
         {
-            var type = typeof(SoWithMultipleLoadPaths1);
             var attributes = type.GetCustomAttributes<LoadFromAssetAttribute>().ToArray();
-            var expected = attributes.Select(a => a.Order).Min();
+            var expected = attributes.Select(a => a.Priority).Max();
 
-            var attr = LoadFromAssetUtils.GetFirstAttribute(typeof(SoWithMultipleLoadPaths1));
+            var attr = LoadFromAssetUtils.GetFirstAttribute(type);
 
-            Assert.AreEqual(expected, attr.Order);
+            Assert.AreEqual(expected, attr.Priority);
         }
     }
 }

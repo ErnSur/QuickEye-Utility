@@ -3,8 +3,8 @@ using UnityEngine;
 namespace OneAsset.Editor.Tests.SampleAssets
 {
     [CreateAssetAutomatically(SampleAssetsTempDirectory.TemporaryTestOnlyDirectory)]
-    [LoadFromAsset(PathToAssetInResourcesDirectory, Order = 1)]
-    [LoadFromAsset(SecondaryPathToAssetInResourcesDirectory, Order = 2)]
+    [LoadFromAsset(PathToAssetInResourcesDirectory, Priority = 2)]
+    [LoadFromAsset(SecondaryPathToAssetInResourcesDirectory, Priority = 1)]
     internal class SoWithCreateAutomatically2 : ScriptableObject
     {
         private const string PathToAssetInResourcesDirectory = "one-asset-tests/"+ nameof(SoWithCreateAutomatically2);
