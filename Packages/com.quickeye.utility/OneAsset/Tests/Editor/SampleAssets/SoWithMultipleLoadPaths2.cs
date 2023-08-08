@@ -2,7 +2,6 @@ using UnityEngine;
 
 namespace OneAsset.Editor.Tests.SampleAssets
 {
-    [CreateAssetMenu]
     [LoadFromAsset(FirstResourcesPath, Priority = 99)]
     [LoadFromAsset(SecondaryResourcesPath, Priority = -2)]
     internal class SoWithMultipleLoadPaths2 : ScriptableObject
