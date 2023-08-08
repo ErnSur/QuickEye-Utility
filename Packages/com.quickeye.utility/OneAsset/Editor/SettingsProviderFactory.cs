@@ -17,22 +17,32 @@ namespace OneAsset.Editor
                 where Attribute.IsDefined(type, typeof(LoadFromAssetAttribute))
                 where typeof(OneScriptableObject).IsAssignableFrom(type)
                 let settingsAssetAttribute = type.GetCustomAttribute<SettingsProviderAssetAttribute>()
-                select CreateSettingsProvider(settingsAssetAttribute.SettingsWindowPath, type);
+                let provider = CreateSettingsProvider(settingsAssetAttribute.SettingsWindowPath, type)
+                where provider != null
+                select provider;
 
             return providers.ToArray();
         }
 
         private static SettingsProvider CreateSettingsProvider(string settingsWindowPath, Type type)
         {
-            var prop = type.BaseType.GetProperty("Instance", 
-                 BindingFlags.Public | BindingFlags.Static);
-            var obj = prop?.GetValue(null) as ScriptableObject;
-            
-            var provider = AssetSettingsProvider.CreateProviderFromObject(
-                settingsWindowPath, obj,
-                SettingsProvider.GetSearchKeywordsFromSerializedObject(new SerializedObject(obj)));
+            try
+            {
+                var prop = type.BaseType.GetProperty("Instance",
+                    BindingFlags.Public | BindingFlags.Static);
+                var obj = prop?.GetValue(null) as ScriptableObject;
 
-            return provider;
+                var provider = AssetSettingsProvider.CreateProviderFromObject(
+                    settingsWindowPath, obj,
+                    SettingsProvider.GetSearchKeywordsFromSerializedObject(new SerializedObject(obj)));
+
+                return provider;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Failed to create a settings provider for: {type.Name}, {e}");
+                return null;
+            }
         }
     }
 }
