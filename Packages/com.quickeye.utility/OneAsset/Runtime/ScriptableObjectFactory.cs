@@ -1,5 +1,7 @@
 using System;
+using System.Linq;
 using System.Reflection;
+using UnityEditorInternal;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -43,7 +45,7 @@ namespace OneAsset
         public static ScriptableObject LoadOrCreateInstance(Type scriptableObjectType)
         {
             var loadFromAssetAttributes = LoadFromAssetUtils.GetAttributesInOrder(scriptableObjectType);
-            if(loadFromAssetAttributes.Length == 0)
+            if (loadFromAssetAttributes.Length == 0)
                 return CreateInstance(scriptableObjectType);
             // Try to load asset from `LoadFromAssetAttribute` path
             if (TryLoadFromResources(scriptableObjectType, loadFromAssetAttributes, out var asset))
@@ -52,12 +54,50 @@ namespace OneAsset
             if (TryCreateAsset(scriptableObjectType) &&
                 TryLoadFromResources(scriptableObjectType, loadFromAssetAttributes, out asset))
                 return asset;
-            // Throw Exception if class has `LoadFromAssetAttribute` and asset instance is mandatory 
+
+            // if we came to this point and asset file exists on disk then that mean we are running before AssetDatabase initialized
+            // if LoadFromAssetAttribute and CreateAssetAutomatically are preset
+            // and we came to this point, it means that AssetDatabase failed to create an asset
+            // OOORRR we are in buit game and game was build without the settings asset (what are the scenarios in which this is possible?)
             var highestPriorityAttribute = loadFromAssetAttributes[0];
+            if (TryLoadUnsafe(scriptableObjectType, highestPriorityAttribute, out asset))
+                return asset;
+
+            // Throw Exception if class has `LoadFromAssetAttribute` and asset instance is mandatory 
             if (highestPriorityAttribute.Mandatory)
-                throw new AssetIsMissingException(scriptableObjectType, highestPriorityAttribute.GetResourcesPath(scriptableObjectType));
+                throw new AssetIsMissingException(scriptableObjectType,
+                    highestPriorityAttribute.GetResourcesPath(scriptableObjectType));
             // Create and return a new instance
             return CreateInstance(scriptableObjectType);
+        }
+
+        // TODO: Design an unsafe loading feature so that:
+        // it doesn't require the `CreateAssetAutomatically` attribute
+        // maybe LoadAssetFrom takes a absolute path?
+        // because the absolute path is required for Unsafe load
+        private static bool TryLoadUnsafe(Type scriptableObjectType, LoadFromAssetAttribute highestPriorityAttribute,
+            out ScriptableObject instance)
+        {
+            if (!Application.isEditor
+                || !highestPriorityAttribute.UnsafeLoad
+                || !TryGetAbsoluteAssetPath(scriptableObjectType, out var absolutePath))
+            {
+                instance = null;
+                return false;
+            }
+            // If someone would depend on unsafe load it would be annoying
+            //Debug.LogWarning($"Loading {scriptableObjectType} outside AssetDatabase!");
+
+#if UNITY_EDITOR
+            // Ideally this code would be in editor assembly. But when this method is called from InitializeOnLoad
+            // there is no guarantee that editor callback will be registered like with `CreateAssetAction`
+            var i = InternalEditorUtility
+                .LoadSerializedFileAndForget(absolutePath)
+                .FirstOrDefault(o => o.GetType() == scriptableObjectType);
+
+            instance = i as ScriptableObject;
+            return true;
+#endif
         }
 
         private static ScriptableObject CreateInstance(Type scriptableObjectType)
@@ -66,7 +106,7 @@ namespace OneAsset
             obj.name = scriptableObjectType.Name;
             return obj;
         }
-        
+
         /// <summary>
         /// If in Editor, try to create an asset at path specified in <see cref="CreateAssetAutomaticallyAttribute"/>
         /// </summary>
@@ -103,6 +143,23 @@ namespace OneAsset
 
             obj = null;
             return false;
+        }
+
+        internal static bool TryGetAbsoluteAssetPath(Type type, out string absolutePath)
+        {
+            var createAssetAtt = type.GetCustomAttribute<CreateAssetAutomaticallyAttribute>();
+            var loadFromAssetAttribute = LoadFromAssetUtils.GetFirstAttribute(type);
+            if (createAssetAtt == null || loadFromAssetAttribute == null)
+            {
+                absolutePath = null;
+                return false;
+            }
+
+            var pathStart = PathUtility.EnsurePathStartsWith("Assets", createAssetAtt.ResourcesFolderPath);
+            pathStart = PathUtility.EnsurePathEndsWith("Resources", pathStart);
+            var pathEnd = loadFromAssetAttribute.GetResourcesPath(type) + ".asset";
+            absolutePath = $"{pathStart}/{pathEnd}";
+            return true;
         }
     }
 }

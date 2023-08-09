@@ -3,6 +3,11 @@ using System.Text;
 
 namespace OneAsset
 {
+    public sealed class UnsafeLoad : Attribute
+    {
+        
+    }
+    
     /// <summary>
     /// Applies loading rules to <see cref="ScriptableObjectFactory"/> and <see cref="OneGameObject{T}"/>.
     /// Can be used on <see cref="UnityEngine.ScriptableObject"/> and <see cref="UnityEngine.MonoBehaviour"/>
@@ -29,6 +34,11 @@ namespace OneAsset
         /// Optional field to specify the order in which asset is searched for. Paths with higher priority are searched first
         /// </summary>
         public int Priority { get; set; } = 1;
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool UnsafeLoad { get; set; }
 
         /// <summary>
         /// Defines a path at which asset can be found for <see cref="ScriptableObjectFactory"/> and <see cref="OneGameObject{T}"/>.
@@ -38,6 +48,8 @@ namespace OneAsset
         /// Path at which asset should be found. Relative to the Resources folder.
         /// Doesn't have to contain file name if <see cref="UseTypeNameAsFileName"/> is set to true.
         /// </param>
+        // TODO: What if I would put additional "absolutePath" here?
+        // change argument to "path" it can lead to resources but it doesnt have to
         public LoadFromAssetAttribute(string resourcesPath)
         {
             ResourcesPath = TrimPath(resourcesPath, "Resources");
