@@ -12,7 +12,7 @@ namespace OneAsset
     /// <para><see cref="LoadFromAssetAttribute"/></para>
     /// <para><see cref="CreateAssetAutomaticallyAttribute"/></para>
     /// </summary>
-    public static class ScriptableObjectFactory
+    public static class OneAssetLoader
     {
         internal static TryCreateAsset CreateAssetAction;
 
@@ -44,14 +44,23 @@ namespace OneAsset
         /// <exception cref="EditorAssetFactoryException">Thrown only in editor, when given type has a <see cref="CreateAssetAutomaticallyAttribute"/> and there was an issue with <see cref="UnityEditor.AssetDatabase"/> action</exception>
         public static ScriptableObject LoadOrCreateInstance(Type scriptableObjectType)
         {
-            var loadFromAssetAttributes = LoadFromAssetUtils.GetAttributesInOrder(scriptableObjectType);
+            var loadAttributes = LoadFromAssetUtils.GetAttributesInOrder(scriptableObjectType);
+            var crateAssetAttribute = scriptableObjectType.GetCustomAttribute<CreateAssetAutomaticallyAttribute>();
+
+            return LoadOrCreateInstance(scriptableObjectType, loadAttributes, crateAssetAttribute);
+        }
+
+        internal static ScriptableObject LoadOrCreateInstance(Type scriptableObjectType,
+            LoadFromAssetAttribute[] loadFromAssetAttributes,
+            CreateAssetAutomaticallyAttribute createAssetAutomaticallyAttribute)
+        {
             if (loadFromAssetAttributes.Length == 0)
                 return CreateInstance(scriptableObjectType);
             // Try to load asset from `LoadFromAssetAttribute` path
             if (TryLoadFromResources(scriptableObjectType, loadFromAssetAttributes, out var asset))
                 return asset;
             // Try to create asset at `CreateAssetAutomaticallyAttribute` path
-            if (TryCreateAsset(scriptableObjectType) &&
+            if (TryCreateAsset(scriptableObjectType, createAssetAutomaticallyAttribute) &&
                 TryLoadFromResources(scriptableObjectType, loadFromAssetAttributes, out asset))
                 return asset;
 
@@ -65,8 +74,7 @@ namespace OneAsset
 
             // Throw Exception if class has `LoadFromAssetAttribute` and asset instance is mandatory 
             if (highestPriorityAttribute.Mandatory)
-                throw new AssetIsMissingException(scriptableObjectType,
-                    highestPriorityAttribute.GetResourcesPath(scriptableObjectType));
+                throw new AssetIsMissingException(scriptableObjectType, highestPriorityAttribute.Path);
             // Create and return a new instance
             return CreateInstance(scriptableObjectType);
         }
@@ -110,12 +118,9 @@ namespace OneAsset
         /// <summary>
         /// If in Editor, try to create an asset at path specified in <see cref="CreateAssetAutomaticallyAttribute"/>
         /// </summary>
-        private static bool TryCreateAsset(Type type)
+        private static bool TryCreateAsset(Type type, CreateAssetAutomaticallyAttribute attr)
         {
-            if (!Application.isEditor || CreateAssetAction == null)
-                return false;
-            var att = type.GetCustomAttribute<CreateAssetAutomaticallyAttribute>();
-            if (att == null)
+            if (!Application.isEditor || attr == null || CreateAssetAction == null)
                 return false;
             var obj = ScriptableObject.CreateInstance(type);
             try
@@ -135,7 +140,9 @@ namespace OneAsset
         {
             foreach (var attribute in attributes)
             {
-                var path = attribute.GetResourcesPath(type);
+                var path = attribute.TryGetResourcesPath(type);
+                path = PathUtility.GetPathWithoutExtension(path);
+                Debug.Log($"Load asset from: {path}");
                 obj = Resources.Load(path, type) as ScriptableObject;
                 if (obj != null)
                     return true;
@@ -147,19 +154,57 @@ namespace OneAsset
 
         internal static bool TryGetAbsoluteAssetPath(Type type, out string absolutePath)
         {
-            var createAssetAtt = type.GetCustomAttribute<CreateAssetAutomaticallyAttribute>();
             var loadFromAssetAttribute = LoadFromAssetUtils.GetFirstAttribute(type);
-            if (createAssetAtt == null || loadFromAssetAttribute == null)
+            if (loadFromAssetAttribute == null)
             {
                 absolutePath = null;
                 return false;
             }
 
-            var pathStart = PathUtility.EnsurePathStartsWith("Assets", createAssetAtt.ResourcesFolderPath);
-            pathStart = PathUtility.EnsurePathEndsWith("Resources", pathStart);
-            var pathEnd = loadFromAssetAttribute.GetResourcesPath(type) + ".asset";
-            absolutePath = $"{pathStart}/{pathEnd}";
+            absolutePath = loadFromAssetAttribute.Path;
             return true;
+        }
+
+        public static Component CreateOrLoadGameObject(Type componentType)
+        {
+            if (TryInstantiatePrefab(componentType, out var i))
+                return i;
+
+            var obj = new GameObject { name = componentType.Name };
+            return obj.AddComponent(componentType);
+        }
+
+        private static bool TryInstantiatePrefab(Type componentType, out Component component)
+        {
+            var loadFromAssetAttributes = LoadFromAssetUtils.GetAttributesInOrder(componentType);
+            if (loadFromAssetAttributes.Length == 0)
+            {
+                component = null;
+                return false;
+            }
+
+            foreach (var attr in loadFromAssetAttributes)
+            {
+                if (!PathUtility.ContainsFolder("Resources", attr.Path))
+                {
+                    continue;
+                }
+
+                var resourcesPath = attr.Path;
+                var prefab = Resources.Load(resourcesPath, componentType);
+                Debug.Log(prefab.GetType().Name);
+                if (prefab == null)
+                    continue;
+                component = (Component)Object.Instantiate(prefab);
+                component.name = componentType.Name;
+                return true;
+            }
+
+            var highestPriorityAttr = loadFromAssetAttributes[0];
+            if (highestPriorityAttr.Mandatory)
+                throw new AssetIsMissingException(componentType, highestPriorityAttr.Path);
+            component = null;
+            return false;
         }
     }
 }

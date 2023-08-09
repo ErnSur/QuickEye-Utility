@@ -6,7 +6,7 @@ namespace OneAsset.Editor.Tests.SampleAssets
     {
     }
     
-    [CreateAssetAutomatically(SampleAssetsTempDirectory.TemporaryTestOnlyDirectory)]
+    [CreateAssetAutomatically()]
     [LoadFromAsset(ResourcesDirectory, UseTypeNameAsFileName = true)]
     internal abstract class SoWithInheritedCreateAutomaticallyBase : ScriptableObject
     {

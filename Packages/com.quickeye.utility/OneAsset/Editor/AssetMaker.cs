@@ -11,13 +11,13 @@ namespace OneAsset.Editor
         [InitializeOnLoadMethod]
         private static void RegisterCallback()
         {
-            ScriptableObjectFactory.CreateAssetAction += CreateAsset;
+            OneAssetLoader.CreateAssetAction += CreateAsset;
             Console.WriteLine("[AssetLoadTest] AssetMaker RegisterCallback");
         }
 
         private static void CreateAsset(ScriptableObject obj)
         {
-            if (!ScriptableObjectFactory.TryGetAbsoluteAssetPath(obj.GetType(), out var fullAssetPath))
+            if (!OneAssetLoader.TryGetAbsoluteAssetPath(obj.GetType(), out var fullAssetPath))
             {
                 throw new InvalidOperationException($"Could not get full assetPath for object {obj}");
             }

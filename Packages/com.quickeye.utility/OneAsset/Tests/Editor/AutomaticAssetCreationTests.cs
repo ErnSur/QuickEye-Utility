@@ -5,7 +5,7 @@ using UnityEditor;
 
 namespace OneAsset.Editor.Tests
 {
-    [TestOf(typeof(ScriptableObjectFactory))]
+    [TestOf(typeof(OneAssetLoader))]
     public class AutomaticAssetCreationTests
     {
         [SetUp]
@@ -29,7 +29,7 @@ namespace OneAsset.Editor.Tests
         [Test]
         public void Should_CreateNewAsset_When_TypeHasCreateAutomaticallyAttributeAndAssetIsMissing()
         {
-            ScriptableObjectFactory.LoadOrCreateInstance<SoWithCreateAutomatically>();
+            var asset =OneAssetLoader.LoadOrCreateInstance<SoWithCreateAutomatically>();
 
             FileAssert.Exists(SoWithCreateAutomatically.AbsoluteAssetPath);
         }
@@ -37,7 +37,7 @@ namespace OneAsset.Editor.Tests
         [Test]
         public void Should_CreateNewAsset_When_AtPathFromTheAttributeWithHighestPriority()
         {
-            ScriptableObjectFactory.LoadOrCreateInstance<SoWithCreateAutomatically2>();
+            OneAssetLoader.LoadOrCreateInstance<SoWithCreateAutomatically2>();
 
             FileAssert.Exists(SoWithCreateAutomatically2.AbsoluteAssetPath);
             FileAssert.DoesNotExist(SoWithCreateAutomatically2.SecondaryAbsoluteAssetPath);
@@ -45,7 +45,7 @@ namespace OneAsset.Editor.Tests
 
         private static void DeleteTestOnlyAssetsIfTheyExist()
         {
-            const string directoryName = SampleAssetsTempDirectory.TemporaryTestOnlyDirectory;
+            const string directoryName = TestUtils.TempDir;
             if (Directory.Exists(directoryName))
             {
                 AssetDatabase.DeleteAsset(directoryName);

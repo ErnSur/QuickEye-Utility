@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace OneAsset.Editor.Tests
 {
-    [TestOf(typeof(ScriptableObjectFactory))]
+    [TestOf(typeof(OneAssetLoader))]
     public class MultipleLoadPathsTests
     {
         [Test]
@@ -13,7 +13,7 @@ namespace OneAsset.Editor.Tests
             var asset = Resources.Load<SoWithMultipleLoadPaths1>(SoWithMultipleLoadPaths1.FirstResourcesPath);
             Assert.NotNull(asset);
             
-            var actual = ScriptableObjectFactory.LoadOrCreateInstance<SoWithMultipleLoadPaths1>();
+            var actual = OneAssetLoader.LoadOrCreateInstance<SoWithMultipleLoadPaths1>();
 
             Assert.AreEqual(asset, actual);
         }
@@ -26,7 +26,7 @@ namespace OneAsset.Editor.Tests
             Assert.IsNull(assetFromFirstPath);
             Assert.NotNull(assetFromSecondaryPath);
             
-            var actual = ScriptableObjectFactory.LoadOrCreateInstance<SoWithMultipleLoadPaths2>();
+            var actual = OneAssetLoader.LoadOrCreateInstance<SoWithMultipleLoadPaths2>();
 
             Assert.AreEqual(assetFromSecondaryPath, actual);
         }

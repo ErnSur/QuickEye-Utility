@@ -2,24 +2,21 @@ using UnityEngine;
 
 namespace OneAsset.Editor.Tests.SampleAssets
 {
-    [CreateAssetAutomatically(SampleAssetsTempDirectory.TemporaryTestOnlyDirectory)]
-    [LoadFromAsset(PathToAssetInResourcesDirectory, Priority = 2)]
-    [LoadFromAsset(SecondaryPathToAssetInResourcesDirectory, Priority = 1)]
+    [CreateAssetAutomatically]
+    [LoadFromAsset(AbsoluteAssetPath, Priority = 2)]
+    [LoadFromAsset(SecondaryAbsoluteAssetPath, Priority = 1)]
     internal class SoWithCreateAutomatically2 : ScriptableObject
     {
-        private const string PathToAssetInResourcesDirectory = "one-asset-tests/"+ nameof(SoWithCreateAutomatically2);
-        private const string SecondaryPathToAssetInResourcesDirectory = PathToAssetInResourcesDirectory + "2";
-        
         public const string AbsoluteAssetPath = 
-            SampleAssetsTempDirectory.TemporaryTestOnlyDirectory 
+            TestUtils.TempDir 
             + "Resources/" 
-            + PathToAssetInResourcesDirectory 
+            + "one-asset-tests/"+ nameof(SoWithCreateAutomatically2) 
             + ".asset";
         
         public const string SecondaryAbsoluteAssetPath = 
-            SampleAssetsTempDirectory.TemporaryTestOnlyDirectory 
+            TestUtils.TempDir 
             + "Resources/" 
-            + SecondaryPathToAssetInResourcesDirectory 
+            + "one-asset-tests/"+ nameof(SoWithCreateAutomatically2) +"2" 
             + ".asset";
     }
 }

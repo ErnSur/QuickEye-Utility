@@ -67,45 +67,9 @@ namespace OneAsset
             if (IsAppQuitting)
                 return null;
             if (_instance == null)
-                _instance = CreateInstance();
+                _instance = OneAssetLoader.CreateOrLoadGameObject(typeof(T)) as T;
 
             return _instance;
-        }
-
-        private static T CreateInstance()
-        {
-            if (TryInstantiatePrefab(out var i))
-                return i;
-
-            var obj = new GameObject { name = typeof(T).Name };
-            return obj.AddComponent<T>();
-        }
-
-        private static bool TryInstantiatePrefab(out T obj)
-        {
-            var loadFromAssetAttributes = LoadFromAssetUtils.GetAttributesInOrder(typeof(T));
-            if (loadFromAssetAttributes.Length == 0)
-            {
-                obj = null;
-                return false;
-            }
-
-            foreach (var attr in loadFromAssetAttributes)
-            {
-                var resourcesPath = attr.GetResourcesPath(typeof(T));
-                var prefab = Resources.Load<T>(resourcesPath);
-                if (prefab == null)
-                    continue;
-                obj = Instantiate(prefab);
-                obj.name = typeof(T).Name;
-                return true;
-            }
-
-            var highestPriorityAttr = loadFromAssetAttributes[0];
-            if (highestPriorityAttr.Mandatory)
-                throw new AssetIsMissingException(typeof(T), highestPriorityAttr.GetResourcesPath(typeof(T)));
-            obj = null;
-            return false;
         }
     }
     

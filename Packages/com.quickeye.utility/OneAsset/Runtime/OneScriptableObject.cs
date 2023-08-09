@@ -15,14 +15,14 @@ namespace OneAsset
         
         /// <summary>
         /// Returns a instance of T.
-        /// If no instance of T exists, it will create a new one using <see cref="ScriptableObjectFactory.LoadOrCreateInstance{T}"/>
+        /// If no instance of T exists, it will create a new one using <see cref="OneAssetLoader.LoadOrCreateInstance{T}"/>
         /// </summary>
         public static T Instance => GetInstance();
 
         private static T GetInstance()
         {
             if (_instance == null)
-                _instance = ScriptableObjectFactory.LoadOrCreateInstance<T>();
+                _instance = OneAssetLoader.LoadOrCreateInstance<T>();
             return _instance;
         }
     }
