@@ -29,13 +29,16 @@ namespace OneAsset.Editor.Tests
             TestUtils.DeleteTestOnlyDirectory();
         }
 
-        [TestCase("Resources")]
-        [TestCase("resources/")]
-        [TestCase("/Resources/")]
-        [TestCase("Assets/Resources/one-asset/")]
-        public void Should_LoadAsset_When_AssetExists(string pathWithoutFileName)
+        [TestCase("Resources/test")]
+        [TestCase("/Resources/test")]
+        [TestCase("Resources/test.asset")]
+        [TestCase("Resources/test/test")]
+        [TestCase("Assets/Resources/test")]
+        [TestCase("/Assets/Resources/test")]
+        [TestCase("Resources/test.userExtension")]
+        public void Should_LoadAsset_When_AssetExists(string path)
         {
-            var loadAttribute = TestUtils.CreateLoadAttributeWithUniquePath(pathWithoutFileName);
+            var loadAttribute = new LoadFromAssetAttribute(path);
             using (new TestAssetScope(loadAttribute.Path))
             {
                 var actual = OneAssetLoader.LoadOrCreateInstance(typeof(SoWithAsset), loadAttribute);

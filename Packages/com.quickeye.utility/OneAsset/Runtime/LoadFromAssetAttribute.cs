@@ -14,7 +14,7 @@ namespace OneAsset
         /// <summary>
         /// If Path starts with "Resources/" it will be loaded from resources
         /// </summary>
-        public string Path { get; internal set; }
+        public string Path { get; }
 
         /// <summary>
         /// Enables a system that will create scriptable object file if it cannot be loaded from <see cref="LoadFromAssetAttribute.Path"/>
@@ -41,7 +41,10 @@ namespace OneAsset
         /// <summary>
         /// 
         /// </summary>
-        public bool UnsafeLoad { get; set; }
+        public bool LoadAndForget { get; set; }
+
+        internal bool IsInResourcesFolder;
+        internal string ResourcesPath;
 
         /// <summary>
         /// Defines a path at which asset can be found for <see cref="OneAssetLoader"/> and <see cref="OneGameObject{T}"/>.
@@ -51,34 +54,16 @@ namespace OneAsset
         /// Path at which asset should be found. Relative to the Resources folder.
         /// Doesn't have to contain file name if <see cref="UseTypeNameAsFileName"/> is set to true.
         /// </param>
-        // TODO: What if I would put additional "absolutePath" here?
-        // change argument to "path" it can lead to resources but it doesnt have to
         public LoadFromAssetAttribute(string path)
         {
-            Path = PathUtility.EnsurePathStartsWith("Assets",path);
+            Path = path.TrimStart('/');
             if (!path.EndsWith(".asset"))
-                Path = $"{Path}.asset";
-        }
-
-        // internal string TryGetResourcesPath()
-        // {
-        //     if (!PathUtility.ContainsFolder("Resources", Path))
-        //         return false;
-        //     return UseTypeNameAsFileName
-        //         ? $"{Path}/{NicifyClassName(owner.Name)}".TrimStart('/')
-        //         : Path;
-        // }
-
-        private static string TrimPath(string path, string startDir)
-        {
-            path = path.TrimStart('/');
-            startDir = startDir.TrimStart('/');
-            if (path.StartsWith(startDir))
+                Path += ".asset";
+            if (PathUtility.ContainsFolder("Resources", Path))
             {
-                path = path.Substring(startDir.Length).TrimStart('/');
+                IsInResourcesFolder = true;
+                ResourcesPath = PathUtility.GetResourcesPath(Path);
             }
-
-            return path;
         }
 
         public static string NicifyClassName(string input)
@@ -127,13 +112,6 @@ namespace OneAsset
             }
 
             return result.ToString();
-        }
-
-        public string TryGetResourcesPath()
-        {
-            var path= PathUtility.GetPathRelativeTo("Resources",Path);
-            path = PathUtility.GetPathWithoutExtension(path);
-            return path.TrimStart('/');
         }
     }
 }

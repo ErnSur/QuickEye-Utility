@@ -19,7 +19,9 @@ namespace OneAsset
         {
             var cleanPath = Path.Combine(Path.GetDirectoryName(path) ?? "", Path.GetFileName(path));
             var folders = cleanPath.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-            return folders.First() == folderName ? path : Path.Combine(folderName, path);
+            if (folders.FirstOrDefault() == folderName)
+                return path;
+            return Combine(folderName, path);
         }
 
         // TODO: enforce forward slashes
@@ -62,6 +64,18 @@ namespace OneAsset
             if (string.IsNullOrWhiteSpace(dirName))
                 return fileName;
             return $"{dirName}/{fileName}";
+        }
+
+        private static string Combine(params string[] pathSegments)
+        {
+            return string.Join("/", pathSegments.Select(p => p.Trim('/', '\\')));
+        }
+        
+        public static string GetResourcesPath(string path)
+        {
+            path = GetPathRelativeTo("Resources", path);
+            path = GetPathWithoutExtension(path);
+            return path.TrimStart('/');
         }
     }
 }

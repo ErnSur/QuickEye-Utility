@@ -15,17 +15,12 @@ namespace OneAsset.Editor
             Console.WriteLine("[AssetLoadTest] AssetMaker RegisterCallback");
         }
 
-        private static void CreateAsset(ScriptableObject obj)
+        private static void CreateAsset(ScriptableObject obj,LoadFromAssetAttribute attribute)
         {
-            if (!OneAssetLoader.TryGetAbsoluteAssetPath(obj.GetType(), out var fullAssetPath))
-            {
-                throw new InvalidOperationException($"Could not get full assetPath for object {obj}");
-            }
-            
-            var baseDir = Path.GetDirectoryName(fullAssetPath);
+            var baseDir = Path.GetDirectoryName(attribute.Path);
             if (baseDir != null)
                 Directory.CreateDirectory(baseDir);
-            AssetDatabase.CreateAsset(obj, fullAssetPath);
+            AssetDatabase.CreateAsset(obj, attribute.Path);
             AssetDatabase.SaveAssets();
         }
     }

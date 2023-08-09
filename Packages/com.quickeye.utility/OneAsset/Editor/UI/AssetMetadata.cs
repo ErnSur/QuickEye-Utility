@@ -29,7 +29,7 @@ namespace OneAsset.Editor.UI
             var type = asset.GetType();
             TypeName = type.Name;
             LoadFromAssetAttributes = LoadFromAssetUtils.GetAttributesInOrder(type);
-            ResourcesPaths = LoadFromAssetAttributes.Select(a => a.TryGetResourcesPath()).ToArray();
+            ResourcesPaths = LoadFromAssetAttributes.Select(a => a.ResourcesPath).ToArray();
         }
 
         public bool IsInLoadablePath(out string attributeLoadPath)

@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Reflection;
 using UnityEditorInternal;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -48,6 +47,7 @@ namespace OneAsset
             return LoadOrCreateInstance(scriptableObjectType, loadAttributes);
         }
 
+        // TODO: support loading from AssetDatabase if path is not in resources folder
         internal static ScriptableObject LoadOrCreateInstance(Type scriptableObjectType,
             params LoadFromAssetAttribute[] loadFromAssetAttributesInOrder)
         {
@@ -59,7 +59,7 @@ namespace OneAsset
             var highestPriorityAttribute = loadFromAssetAttributesInOrder[0];
             
             // Try to create asset at path
-            if (highestPriorityAttribute.CreateAssetAutomatically && TryCreateAsset(scriptableObjectType) &&
+            if (highestPriorityAttribute.CreateAssetAutomatically && TryCreateAsset(scriptableObjectType,highestPriorityAttribute) &&
                 TryLoadFromResources(scriptableObjectType, loadFromAssetAttributesInOrder, out asset))
                 return asset;
 
@@ -85,8 +85,7 @@ namespace OneAsset
             out ScriptableObject instance)
         {
             if (!Application.isEditor
-                || !highestPriorityAttribute.UnsafeLoad
-                || !TryGetAbsoluteAssetPath(scriptableObjectType, out var absolutePath))
+                || !highestPriorityAttribute.LoadAndForget)
             {
                 instance = null;
                 return false;
@@ -98,7 +97,7 @@ namespace OneAsset
             // Ideally this code would be in editor assembly. But when this method is called from InitializeOnLoad
             // there is no guarantee that editor callback will be registered like with `CreateAssetAction`
             var i = InternalEditorUtility
-                .LoadSerializedFileAndForget(absolutePath)
+                .LoadSerializedFileAndForget(highestPriorityAttribute.Path)
                 .FirstOrDefault(o => o.GetType() == scriptableObjectType);
 
             instance = i as ScriptableObject;
@@ -114,16 +113,16 @@ namespace OneAsset
         }
 
         /// <summary>
-        /// If in Editor, try to create an asset at path specified in <see cref="CreateAssetAutomaticallyAttribute"/>
+        /// If in Editor, try to create an asset
         /// </summary>
-        private static bool TryCreateAsset(Type type)
+        private static bool TryCreateAsset(Type type,LoadFromAssetAttribute attribute)
         {
             if (!Application.isEditor || CreateAssetAction == null)
                 return false;
             var obj = ScriptableObject.CreateInstance(type);
             try
             {
-                CreateAssetAction(obj);
+                CreateAssetAction(obj,attribute);
                 return true;
             }
             catch (Exception e)
@@ -136,9 +135,9 @@ namespace OneAsset
         private static bool TryLoadFromResources(Type type, LoadFromAssetAttribute[] attributes,
             out ScriptableObject obj)
         {
-            foreach (var attribute in attributes)
+            foreach (var attribute in attributes.Where(a=>a.IsInResourcesFolder))
             {
-                var path = attribute.TryGetResourcesPath();
+                var path = attribute.ResourcesPath;
                 Debug.Log($"Load asset from: {path}");
                 obj = Resources.Load(path, type) as ScriptableObject;
                 if (obj != null)
@@ -147,19 +146,6 @@ namespace OneAsset
 
             obj = null;
             return false;
-        }
-
-        internal static bool TryGetAbsoluteAssetPath(Type type, out string absolutePath)
-        {
-            var loadFromAssetAttribute = LoadFromAssetUtils.GetFirstAttribute(type);
-            if (loadFromAssetAttribute == null)
-            {
-                absolutePath = null;
-                return false;
-            }
-
-            absolutePath = loadFromAssetAttribute.Path;
-            return true;
         }
 
         public static Component CreateOrLoadGameObject(Type componentType)
@@ -180,14 +166,9 @@ namespace OneAsset
                 return false;
             }
 
-            foreach (var attr in loadFromAssetAttributes)
+            foreach (var attr in loadFromAssetAttributes.Where(a=>a.IsInResourcesFolder))
             {
-                if (!PathUtility.ContainsFolder("Resources", attr.Path))
-                {
-                    continue;
-                }
-
-                var resourcesPath = attr.TryGetResourcesPath();
+                var resourcesPath = attr.ResourcesPath;
                 var prefab = Resources.Load(resourcesPath, componentType);
                 Debug.Log(prefab.GetType().Name);
                 if (prefab == null)
