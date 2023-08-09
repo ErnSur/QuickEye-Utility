@@ -29,19 +29,16 @@ namespace OneAsset.Editor.Tests
             TestUtils.DeleteTestOnlyDirectory();
         }
 
-        [TestCase("Resources/one-asset/test.asset")]
-        [TestCase("Assets/Resources/one-asset/test.asset")]
-        [TestCase("Assets/Resources/one-asset/test")]
-        [TestCase("Assets/Resources/test.asset")]
-        [TestCase("Assets/Resources/test")]
-        public void Should_LoadAsset_When_AssetExists(string loadPath)
+        [TestCase("Resources")]
+        [TestCase("resources/")]
+        [TestCase("/Resources/")]
+        [TestCase("Assets/Resources/one-asset/")]
+        public void Should_LoadAsset_When_AssetExists(string pathWithoutFileName)
         {
-            
-            using (new TestAssetScope(loadPath))
+            var loadAttribute = TestUtils.CreateLoadAttributeWithUniquePath(pathWithoutFileName);
+            using (new TestAssetScope(loadAttribute.Path))
             {
-                var loadAttribute = new LoadFromAssetAttribute(loadPath);
-                var actual = OneAssetLoader.LoadOrCreateInstance(typeof(SoWithAsset),
-                    new[] { loadAttribute }, null);
+                var actual = OneAssetLoader.LoadOrCreateInstance(typeof(SoWithAsset), loadAttribute);
 
                 Assert.NotNull(actual);
                 Assert.IsTrue(AssetDatabase.Contains(actual));

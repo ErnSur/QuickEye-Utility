@@ -31,11 +31,10 @@ namespace OneAsset.Editor.Tests
             using (new TestAssetScope(lowerPriorityAttribute.Path))
             using (var expectedAssetScope = new TestAssetScope(attributeWithHighestPriority.Path))
             {
-                var asset = OneAssetLoader.LoadOrCreateInstance(typeof(SoWithAsset), new[]
-                {
+                var asset = OneAssetLoader.LoadOrCreateInstance(
+                    typeof(SoWithAsset),
                     attributeWithHighestPriority,
-                    lowerPriorityAttribute,
-                }, null);
+                    lowerPriorityAttribute);
 
                 Assert.NotNull(asset);
                 Assert.AreEqual(expectedAssetScope.Asset, asset);

@@ -5,9 +5,8 @@ namespace OneAsset.Editor.Tests.SampleAssets
     internal class SoWithInheritedCreateAutomatically : SoWithInheritedCreateAutomaticallyBase
     {
     }
-    
-    [CreateAssetAutomatically()]
-    [LoadFromAsset(ResourcesDirectory, UseTypeNameAsFileName = true)]
+
+    [LoadFromAsset(ResourcesDirectory, UseTypeNameAsFileName = true, CreateAssetAutomatically = true)]
     internal abstract class SoWithInheritedCreateAutomaticallyBase : ScriptableObject
     {
         private const string ResourcesDirectory = "one-asset-tests/";

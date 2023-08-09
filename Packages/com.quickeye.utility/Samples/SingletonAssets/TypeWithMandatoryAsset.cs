@@ -13,16 +13,14 @@ namespace QuickEye.Samples.SingletonAssets
     /// The <see cref="CreateAssetAutomaticallyAttribute"/> turns on a editor-only system that will create scriptable object file at specific path
     /// if it cannot be loaded from a path defined in <see cref="LoadFromAssetAttribute"/>
     /// </summary>
-    [LoadFromAsset(ResourcesPath, Mandatory = true)]
-    [CreateAssetAutomatically(AutoCreatePath)]
+    [LoadFromAsset(Path, Mandatory = true, CreateAssetAutomatically = true)]
     public class TypeWithMandatoryAsset : OneScriptableObject<TypeWithMandatoryAsset>
     {
-        private const string ResourcesPath = nameof(TypeWithMandatoryAsset);
-        private const string AutoCreatePath = "Assets/Samples/Settings/Resources/" + ResourcesPath;
+        private const string Path = "Assets/Samples/Settings/Resources/" + nameof(TypeWithMandatoryAsset);
 
         [TextArea(10,30)]
         public string Description =
             $"Call to `{nameof(TypeWithMandatoryAsset)}.Instance` will try to load an asset from Resources folder at path specified in `{nameof(LoadFromAssetAttribute)}.`" +
-            $"If there is no asset at that path a new Asset will be created at: {AutoCreatePath}";
+            $"If there is no asset at that path a new Asset will be created at: {Path}";
     }
 }

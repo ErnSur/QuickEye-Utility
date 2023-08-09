@@ -45,22 +45,21 @@ namespace OneAsset
         public static ScriptableObject LoadOrCreateInstance(Type scriptableObjectType)
         {
             var loadAttributes = LoadFromAssetUtils.GetAttributesInOrder(scriptableObjectType);
-            var crateAssetAttribute = scriptableObjectType.GetCustomAttribute<CreateAssetAutomaticallyAttribute>();
-
-            return LoadOrCreateInstance(scriptableObjectType, loadAttributes, crateAssetAttribute);
+            return LoadOrCreateInstance(scriptableObjectType, loadAttributes);
         }
 
         internal static ScriptableObject LoadOrCreateInstance(Type scriptableObjectType,
-            LoadFromAssetAttribute[] loadFromAssetAttributesInOrder,
-            CreateAssetAutomaticallyAttribute createAssetAutomaticallyAttribute)
+            params LoadFromAssetAttribute[] loadFromAssetAttributesInOrder)
         {
             if (loadFromAssetAttributesInOrder.Length == 0)
                 return CreateInstance(scriptableObjectType);
             // Try to load asset from `LoadFromAssetAttribute` path
             if (TryLoadFromResources(scriptableObjectType, loadFromAssetAttributesInOrder, out var asset))
                 return asset;
-            // Try to create asset at `CreateAssetAutomaticallyAttribute` path
-            if (TryCreateAsset(scriptableObjectType, createAssetAutomaticallyAttribute) &&
+            var highestPriorityAttribute = loadFromAssetAttributesInOrder[0];
+            
+            // Try to create asset at path
+            if (highestPriorityAttribute.CreateAssetAutomatically && TryCreateAsset(scriptableObjectType) &&
                 TryLoadFromResources(scriptableObjectType, loadFromAssetAttributesInOrder, out asset))
                 return asset;
 
@@ -68,7 +67,6 @@ namespace OneAsset
             // if LoadFromAssetAttribute and CreateAssetAutomatically are preset
             // and we came to this point, it means that AssetDatabase failed to create an asset
             // OOORRR we are in buit game and game was build without the settings asset (what are the scenarios in which this is possible?)
-            var highestPriorityAttribute = loadFromAssetAttributesInOrder[0];
             if (TryLoadUnsafe(scriptableObjectType, highestPriorityAttribute, out asset))
                 return asset;
 
@@ -118,9 +116,9 @@ namespace OneAsset
         /// <summary>
         /// If in Editor, try to create an asset at path specified in <see cref="CreateAssetAutomaticallyAttribute"/>
         /// </summary>
-        private static bool TryCreateAsset(Type type, CreateAssetAutomaticallyAttribute attr)
+        private static bool TryCreateAsset(Type type)
         {
-            if (!Application.isEditor || attr == null || CreateAssetAction == null)
+            if (!Application.isEditor || CreateAssetAction == null)
                 return false;
             var obj = ScriptableObject.CreateInstance(type);
             try

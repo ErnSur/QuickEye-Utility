@@ -11,7 +11,15 @@ namespace OneAsset
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
     public sealed class LoadFromAssetAttribute : Attribute
     {
+        /// <summary>
+        /// If Path starts with "Resources/" it will be loaded from resources
+        /// </summary>
         public string Path { get; internal set; }
+
+        /// <summary>
+        /// Enables a system that will create scriptable object file if it cannot be loaded from <see cref="LoadFromAssetAttribute.Path"/>
+        /// </summary>        
+        public bool CreateAssetAutomatically { get; set; }
 
         /// <summary>
         /// <para>If set to true a <see cref="AssetIsMissingException"/> will be thrown when trying to load missing asset.</para>
@@ -125,7 +133,7 @@ namespace OneAsset
         {
             var path= PathUtility.GetPathRelativeTo("Resources",Path);
             path = PathUtility.GetPathWithoutExtension(path);
-            return path;
+            return path.TrimStart('/');
         }
     }
 }
