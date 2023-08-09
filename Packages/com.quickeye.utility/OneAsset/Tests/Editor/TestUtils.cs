@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using NUnit.Framework;
 using OneAsset.Editor.Tests.SampleAssets;
 using UnityEditor;
 using UnityEngine;
@@ -10,6 +11,11 @@ namespace OneAsset.Editor.Tests
     {
         public const string TempDir = "Assets/one-asset-tests/";
 
+        public static LoadFromAssetAttribute CreateLoadAttributeWithUniquePath(string pathWithoutFileName)
+        {
+            var fileName = Guid.NewGuid();
+            return new LoadFromAssetAttribute($"{pathWithoutFileName}/{fileName}");
+        }
         public static ScriptableObject CreateTestSoAsset(string path)
         {
             path = PathUtility.EnsurePathStartsWith("Assets", path);
@@ -20,7 +26,6 @@ namespace OneAsset.Editor.Tests
             if (!string.IsNullOrWhiteSpace(dirName))
                 Directory.CreateDirectory(dirName);
 
-            Debug.Log($"Created asset at: {path}");
             AssetDatabase.CreateAsset(so, path);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
@@ -31,7 +36,6 @@ namespace OneAsset.Editor.Tests
         {
             if (Directory.Exists(TempDir))
             {
-                Debug.Log("DELETE");
                 AssetDatabase.DeleteAsset(TempDir);
             }
 
@@ -47,6 +51,8 @@ namespace OneAsset.Editor.Tests
         public TestAssetScope(string path)
         {
             Asset = TestUtils.CreateTestSoAsset(path);
+            
+            Assert.IsTrue(AssetDatabase.Contains(Asset));
         }
 
         public void Dispose()

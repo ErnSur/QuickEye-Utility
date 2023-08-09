@@ -41,20 +41,27 @@ namespace OneAsset
             if (!path.StartsWith("/"))
                 path = $"/{path}";
             // TODO: chack if is case sensitive
-            var resourcesDirName = $"/{folderName}/";
-            var startIndex = path.LastIndexOf(resourcesDirName, StringComparison.InvariantCulture);
-            if (startIndex < 0)
+            folderName = $"/{folderName}/";
+            // Find the last index of the folder name in the path
+            int index = path.LastIndexOf(folderName, StringComparison.InvariantCulture);
+            if (index == -1)
+            {
                 return string.Empty;
-            startIndex += resourcesDirName.Length;
-            return path.Substring(startIndex, path.Length - startIndex);
+            }
+
+            return path.Substring(index + folderName.Length);
         }
-        
+
         // TODO: test on windows
         public static string GetPathWithoutExtension(string path)
         {
             if (string.IsNullOrWhiteSpace(path))
                 return path;
-            return Path.GetDirectoryName(path) + "/" + Path.GetFileNameWithoutExtension(path);
+            var dirName = Path.GetDirectoryName(path);
+            var fileName = Path.GetFileNameWithoutExtension(path);
+            if (string.IsNullOrWhiteSpace(dirName))
+                return fileName;
+            return $"{dirName}/{fileName}";
         }
     }
 }

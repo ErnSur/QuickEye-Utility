@@ -36,6 +36,7 @@ namespace OneAsset.Editor.Tests
         [TestCase("Assets/Resources/test")]
         public void Should_LoadAsset_When_AssetExists(string loadPath)
         {
+            
             using (new TestAssetScope(loadPath))
             {
                 var loadAttribute = new LoadFromAssetAttribute(loadPath);

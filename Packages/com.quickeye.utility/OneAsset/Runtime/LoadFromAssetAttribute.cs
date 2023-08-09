@@ -121,9 +121,11 @@ namespace OneAsset
             return result.ToString();
         }
 
-        public string TryGetResourcesPath(Type type)
+        public string TryGetResourcesPath()
         {
-            return PathUtility.GetPathRelativeTo("Resources",Path);
+            var path= PathUtility.GetPathRelativeTo("Resources",Path);
+            path = PathUtility.GetPathWithoutExtension(path);
+            return path;
         }
     }
 }

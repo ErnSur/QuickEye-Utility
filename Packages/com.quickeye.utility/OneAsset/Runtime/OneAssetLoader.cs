@@ -51,24 +51,24 @@ namespace OneAsset
         }
 
         internal static ScriptableObject LoadOrCreateInstance(Type scriptableObjectType,
-            LoadFromAssetAttribute[] loadFromAssetAttributes,
+            LoadFromAssetAttribute[] loadFromAssetAttributesInOrder,
             CreateAssetAutomaticallyAttribute createAssetAutomaticallyAttribute)
         {
-            if (loadFromAssetAttributes.Length == 0)
+            if (loadFromAssetAttributesInOrder.Length == 0)
                 return CreateInstance(scriptableObjectType);
             // Try to load asset from `LoadFromAssetAttribute` path
-            if (TryLoadFromResources(scriptableObjectType, loadFromAssetAttributes, out var asset))
+            if (TryLoadFromResources(scriptableObjectType, loadFromAssetAttributesInOrder, out var asset))
                 return asset;
             // Try to create asset at `CreateAssetAutomaticallyAttribute` path
             if (TryCreateAsset(scriptableObjectType, createAssetAutomaticallyAttribute) &&
-                TryLoadFromResources(scriptableObjectType, loadFromAssetAttributes, out asset))
+                TryLoadFromResources(scriptableObjectType, loadFromAssetAttributesInOrder, out asset))
                 return asset;
 
             // if we came to this point and asset file exists on disk then that mean we are running before AssetDatabase initialized
             // if LoadFromAssetAttribute and CreateAssetAutomatically are preset
             // and we came to this point, it means that AssetDatabase failed to create an asset
             // OOORRR we are in buit game and game was build without the settings asset (what are the scenarios in which this is possible?)
-            var highestPriorityAttribute = loadFromAssetAttributes[0];
+            var highestPriorityAttribute = loadFromAssetAttributesInOrder[0];
             if (TryLoadUnsafe(scriptableObjectType, highestPriorityAttribute, out asset))
                 return asset;
 
@@ -140,8 +140,7 @@ namespace OneAsset
         {
             foreach (var attribute in attributes)
             {
-                var path = attribute.TryGetResourcesPath(type);
-                path = PathUtility.GetPathWithoutExtension(path);
+                var path = attribute.TryGetResourcesPath();
                 Debug.Log($"Load asset from: {path}");
                 obj = Resources.Load(path, type) as ScriptableObject;
                 if (obj != null)
@@ -190,7 +189,7 @@ namespace OneAsset
                     continue;
                 }
 
-                var resourcesPath = attr.Path;
+                var resourcesPath = attr.TryGetResourcesPath();
                 var prefab = Resources.Load(resourcesPath, componentType);
                 Debug.Log(prefab.GetType().Name);
                 if (prefab == null)
