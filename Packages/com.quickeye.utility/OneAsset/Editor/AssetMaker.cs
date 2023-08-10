@@ -20,7 +20,10 @@ namespace OneAsset.Editor
             var baseDir = Path.GetDirectoryName(attribute.Path);
             if (baseDir != null)
                 Directory.CreateDirectory(baseDir);
-            AssetDatabase.CreateAsset(obj, attribute.Path);
+            var assetPath = attribute.Path;
+            if (!assetPath.EndsWith(".asset"))
+                assetPath = $"{assetPath}.asset";
+            AssetDatabase.CreateAsset(obj, assetPath);
             AssetDatabase.SaveAssets();
         }
     }

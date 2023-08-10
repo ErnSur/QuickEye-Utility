@@ -53,17 +53,15 @@ namespace OneAsset
 
             return path.Substring(index + folderName.Length);
         }
-
-        // TODO: test on windows
-        public static string GetPathWithoutExtension(string path)
+        
+        public static string GetPathWithoutAssetExtension(string path)
         {
+            const string assetExtension = ".asset";
             if (string.IsNullOrWhiteSpace(path))
                 return path;
-            var dirName = Path.GetDirectoryName(path);
-            var fileName = Path.GetFileNameWithoutExtension(path);
-            if (string.IsNullOrWhiteSpace(dirName))
-                return fileName;
-            return $"{dirName}/{fileName}";
+            if (!path.EndsWith(assetExtension))
+                return path;
+            return path.Substring(0, path.Length - assetExtension.Length);
         }
 
         private static string Combine(params string[] pathSegments)
@@ -74,7 +72,8 @@ namespace OneAsset
         public static string GetResourcesPath(string path)
         {
             path = GetPathRelativeTo("Resources", path);
-            path = GetPathWithoutExtension(path);
+            
+            path = GetPathWithoutAssetExtension(path);
             return path.TrimStart('/');
         }
     }

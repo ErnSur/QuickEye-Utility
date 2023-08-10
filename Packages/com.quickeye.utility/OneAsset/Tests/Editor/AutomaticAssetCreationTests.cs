@@ -2,6 +2,7 @@ using System.IO;
 using NUnit.Framework;
 using OneAsset.Editor.Tests.SampleAssets;
 using UnityEditor;
+using UnityEngine;
 
 namespace OneAsset.Editor.Tests
 {
@@ -29,18 +30,48 @@ namespace OneAsset.Editor.Tests
         [Test]
         public void Should_CreateNewAsset_When_TypeHasCreateAutomaticallyAttributeAndAssetIsMissing()
         {
-            var asset =OneAssetLoader.LoadOrCreateInstance<SoWithCreateAutomatically>();
+            var asset = OneAssetLoader.LoadOrCreateInstance<SoWithCreateAutomatically>();
 
-            FileAssert.Exists(SoWithCreateAutomatically.AbsoluteAssetPath);
+            var assetPath = AssetDatabase.GetAssetPath(asset);
+            StringAssert.Contains(SoWithCreateAutomatically.AbsoluteAssetPath,assetPath);
         }
         
         [Test]
         public void Should_CreateNewAsset_When_AtPathFromTheAttributeWithHighestPriority()
         {
-            OneAssetLoader.LoadOrCreateInstance<SoWithCreateAutomatically2>();
+            var asset = OneAssetLoader.LoadOrCreateInstance<SoWithCreateAutomatically2>();
 
-            FileAssert.Exists(SoWithCreateAutomatically2.AbsoluteAssetPath);
+            var assetPath = AssetDatabase.GetAssetPath(asset);
+            StringAssert.Contains(SoWithCreateAutomatically2.AbsoluteAssetPathNoExt,assetPath);
             FileAssert.DoesNotExist(SoWithCreateAutomatically2.SecondaryAbsoluteAssetPath);
+        }
+        
+        [Test]
+        public void Should_CreateNewAsset_When_PathHasNoFileExtension()
+        {
+            var attribute = new LoadFromAssetAttribute($"{TestUtils.TempDir}Resources/test")
+            {
+                CreateAssetAutomatically = true
+            };
+            var asset = OneAssetLoader.LoadOrCreateInstance(typeof(ScriptableObject),attribute);
+
+            Assert.IsTrue(AssetDatabase.Contains(asset));
+            var assetPath = AssetDatabase.GetAssetPath(asset);
+            StringAssert.Contains(attribute.Path,assetPath);
+        }
+        
+        [Test]
+        public void Should_CreateNewAsset_When_PathHasFileExtension()
+        {
+            var attribute = new LoadFromAssetAttribute($"{TestUtils.TempDir}Resources/test.asset")
+            {
+                CreateAssetAutomatically = true
+            };
+            var asset = OneAssetLoader.LoadOrCreateInstance(typeof(ScriptableObject),attribute);
+
+            Assert.IsTrue(AssetDatabase.Contains(asset));
+            var assetPath = AssetDatabase.GetAssetPath(asset);
+            StringAssert.Contains(attribute.Path,assetPath);
         }
 
         private static void DeleteTestOnlyAssetsIfTheyExist()

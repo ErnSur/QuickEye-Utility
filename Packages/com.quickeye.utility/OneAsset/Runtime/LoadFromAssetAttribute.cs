@@ -3,6 +3,7 @@ using System.Text;
 
 namespace OneAsset
 {
+    // TODO: add an icon in the header drawer to indicate if the asset is loadable in runtime or just editor. It should have an icon of "?" in a circle. like help button. it could also display Path formatting rules for all of the options enabled
     /// <summary>
     /// Applies loading rules to <see cref="OneAssetLoader"/> and <see cref="OneGameObject{T}"/>.
     /// Can be used on <see cref="UnityEngine.ScriptableObject"/> and <see cref="UnityEngine.MonoBehaviour"/>
@@ -43,22 +44,32 @@ namespace OneAsset
         /// </summary>
         public bool LoadAndForget { get; set; }
 
-        internal bool IsInResourcesFolder;
-        internal string ResourcesPath;
+        internal bool IsInResourcesFolder { get; }
+        internal string ResourcesPath { get; }
 
+        // TODO: explaining all path rules is dumb
+        // just pring warnings/errors if path is not fomrated correctly?
+        // stincking to the rule: absolute allwys work is good.
         /// <summary>
         /// Defines a path at which asset can be found for <see cref="OneAssetLoader"/> and <see cref="OneGameObject{T}"/>.
         /// Valid on types derived from <see cref="UnityEngine.ScriptableObject"/> or <see cref="OneGameObject{T}"/>
         /// </summary>
         /// <param name="path">
-        /// Path at which asset should be found. Relative to the Resources folder.
+        /// Path at which asset should be found. Should be relative to unity project directory and contain file extensions.
+        /// Under certain conditions path can be less specific.
+        /// <para>If path is absolute and contains a file extension, it will work with all of the options.</para>
+        /// <para>If <see cref="CreateAssetAutomatically"/> is enabled, the path must be absolute</para>
+        /// <para>If path </para>
         /// Doesn't have to contain file name if <see cref="UseTypeNameAsFileName"/> is set to true.
         /// </param>
         public LoadFromAssetAttribute(string path)
         {
             Path = path.TrimStart('/');
-            if (!path.EndsWith(".asset"))
-                Path += ".asset";
+            
+            // should I add ext? Unity doesn't do that https://docs.unity3d.com/2020.1/Documentation/ScriptReference/ScriptableSingleton_1.html
+            // if I will the `PathUtility.GetResourcesPath` will stop working
+            // if (!LoadAndForget && !path.EndsWith(".asset"))
+            //     Path += ".asset";
             if (PathUtility.ContainsFolder("Resources", Path))
             {
                 IsInResourcesFolder = true;

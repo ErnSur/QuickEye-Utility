@@ -51,7 +51,7 @@ namespace OneAsset.Editor.Tests
         public TestAssetScope(string path)
         {
             Asset = TestUtils.CreateTestSoAsset(path);
-            
+            //Debug.Log($"Created asset at: {AssetDatabase.GetAssetPath(Asset)}");
             Assert.IsTrue(AssetDatabase.Contains(Asset));
         }
 

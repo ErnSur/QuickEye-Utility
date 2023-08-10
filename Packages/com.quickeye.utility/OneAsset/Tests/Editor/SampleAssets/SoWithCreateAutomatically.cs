@@ -7,6 +7,6 @@ namespace OneAsset.Editor.Tests.SampleAssets
     {
         public const string AbsoluteAssetPath =
             TestUtils.TempDir
-            + "Resources/one-asset-tests/" + nameof(SoWithCreateAutomatically) + ".asset";
+            + "Resources/one-asset-tests/" + nameof(SoWithCreateAutomatically);
     }
 }

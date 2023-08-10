@@ -76,11 +76,7 @@ namespace OneAsset
             // Create and return a new instance
             return CreateInstance(scriptableObjectType);
         }
-
-        // TODO: Design an unsafe loading feature so that:
-        // it doesn't require the `CreateAssetAutomatically` attribute
-        // maybe LoadAssetFrom takes a absolute path?
-        // because the absolute path is required for Unsafe load
+        
         private static bool TryLoadUnsafe(Type scriptableObjectType, LoadFromAssetAttribute highestPriorityAttribute,
             out ScriptableObject instance)
         {
@@ -90,9 +86,6 @@ namespace OneAsset
                 instance = null;
                 return false;
             }
-            // If someone would depend on unsafe load it would be annoying
-            //Debug.LogWarning($"Loading {scriptableObjectType} outside AssetDatabase!");
-
 #if UNITY_EDITOR
             // Ideally this code would be in editor assembly. But when this method is called from InitializeOnLoad
             // there is no guarantee that editor callback will be registered like with `CreateAssetAction`
@@ -138,7 +131,6 @@ namespace OneAsset
             foreach (var attribute in attributes.Where(a=>a.IsInResourcesFolder))
             {
                 var path = attribute.ResourcesPath;
-                Debug.Log($"Load asset from: {path}");
                 obj = Resources.Load(path, type) as ScriptableObject;
                 if (obj != null)
                     return true;
@@ -170,7 +162,7 @@ namespace OneAsset
             {
                 var resourcesPath = attr.ResourcesPath;
                 var prefab = Resources.Load(resourcesPath, componentType);
-                Debug.Log(prefab.GetType().Name);
+
                 if (prefab == null)
                     continue;
                 component = (Component)Object.Instantiate(prefab);
