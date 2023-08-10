@@ -13,8 +13,8 @@ namespace OneAsset.Editor.UI
         public readonly string TypeName;
 
         public readonly AssetLoadOptions LoadOptions;
-        public readonly AssetPath[] AssetPaths;
         public string[] ResourcesPaths { get; }
+
         public string FirstResourcesPath =>
             ResourcesPaths.Length == 0 ? null : ResourcesPaths[0];
 
@@ -31,8 +31,8 @@ namespace OneAsset.Editor.UI
             var type = asset.GetType();
             TypeName = type.Name;
             LoadOptions = AssetLoadOptionsUtility.GetLoadOptions(type);
-            AssetPaths = LoadOptions.Paths.Select(p => LoadOptions.AssetPaths[p]).ToArray();
-            ResourcesPaths = LoadOptions.AssetPaths.Values.Where(p=>p.IsInResourcesFolder).Select(p => p.ResourcesPath).ToArray();
+            ResourcesPaths = LoadOptions.AssetPaths.Where(p => p.IsInResourcesFolder).Select(p => p.ResourcesPath)
+                .ToArray();
         }
 
         public bool IsInLoadablePath2(out string attributeLoadPath)
@@ -59,8 +59,8 @@ namespace OneAsset.Editor.UI
             attributeLoadPath = null;
             return false;
         }
-        
-        public bool IsInLoadablePath(out string loadPath)
+
+        public bool IsInLoadablePath(out AssetPath loadPath)
         {
             var assetPath = AssetDatabase.GetAssetPath(Asset);
             if (string.IsNullOrEmpty(assetPath))
@@ -69,18 +69,12 @@ namespace OneAsset.Editor.UI
                 return false;
             }
 
-            foreach (var loadOptionsPath in LoadOptions.Paths)
+            foreach (var loadablePath in LoadOptions.AssetPaths)
             {
-                var loadOptionsPathWithExt = loadOptionsPath;
-                if (!loadOptionsPathWithExt.EndsWith(".asset"))
-                    loadOptionsPathWithExt += ".asset";
-
-                if (!assetPath.EndsWith(loadOptionsPathWithExt))
+                if (!assetPath.EndsWith(loadablePath.OriginalPath))
                     continue;
-                
-                if (LoadOptions.AssetPaths[loadOptionsPath].IsInResourcesFolder)
-                    loadPath = LoadOptions.AssetPaths[loadOptionsPath].ResourcesPath;
-                loadPath = loadOptionsPathWithExt;
+
+                loadPath = loadablePath;
                 return true;
             }
 

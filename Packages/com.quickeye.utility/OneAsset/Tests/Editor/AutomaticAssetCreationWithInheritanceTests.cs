@@ -26,7 +26,7 @@ namespace OneAsset.Editor.Tests
             AssetDatabase.Refresh();
         }
 
-        [Test][Ignore("Feature not supported in this version")]
+        //[Test][Ignore("Feature not supported in this version")]
         public void Should_CreateNewAsset_When_TypeHasInheritedCreateAutomaticallyAttributeAndAssetIsMissing()
         {
             var asset = OneAssetLoader.LoadOrCreateScriptableObject<SoWithInheritedCreateAutomatically>();

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using UnityEngine;
 
 namespace OneAsset
 {
@@ -15,14 +16,19 @@ namespace OneAsset
         {
             return type.GetCustomAttributes<LoadFromAssetAttribute>().OrderByDescending(a => a.Priority).ToArray();
         }
-        
+
         public static AssetLoadOptions GetLoadOptions(Type type)
         {
             var loadAttributes = GetAttributesInOrder(type);
-            return GetLoadOptions(loadAttributes);
+            var fileExtension = "";
+            if (typeof(ScriptableObject).IsAssignableFrom(type))
+                fileExtension = ".asset";
+            else if (typeof(Component).IsAssignableFrom(type))
+                fileExtension = ".prefab";
+            return GetLoadOptions(loadAttributes, fileExtension);
         }
 
-        private static AssetLoadOptions GetLoadOptions(LoadFromAssetAttribute[] attributes)
+        private static AssetLoadOptions GetLoadOptions(LoadFromAssetAttribute[] attributes, string fileExtension)
         {
             attributes = attributes.OrderByDescending(a => a.Priority).ToArray();
 
@@ -30,7 +36,13 @@ namespace OneAsset
             if (highestPriorityAttribute == null)
                 return null;
 
-            var options = new AssetLoadOptions(attributes.Select(a => a.Path).ToArray())
+            var options = new AssetLoadOptions(attributes.Select(a =>
+            {
+                var path = a.Path;
+                if (!path.EndsWith(fileExtension))
+                    path = $"{path}{fileExtension}";
+                return path;
+            }).ToArray())
             {
                 AssetIsMandatory = highestPriorityAttribute.AssetIsMandatory,
                 CreateAssetIfMissing = highestPriorityAttribute.CreateAssetIfMissing,

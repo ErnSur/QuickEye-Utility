@@ -2,10 +2,10 @@ using System.IO;
 using NUnit.Framework;
 using OneAsset.Editor.Tests.SampleAssets;
 using UnityEditor;
-using UnityEngine;
 
 namespace OneAsset.Editor.Tests
 {
+    using static TestUtils;
     [TestOf(typeof(OneAssetLoader))]
     public class AutomaticAssetCreationTests
     {
@@ -49,12 +49,12 @@ namespace OneAsset.Editor.Tests
         [Test]
         public void Should_CreateNewAsset_When_PathHasNoFileExtension()
         {
-            var options = new AssetLoadOptions($"{TestUtils.TempDir}Resources/test")
+            var options = new AssetLoadOptions($"{TempDir}Resources/test")
             {
                 CreateAssetIfMissing = true
             };
            
-            var asset = OneAssetLoader.LoadOrCreateScriptableObject(typeof(ScriptableObject), options);
+            var asset = OneAssetLoader.LoadOrCreateScriptableObject(typeof(SoWithAsset), options);
 
             Assert.IsTrue(AssetDatabase.Contains(asset));
             var assetPath = AssetDatabase.GetAssetPath(asset);
@@ -64,11 +64,11 @@ namespace OneAsset.Editor.Tests
         [Test]
         public void Should_CreateNewAsset_When_PathHasFileExtension()
         {
-            var options = new AssetLoadOptions($"{TestUtils.TempDir}Resources/test.asset")
+            var options = new AssetLoadOptions($"{TempDir}Resources/test.asset")
             {
                 CreateAssetIfMissing = true
             };
-            var asset = OneAssetLoader.LoadOrCreateScriptableObject(typeof(ScriptableObject), options);
+            var asset = OneAssetLoader.LoadOrCreateScriptableObject(typeof(SoWithAsset), options);
 
             Assert.IsTrue(AssetDatabase.Contains(asset));
             var assetPath = AssetDatabase.GetAssetPath(asset);
@@ -77,10 +77,9 @@ namespace OneAsset.Editor.Tests
 
         private static void DeleteTestOnlyAssetsIfTheyExist()
         {
-            const string directoryName = TestUtils.TempDir;
-            if (Directory.Exists(directoryName))
+            if (Directory.Exists(TempDir))
             {
-                AssetDatabase.DeleteAsset(directoryName);
+                AssetDatabase.DeleteAsset(TempDir);
             }
         }
     }

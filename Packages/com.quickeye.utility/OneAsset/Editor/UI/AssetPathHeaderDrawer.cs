@@ -39,29 +39,28 @@ namespace OneAsset.Editor.UI
         {
             var hasCorrectPath = _metadata.IsInLoadablePath(out var loadPath);
             if (!hasCorrectPath)
-                loadPath = _metadata.LoadOptions.Paths[0];
+                loadPath = _metadata.LoadOptions.AssetPaths[0];
 
             using (new GUILayout.HorizontalScope())
             {
-                var path = $"{loadPath}";
-                var labelContent = new GUIContent(GetGuiContent(hasCorrectPath, loadPath, _metadata.TypeName));
+                var pathText = loadPath.ToString();
+                var labelContent = new GUIContent(GetGuiContent(hasCorrectPath, pathText, _metadata.TypeName));
                 var labelStyle = new GUIStyle(EditorStyles.label);
                 labelStyle.margin.left += 2;
                 labelStyle.margin.right += 2;
                 labelContent.text = "Load Path";
-                labelContent.tooltip = path;
+                labelContent.tooltip = pathText;
                 var labelRect = GUILayoutUtility.GetRect(labelContent, labelStyle, GUILayout.ExpandWidth(false));
                 var textFieldRect = GUILayoutUtility.GetRect(GUIContent.none, EditorStyles.textField);
 
                 GUI.enabled = false;
-                // TODO: if in resources show "*/" at the beginning
-                EditorGUI.TextField(textFieldRect, $"{path}");
+                EditorGUI.TextField(textFieldRect, pathText);
                 GUI.enabled = true;
 
                 if (GUI.RepeatButton(textFieldRect, GUIContent.none, GUIStyle.none))
                 {
                     labelContent.text = "Copied";
-                    GUIUtility.systemCopyBuffer = path;
+                    GUIUtility.systemCopyBuffer = pathText;
                 }
 
                 using (new EditorGUIUtility.IconSizeScope(new Vector2(16, 16)))

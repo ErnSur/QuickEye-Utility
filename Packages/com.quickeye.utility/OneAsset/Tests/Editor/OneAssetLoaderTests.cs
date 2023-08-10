@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace OneAsset.Editor.Tests
 {
+    using static TestUtils;
     [TestOf(typeof(OneAssetLoader))]
     public class OneAssetLoaderTests
     {
@@ -20,23 +21,21 @@ namespace OneAsset.Editor.Tests
         [SetUp]
         public void SetUp()
         {
-            TestUtils.DeleteTestOnlyDirectory();
+            DeleteTestOnlyDirectory();
         }
 
         [TearDown]
         public void TearDown()
         {
-            TestUtils.DeleteTestOnlyDirectory();
+            DeleteTestOnlyDirectory();
         }
 
-        [TestCase("Resources/test")]
-        [TestCase("/Resources/test")]
-        [TestCase("Resources/test.asset")]
-        [TestCase("Resources/test/test")]
-        [TestCase("Assets/Resources/test")]
-        [TestCase("/Assets/Resources/test")]
-        [TestCase("Resources/test.userExtension")]
-        public void Should_LoadAsset_When_AssetExists(string path)
+        [TestCase(TempDir+"Resources/"+UniqueFileName)]
+        [TestCase("/"+TempDir+"Resources/"+UniqueFileName)]
+        [TestCase(TempDir+"Resources/"+UniqueFileName+".asset")]
+        [TestCase(TempDir+"Resources/"+UniqueFileName+".userExtension")]
+        [TestCase(TempDir+"Resources/"+UniqueFileName+".userExtension.asset")]
+        public void Should_LoadAsset_When_AssetExistsInResources(string path)
         {
             var options = new AssetLoadOptions(path);
             using (new TestAssetScope(options.Paths[0]))
@@ -48,11 +47,9 @@ namespace OneAsset.Editor.Tests
             }
         }
         
-        [TestCase("Assets/one-asset-test-asset")]
-        [TestCase("Assets/one-asset-test/asset")]
-        [TestCase("/Assets/one-asset-test/asset")]
-        [TestCase("Assets/one-asset-test-asset.asset")]
-        [TestCase("Assets/one-asset-test-asset.userExtension")]
+        [TestCase(TempDir+UniqueFileName+".asset")]
+        [TestCase("/"+TempDir+UniqueFileName+".asset")]
+        [TestCase(TempDir+UniqueFileName+".userExtension.asset")]
         public void Should_LoadAsset_When_AssetInNotInResources(string path)
         {
             var options = new AssetLoadOptions(path);

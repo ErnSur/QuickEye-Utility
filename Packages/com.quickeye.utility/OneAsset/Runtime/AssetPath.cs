@@ -3,7 +3,6 @@ namespace OneAsset
     internal class AssetPath
     {
         public string OriginalPath { get; }
-        //public string PathWithExtension { get; }
         public bool IsInResourcesFolder { get; }
         public string ResourcesPath { get; }
 
@@ -15,6 +14,11 @@ namespace OneAsset
                 IsInResourcesFolder = true;
                 ResourcesPath = PathUtility.GetResourcesPath(path);
             }
+        }
+
+        public override string ToString()
+        {
+            return IsInResourcesFolder ? $"*/Resources/{ResourcesPath}" : OriginalPath;
         }
     }
 }

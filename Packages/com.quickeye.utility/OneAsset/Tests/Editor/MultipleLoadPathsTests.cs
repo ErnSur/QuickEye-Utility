@@ -1,7 +1,5 @@
-using System;
 using NUnit.Framework;
 using OneAsset.Editor.Tests.SampleAssets;
-using UnityEditor;
 using UnityEngine;
 
 namespace OneAsset.Editor.Tests

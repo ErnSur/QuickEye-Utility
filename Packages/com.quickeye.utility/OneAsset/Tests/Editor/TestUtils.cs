@@ -11,10 +11,11 @@ namespace OneAsset.Editor.Tests
     public static class TestUtils
     {
         public const string TempDir = "Assets/one-asset-tests/";
+        public const string UniqueFileName = "2e18d746-214c-4557-8e9d-f8f15389f253";
 
         public static AssetLoadOptions CreateLoadOptionsWithUniquePath(params string[] pathWithoutFileName)
         {
-            var paths = pathWithoutFileName.Select(p => $"{p}/{Guid.NewGuid().ToString()}").ToArray();
+            var paths = pathWithoutFileName.Select(p => $"{TempDir}{p}/{Guid.NewGuid().ToString()}").ToArray();
             return new AssetLoadOptions(paths);
         }
         public static ScriptableObject CreateTestSoAsset(string path)
