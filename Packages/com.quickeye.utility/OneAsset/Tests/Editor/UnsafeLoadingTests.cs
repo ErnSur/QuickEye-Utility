@@ -9,15 +9,15 @@ namespace OneAsset.Editor.Tests
         [Test]
         public void LoadUnsafe()
         {
-            var attribute = new LoadFromAssetAttribute("UNSAFE_TEST")
+            var options = new AssetLoadOptions("UNSAFE_TEST")
             {
                 LoadAndForget = true
             };
             var so = ScriptableObject.CreateInstance<SoWithAsset>();
-            UnityEditorInternal.InternalEditorUtility.SaveToSerializedFileAndForget(new Object[] { so }, attribute.Path,
+            UnityEditorInternal.InternalEditorUtility.SaveToSerializedFileAndForget(new Object[] { so }, options.Paths[0],
                 true);
 
-            var instance = OneAssetLoader.LoadOrCreateInstance(typeof(SoWithAsset), attribute);
+            var instance = OneAssetLoader.LoadOrCreateInstance(typeof(SoWithAsset), options);
 
             Assert.NotNull(instance);
             Assert.AreEqual(typeof(SoWithAsset), instance.GetType());

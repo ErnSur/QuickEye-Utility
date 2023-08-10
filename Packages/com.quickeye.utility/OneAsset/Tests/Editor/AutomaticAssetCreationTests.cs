@@ -20,7 +20,7 @@ namespace OneAsset.Editor.Tests
         {
             DeleteTestOnlyAssetsIfTheyExist();
         }
-        
+
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
@@ -33,45 +33,46 @@ namespace OneAsset.Editor.Tests
             var asset = OneAssetLoader.LoadOrCreateInstance<SoWithCreateAutomatically>();
 
             var assetPath = AssetDatabase.GetAssetPath(asset);
-            StringAssert.Contains(SoWithCreateAutomatically.AbsoluteAssetPath,assetPath);
+            StringAssert.Contains(SoWithCreateAutomatically.AbsoluteAssetPath, assetPath);
         }
-        
+
         [Test]
         public void Should_CreateNewAsset_When_AtPathFromTheAttributeWithHighestPriority()
         {
             var asset = OneAssetLoader.LoadOrCreateInstance<SoWithCreateAutomatically2>();
 
             var assetPath = AssetDatabase.GetAssetPath(asset);
-            StringAssert.Contains(SoWithCreateAutomatically2.AbsoluteAssetPathNoExt,assetPath);
+            StringAssert.Contains(SoWithCreateAutomatically2.AbsoluteAssetPathNoExt, assetPath);
             FileAssert.DoesNotExist(SoWithCreateAutomatically2.SecondaryAbsoluteAssetPath);
         }
-        
+
         [Test]
         public void Should_CreateNewAsset_When_PathHasNoFileExtension()
         {
-            var attribute = new LoadFromAssetAttribute($"{TestUtils.TempDir}Resources/test")
+            var options = new AssetLoadOptions($"{TestUtils.TempDir}Resources/test")
             {
                 CreateAssetAutomatically = true
             };
-            var asset = OneAssetLoader.LoadOrCreateInstance(typeof(ScriptableObject),attribute);
+           
+            var asset = OneAssetLoader.LoadOrCreateInstance(typeof(ScriptableObject), options);
 
             Assert.IsTrue(AssetDatabase.Contains(asset));
             var assetPath = AssetDatabase.GetAssetPath(asset);
-            StringAssert.Contains(attribute.Path,assetPath);
+            StringAssert.Contains(options.Paths[0], assetPath);
         }
-        
+
         [Test]
         public void Should_CreateNewAsset_When_PathHasFileExtension()
         {
-            var attribute = new LoadFromAssetAttribute($"{TestUtils.TempDir}Resources/test.asset")
+            var options = new AssetLoadOptions($"{TestUtils.TempDir}Resources/test.asset")
             {
                 CreateAssetAutomatically = true
             };
-            var asset = OneAssetLoader.LoadOrCreateInstance(typeof(ScriptableObject),attribute);
+            var asset = OneAssetLoader.LoadOrCreateInstance(typeof(ScriptableObject), options);
 
             Assert.IsTrue(AssetDatabase.Contains(asset));
             var assetPath = AssetDatabase.GetAssetPath(asset);
-            StringAssert.Contains(attribute.Path,assetPath);
+            StringAssert.Contains(options.Paths[0], assetPath);
         }
 
         private static void DeleteTestOnlyAssetsIfTheyExist()

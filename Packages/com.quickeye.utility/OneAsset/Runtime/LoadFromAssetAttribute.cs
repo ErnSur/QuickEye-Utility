@@ -29,11 +29,6 @@ namespace OneAsset
         public bool Mandatory { get; set; } = true;
 
         /// <summary>
-        /// When enabled, the path file name will be based on type name  
-        /// </summary>
-        public bool UseTypeNameAsFileName { get; set; }
-
-        /// <summary>
         /// Relevant for types with multiple <see cref="LoadFromAssetAttribute"/>.
         /// Optional field to specify the order in which asset is searched for. Paths with higher priority are searched first
         /// </summary>

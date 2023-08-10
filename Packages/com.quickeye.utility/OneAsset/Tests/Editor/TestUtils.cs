@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using NUnit.Framework;
 using OneAsset.Editor.Tests.SampleAssets;
 using UnityEditor;
@@ -11,10 +12,10 @@ namespace OneAsset.Editor.Tests
     {
         public const string TempDir = "Assets/one-asset-tests/";
 
-        public static LoadFromAssetAttribute CreateLoadAttributeWithUniquePath(string pathWithoutFileName)
+        public static AssetLoadOptions CreateLoadOptionsWithUniquePath(params string[] pathWithoutFileName)
         {
-            var fileName = Guid.NewGuid();
-            return new LoadFromAssetAttribute($"{pathWithoutFileName}/{fileName}");
+            var paths = pathWithoutFileName.Select(p => $"{p}/{Guid.NewGuid().ToString()}").ToArray();
+            return new AssetLoadOptions(paths);
         }
         public static ScriptableObject CreateTestSoAsset(string path)
         {

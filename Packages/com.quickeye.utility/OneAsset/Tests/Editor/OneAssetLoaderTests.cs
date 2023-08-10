@@ -38,10 +38,10 @@ namespace OneAsset.Editor.Tests
         [TestCase("Resources/test.userExtension")]
         public void Should_LoadAsset_When_AssetExists(string path)
         {
-            var loadAttribute = new LoadFromAssetAttribute(path);
-            using (new TestAssetScope(loadAttribute.Path))
+            var options = new AssetLoadOptions(path);
+            using (new TestAssetScope(options.Paths[0]))
             {
-                var actual = OneAssetLoader.LoadOrCreateInstance(typeof(SoWithAsset), loadAttribute);
+                var actual = OneAssetLoader.LoadOrCreateInstance(typeof(SoWithAsset), options);
 
                 Assert.NotNull(actual);
                 Assert.IsTrue(AssetDatabase.Contains(actual));

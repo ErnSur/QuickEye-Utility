@@ -1,6 +1,6 @@
 using System;
+using System.IO;
 using System.Linq;
-using UnityEditorInternal;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -47,51 +47,50 @@ namespace OneAsset
             return LoadOrCreateInstance(scriptableObjectType, loadAttributes);
         }
 
-        // TODO: support loading from AssetDatabase if path is not in resources folder
-        internal static ScriptableObject LoadOrCreateInstance(Type scriptableObjectType,
+        private static ScriptableObject LoadOrCreateInstance(Type scriptableObjectType,
             params LoadFromAssetAttribute[] loadFromAssetAttributesInOrder)
         {
-            if (loadFromAssetAttributesInOrder.Length == 0)
+            return LoadOrCreateInstance(scriptableObjectType, GetLoadOptions(loadFromAssetAttributesInOrder));
+        }
+
+        public static ScriptableObject LoadOrCreateInstance(Type scriptableObjectType, AssetLoadOptions options)
+        {
+            if (options == null || options.Paths.Length == 0)
                 return CreateInstance(scriptableObjectType);
-            // Try to load asset from `LoadFromAssetAttribute` path
-            if (TryLoadFromResources(scriptableObjectType, loadFromAssetAttributesInOrder, out var asset))
+
+            // Try to load asset
+            if (TryLoad(scriptableObjectType, options, out var asset))
                 return asset;
-            var highestPriorityAttribute = loadFromAssetAttributesInOrder[0];
-            
+
             // Try to create asset at path
-            if (highestPriorityAttribute.CreateAssetAutomatically && TryCreateAsset(scriptableObjectType,highestPriorityAttribute) &&
-                TryLoadFromResources(scriptableObjectType, loadFromAssetAttributesInOrder, out asset))
+            if (options.CreateAssetAutomatically &&
+                TryCreateAsset(scriptableObjectType, options) &&
+                TryLoad(scriptableObjectType, options, out asset))
                 return asset;
 
-            // if we came to this point and asset file exists on disk then that mean we are running before AssetDatabase initialized
-            // if LoadFromAssetAttribute and CreateAssetAutomatically are preset
-            // and we came to this point, it means that AssetDatabase failed to create an asset
-            // OOORRR we are in buit game and game was build without the settings asset (what are the scenarios in which this is possible?)
-            if (TryLoadUnsafe(scriptableObjectType, highestPriorityAttribute, out asset))
-                return asset;
-
-            // Throw Exception if class has `LoadFromAssetAttribute` and asset instance is mandatory 
-            if (highestPriorityAttribute.Mandatory)
-                throw new AssetIsMissingException(scriptableObjectType, highestPriorityAttribute.Path);
+            // Throw if asset is mandatory
+            if (options.AssetIsMandatory)
+                throw new AssetIsMissingException(scriptableObjectType, options.Paths[0]);
+            
             // Create and return a new instance
             return CreateInstance(scriptableObjectType);
         }
-        
-        private static bool TryLoadUnsafe(Type scriptableObjectType, LoadFromAssetAttribute highestPriorityAttribute,
+
+        private static bool TryLoadUnsafe(Type scriptableObjectType, string path,
             out ScriptableObject instance)
         {
-            if (!Application.isEditor
-                || !highestPriorityAttribute.LoadAndForget)
+#if UNITY_EDITOR
+            // Ideally this code would be in editor assembly. But when this method is called from InitializeOnLoad
+            // there is no guarantee that editor callback will be registered like with `CreateAssetAction`
+            var i = UnityEditorInternal.InternalEditorUtility
+                .LoadSerializedFileAndForget(path)
+                .FirstOrDefault(o => o.GetType() == scriptableObjectType);
+            
+            if (i == null)
             {
                 instance = null;
                 return false;
             }
-#if UNITY_EDITOR
-            // Ideally this code would be in editor assembly. But when this method is called from InitializeOnLoad
-            // there is no guarantee that editor callback will be registered like with `CreateAssetAction`
-            var i = InternalEditorUtility
-                .LoadSerializedFileAndForget(highestPriorityAttribute.Path)
-                .FirstOrDefault(o => o.GetType() == scriptableObjectType);
 
             instance = i as ScriptableObject;
             return true;
@@ -108,14 +107,14 @@ namespace OneAsset
         /// <summary>
         /// If in Editor, try to create an asset
         /// </summary>
-        private static bool TryCreateAsset(Type type,LoadFromAssetAttribute attribute)
+        private static bool TryCreateAsset(Type type, AssetLoadOptions options)
         {
             if (!Application.isEditor || CreateAssetAction == null)
                 return false;
             var obj = ScriptableObject.CreateInstance(type);
             try
             {
-                CreateAssetAction(obj,attribute);
+                CreateAssetAction(obj, options);
                 return true;
             }
             catch (Exception e)
@@ -125,15 +124,30 @@ namespace OneAsset
             }
         }
 
-        private static bool TryLoadFromResources(Type type, LoadFromAssetAttribute[] attributes,
-            out ScriptableObject obj)
+        private static bool TryLoad(Type type, AssetLoadOptions options, out ScriptableObject obj)
         {
-            foreach (var attribute in attributes.Where(a=>a.IsInResourcesFolder))
+            foreach (var path in options.Paths)
             {
-                var path = attribute.ResourcesPath;
-                obj = Resources.Load(path, type) as ScriptableObject;
-                if (obj != null)
+                if (options.AssetPaths.TryGetValue(path, out var assetPath) && assetPath.IsInResourcesFolder)
+                {
+                    obj = Resources.Load(assetPath.ResourcesPath, type) as ScriptableObject;
+                    if (obj != null)
+                        return true;
+                }
+
+                // TODO: Add tests and support for AssetDatabase later
+// #if UNITY_EDITOR
+//                 obj = UnityEditor.AssetDatabase.LoadAssetAtPath(path, type) as ScriptableObject;
+//                 if (obj != null)
+//                     return true;
+// #endif
+                if (Application.isEditor 
+                    && options.LoadAndForget 
+                    && File.Exists(path)
+                    && TryLoadUnsafe(type, path, out obj))
+                {
                     return true;
+                }
             }
 
             obj = null;
@@ -158,7 +172,7 @@ namespace OneAsset
                 return false;
             }
 
-            foreach (var attr in loadFromAssetAttributes.Where(a=>a.IsInResourcesFolder))
+            foreach (var attr in loadFromAssetAttributes.Where(a => a.IsInResourcesFolder))
             {
                 var resourcesPath = attr.ResourcesPath;
                 var prefab = Resources.Load(resourcesPath, componentType);
@@ -175,6 +189,23 @@ namespace OneAsset
                 throw new AssetIsMissingException(componentType, highestPriorityAttr.Path);
             component = null;
             return false;
+        }
+
+        private static AssetLoadOptions GetLoadOptions(LoadFromAssetAttribute[] attributes)
+        {
+            attributes = attributes.OrderByDescending(a => a.Priority).ToArray();
+
+            var highestPriorityAttribute = attributes.FirstOrDefault();
+            if (highestPriorityAttribute == null)
+                return null;
+
+            var options = new AssetLoadOptions(attributes.Select(a => a.Path).ToArray())
+            {
+                AssetIsMandatory = highestPriorityAttribute.Mandatory,
+                CreateAssetAutomatically = highestPriorityAttribute.CreateAssetAutomatically,
+                LoadAndForget = highestPriorityAttribute.LoadAndForget
+            };
+            return options;
         }
     }
 }

@@ -2,5 +2,5 @@ using UnityEngine;
 
 namespace OneAsset
 {
-    internal delegate void TryCreateAsset(ScriptableObject scriptableObject, LoadFromAssetAttribute attribute);
+    internal delegate void TryCreateAsset(ScriptableObject scriptableObject, AssetLoadOptions attribute);
 }

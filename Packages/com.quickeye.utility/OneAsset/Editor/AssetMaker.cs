@@ -15,12 +15,13 @@ namespace OneAsset.Editor
             Console.WriteLine("[AssetLoadTest] AssetMaker RegisterCallback");
         }
 
-        private static void CreateAsset(ScriptableObject obj,LoadFromAssetAttribute attribute)
+        private static void CreateAsset(ScriptableObject obj, AssetLoadOptions options)
         {
-            var baseDir = Path.GetDirectoryName(attribute.Path);
+            var path = options.Paths[0];
+            var baseDir = Path.GetDirectoryName(path);
             if (baseDir != null)
                 Directory.CreateDirectory(baseDir);
-            var assetPath = attribute.Path;
+            var assetPath = path;
             if (!assetPath.EndsWith(".asset"))
                 assetPath = $"{assetPath}.asset";
             AssetDatabase.CreateAsset(obj, assetPath);

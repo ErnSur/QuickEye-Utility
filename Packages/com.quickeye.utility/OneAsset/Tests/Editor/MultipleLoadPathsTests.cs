@@ -23,18 +23,12 @@ namespace OneAsset.Editor.Tests
         [Test]
         public void Should_LoadAssetInstanceWithHighestPriorityPath_When_TypeHasMultipleAttributes2()
         {
-            var attributeWithHighestPriority = TestUtils.CreateLoadAttributeWithUniquePath("Resources");
-            attributeWithHighestPriority.Priority = 2;
-            var lowerPriorityAttribute = TestUtils.CreateLoadAttributeWithUniquePath("Resources");
-            lowerPriorityAttribute.Priority = 1;
+            var options = TestUtils.CreateLoadOptionsWithUniquePath("Resources","Resources");
 
-            using (new TestAssetScope(lowerPriorityAttribute.Path))
-            using (var expectedAssetScope = new TestAssetScope(attributeWithHighestPriority.Path))
+            using (var expectedAssetScope = new TestAssetScope(options.Paths[0]))
+            using (new TestAssetScope(options.Paths[1]))
             {
-                var asset = OneAssetLoader.LoadOrCreateInstance(
-                    typeof(SoWithAsset),
-                    attributeWithHighestPriority,
-                    lowerPriorityAttribute);
+                var asset = OneAssetLoader.LoadOrCreateInstance(typeof(SoWithAsset),options);
 
                 Assert.NotNull(asset);
                 Assert.AreEqual(expectedAssetScope.Asset, asset);
