@@ -17,7 +17,7 @@ namespace OneAsset.Editor.Tests
             UnityEditorInternal.InternalEditorUtility.SaveToSerializedFileAndForget(new Object[] { so }, options.Paths[0],
                 true);
 
-            var instance = OneAssetLoader.LoadOrCreateInstance(typeof(SoWithAsset), options);
+            var instance = OneAssetLoader.LoadOrCreateScriptableObject(typeof(SoWithAsset), options);
 
             Assert.NotNull(instance);
             Assert.AreEqual(typeof(SoWithAsset), instance.GetType());

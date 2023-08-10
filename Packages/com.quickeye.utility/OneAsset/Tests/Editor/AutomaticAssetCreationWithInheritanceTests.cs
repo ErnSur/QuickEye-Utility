@@ -29,7 +29,7 @@ namespace OneAsset.Editor.Tests
         [Test][Ignore("Feature not supported in this version")]
         public void Should_CreateNewAsset_When_TypeHasInheritedCreateAutomaticallyAttributeAndAssetIsMissing()
         {
-            var asset = OneAssetLoader.LoadOrCreateInstance<SoWithInheritedCreateAutomatically>();
+            var asset = OneAssetLoader.LoadOrCreateScriptableObject<SoWithInheritedCreateAutomatically>();
 
             Assert.IsTrue(AssetDatabase.Contains(asset));
         }

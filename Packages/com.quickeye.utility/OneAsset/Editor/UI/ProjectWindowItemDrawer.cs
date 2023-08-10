@@ -34,7 +34,7 @@ namespace OneAsset.Editor.UI
             try
             {
                 if (!LoadFromAssetCache.TryGetEntry(guid, out var metadata) ||
-                    metadata.FirstLoadFromAssetAttribute == null)
+                    metadata.FirstLoadPath == null)
                     return;
                 if (rect.height > EditorGUIUtility.singleLineHeight)
                     DrawProjectGridItem(rect, metadata);
@@ -54,6 +54,7 @@ namespace OneAsset.Editor.UI
         {
             var projectItemLabelContent = new GUIContent(Path.GetFileNameWithoutExtension(path));
             var linkedIconRect = CalculateRectAfterLabelText(rect, projectItemLabelContent, true);
+            
             var isInLoadablePath = meta.IsInLoadablePath(out _);
             var linkedIcon = GetGuiContent(isInLoadablePath, meta.FirstResourcesPath, meta.TypeName);
             using (new EditorGUIUtility.IconSizeScope(new Vector2(16, 16)))

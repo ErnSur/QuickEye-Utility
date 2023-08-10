@@ -7,7 +7,7 @@ namespace QuickEye.Samples.SingletonAssets
     /// Creates a new Project Settings Window page using <see cref="OneScriptableObject"/>
     /// with <see cref="LoadFromAssetAttribute"/> and <see cref="SettingsProviderAssetAttribute"/>
     /// </summary>
-    [LoadFromAsset(AssetPath, Mandatory = true, CreateAssetAutomatically = true)]
+    [LoadFromAsset(AssetPath, AssetIsMandatory = true, CreateAssetIfMissing = true)]
     [SettingsProviderAsset("Project/" + SettingsPageName)]
     public class ProjectSettingsAsset : OneScriptableObject<ProjectSettingsAsset>
     {

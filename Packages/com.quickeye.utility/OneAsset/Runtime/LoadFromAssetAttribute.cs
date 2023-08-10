@@ -3,9 +3,8 @@ using System.Text;
 
 namespace OneAsset
 {
-    // TODO: add an icon in the header drawer to indicate if the asset is loadable in runtime or just editor. It should have an icon of "?" in a circle. like help button. it could also display Path formatting rules for all of the options enabled
     /// <summary>
-    /// Applies loading rules to <see cref="OneAssetLoader"/> and <see cref="OneGameObject{T}"/>.
+    /// Applies loading rules for <see cref="OneAssetLoader"/>
     /// Can be used on <see cref="UnityEngine.ScriptableObject"/> and <see cref="UnityEngine.MonoBehaviour"/>
     /// Use multiple <see cref="LoadFromAssetAttribute"/> to look for the asset in multiple different paths.
     /// </summary>
@@ -13,20 +12,20 @@ namespace OneAsset
     public sealed class LoadFromAssetAttribute : Attribute
     {
         /// <summary>
-        /// If Path starts with "Resources/" it will be loaded from resources
+        /// If Path starts with "Resources/" it will be loaded from resources and be available in runtime
         /// </summary>
         public string Path { get; }
 
         /// <summary>
         /// Enables a system that will create scriptable object file if it cannot be loaded from <see cref="LoadFromAssetAttribute.Path"/>
         /// </summary>        
-        public bool CreateAssetAutomatically { get; set; }
+        public bool CreateAssetIfMissing { get; set; }
 
         /// <summary>
-        /// <para>If set to true a <see cref="AssetIsMissingException"/> will be thrown when trying to load missing asset.</para>
+        /// <para>If set to true a <see cref="AssetIsMissingException"/> will be thrown when <see cref="OneAssetLoader"/> will not find asset at any of the paths.</para>
         /// <para>By default: true</para>
         /// </summary>
-        public bool Mandatory { get; set; } = true;
+        public bool AssetIsMandatory { get; set; } = true;
 
         /// <summary>
         /// Relevant for types with multiple <see cref="LoadFromAssetAttribute"/>.
@@ -35,16 +34,10 @@ namespace OneAsset
         public int Priority { get; set; } = 1;
 
         /// <summary>
-        /// 
+        /// In Editor, use the <see cref="UnityEditorInternal.InternalEditorUtility.LoadSerializedFileAndForget"/> as a fallback load option. Use with caution!
         /// </summary>
         public bool LoadAndForget { get; set; }
 
-        internal bool IsInResourcesFolder { get; }
-        internal string ResourcesPath { get; }
-
-        // TODO: explaining all path rules is dumb
-        // just pring warnings/errors if path is not fomrated correctly?
-        // stincking to the rule: absolute allwys work is good.
         /// <summary>
         /// Defines a path at which asset can be found for <see cref="OneAssetLoader"/> and <see cref="OneGameObject{T}"/>.
         /// Valid on types derived from <see cref="UnityEngine.ScriptableObject"/> or <see cref="OneGameObject{T}"/>
@@ -53,26 +46,16 @@ namespace OneAsset
         /// Path at which asset should be found. Should be relative to unity project directory and contain file extensions.
         /// Under certain conditions path can be less specific.
         /// <para>If path is absolute and contains a file extension, it will work with all of the options.</para>
-        /// <para>If <see cref="CreateAssetAutomatically"/> is enabled, the path must be absolute</para>
+        /// <para>If <see cref="CreateAssetIfMissing"/> is enabled, the path must be absolute</para>
         /// <para>If path </para>
         /// Doesn't have to contain file name if <see cref="UseTypeNameAsFileName"/> is set to true.
         /// </param>
         public LoadFromAssetAttribute(string path)
         {
-            Path = path.TrimStart('/');
-            
-            // should I add ext? Unity doesn't do that https://docs.unity3d.com/2020.1/Documentation/ScriptReference/ScriptableSingleton_1.html
-            // if I will the `PathUtility.GetResourcesPath` will stop working
-            // if (!LoadAndForget && !path.EndsWith(".asset"))
-            //     Path += ".asset";
-            if (PathUtility.ContainsFolder("Resources", Path))
-            {
-                IsInResourcesFolder = true;
-                ResourcesPath = PathUtility.GetResourcesPath(Path);
-            }
+            Path = path;
         }
 
-        public static string NicifyClassName(string input)
+        internal static string NicifyClassName(string input)
         {
             var result = new StringBuilder(input.Length * 2);
 

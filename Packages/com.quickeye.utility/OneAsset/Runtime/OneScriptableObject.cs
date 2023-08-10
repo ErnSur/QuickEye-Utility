@@ -22,7 +22,7 @@ namespace OneAsset
         private static T GetInstance()
         {
             if (_instance == null)
-                _instance = OneAssetLoader.LoadOrCreateInstance<T>();
+                _instance = OneAssetLoader.LoadOrCreateScriptableObject<T>();
             return _instance;
         }
     }

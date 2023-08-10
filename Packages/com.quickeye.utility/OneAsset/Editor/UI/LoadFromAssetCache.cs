@@ -96,7 +96,7 @@ namespace OneAsset.Editor.UI
 
         private static bool HasLoadFromAssetAttribute(Object asset)
         {
-            return LoadFromAssetUtils.HasAttribute(asset.GetType());
+            return AssetLoadOptionsUtility.HasAttribute(asset.GetType());
         }
 
         private static Object GetLoadableAssetOrNull(Object obj)

@@ -41,7 +41,24 @@ namespace OneAsset.Editor.Tests
             var options = new AssetLoadOptions(path);
             using (new TestAssetScope(options.Paths[0]))
             {
-                var actual = OneAssetLoader.LoadOrCreateInstance(typeof(SoWithAsset), options);
+                var actual = OneAssetLoader.LoadOrCreateScriptableObject(typeof(SoWithAsset), options);
+
+                Assert.NotNull(actual);
+                Assert.IsTrue(AssetDatabase.Contains(actual));
+            }
+        }
+        
+        [TestCase("Assets/one-asset-test-asset")]
+        [TestCase("Assets/one-asset-test/asset")]
+        [TestCase("/Assets/one-asset-test/asset")]
+        [TestCase("Assets/one-asset-test-asset.asset")]
+        [TestCase("Assets/one-asset-test-asset.userExtension")]
+        public void Should_LoadAsset_When_AssetInNotInResources(string path)
+        {
+            var options = new AssetLoadOptions(path);
+            using (new TestAssetScope(options.Paths[0]))
+            {
+                var actual = OneAssetLoader.LoadOrCreateScriptableObject(typeof(SoWithAsset), options);
 
                 Assert.NotNull(actual);
                 Assert.IsTrue(AssetDatabase.Contains(actual));
@@ -49,21 +66,21 @@ namespace OneAsset.Editor.Tests
         }
 
         /// <summary>
-        /// Mandatory asset is defined by <see cref="LoadFromAssetAttribute.Mandatory"/>
+        /// Mandatory asset is defined by <see cref="LoadFromAssetAttribute.AssetIsMandatory"/>
         /// </summary>
         [Test]
         public void Should_Throw_When_TypeHasMandatoryAssetButAssetIsMissing()
         {
             Assert.Throws<AssetIsMissingException>(() =>
             {
-                OneAssetLoader.LoadOrCreateInstance<SoWithMissingAsset>();
+                OneAssetLoader.LoadOrCreateScriptableObject<SoWithMissingAsset>();
             });
         }
 
         [Test]
         public void Should_CreateNewInstance_When_TypeHasNonMandatoryAssetAndAssetIsMissing()
         {
-            var result = OneAssetLoader.LoadOrCreateInstance<SoWithNonMandatoryMissingAsset>();
+            var result = OneAssetLoader.LoadOrCreateScriptableObject<SoWithNonMandatoryMissingAsset>();
 
             Assert.NotNull(result);
         }

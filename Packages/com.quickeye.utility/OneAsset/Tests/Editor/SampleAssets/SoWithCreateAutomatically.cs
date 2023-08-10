@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace OneAsset.Editor.Tests.SampleAssets
 {
-    [LoadFromAsset(AbsoluteAssetPath, CreateAssetAutomatically = true)]
+    [LoadFromAsset(AbsoluteAssetPath, CreateAssetIfMissing = true)]
     internal class SoWithCreateAutomatically : ScriptableObject
     {
         public const string AbsoluteAssetPath =

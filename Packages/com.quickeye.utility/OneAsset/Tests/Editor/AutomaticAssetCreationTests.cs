@@ -30,7 +30,7 @@ namespace OneAsset.Editor.Tests
         [Test]
         public void Should_CreateNewAsset_When_TypeHasCreateAutomaticallyAttributeAndAssetIsMissing()
         {
-            var asset = OneAssetLoader.LoadOrCreateInstance<SoWithCreateAutomatically>();
+            var asset = OneAssetLoader.LoadOrCreateScriptableObject<SoWithCreateAutomatically>();
 
             var assetPath = AssetDatabase.GetAssetPath(asset);
             StringAssert.Contains(SoWithCreateAutomatically.AbsoluteAssetPath, assetPath);
@@ -39,7 +39,7 @@ namespace OneAsset.Editor.Tests
         [Test]
         public void Should_CreateNewAsset_When_AtPathFromTheAttributeWithHighestPriority()
         {
-            var asset = OneAssetLoader.LoadOrCreateInstance<SoWithCreateAutomatically2>();
+            var asset = OneAssetLoader.LoadOrCreateScriptableObject<SoWithCreateAutomatically2>();
 
             var assetPath = AssetDatabase.GetAssetPath(asset);
             StringAssert.Contains(SoWithCreateAutomatically2.AbsoluteAssetPathNoExt, assetPath);
@@ -51,10 +51,10 @@ namespace OneAsset.Editor.Tests
         {
             var options = new AssetLoadOptions($"{TestUtils.TempDir}Resources/test")
             {
-                CreateAssetAutomatically = true
+                CreateAssetIfMissing = true
             };
            
-            var asset = OneAssetLoader.LoadOrCreateInstance(typeof(ScriptableObject), options);
+            var asset = OneAssetLoader.LoadOrCreateScriptableObject(typeof(ScriptableObject), options);
 
             Assert.IsTrue(AssetDatabase.Contains(asset));
             var assetPath = AssetDatabase.GetAssetPath(asset);
@@ -66,9 +66,9 @@ namespace OneAsset.Editor.Tests
         {
             var options = new AssetLoadOptions($"{TestUtils.TempDir}Resources/test.asset")
             {
-                CreateAssetAutomatically = true
+                CreateAssetIfMissing = true
             };
-            var asset = OneAssetLoader.LoadOrCreateInstance(typeof(ScriptableObject), options);
+            var asset = OneAssetLoader.LoadOrCreateScriptableObject(typeof(ScriptableObject), options);
 
             Assert.IsTrue(AssetDatabase.Contains(asset));
             var assetPath = AssetDatabase.GetAssetPath(asset);

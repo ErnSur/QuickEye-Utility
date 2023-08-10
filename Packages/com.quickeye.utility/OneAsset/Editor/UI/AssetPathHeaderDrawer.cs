@@ -5,6 +5,7 @@ namespace OneAsset.Editor.UI
 {
     using static LoadableAssetGUI;
 
+    // TODO: add an icon in the header drawer to indicate if the asset is loadable in runtime or just editor. It should have an icon of "?" in a circle. like help button. it could also display Path formatting rules for all of the options enabled
     internal class AssetPathHeaderDrawer : PostHeaderDrawer
     {
         [InitializeOnLoadMethod]
@@ -23,7 +24,7 @@ namespace OneAsset.Editor.UI
             return editor.targets.Length == 1 &&
                    EditorUtility.IsPersistent(editor.target) &&
                    LoadFromAssetCache.TryGetEntry(editor.serializedObject.targetObject, out metadata) &&
-                   metadata.LoadFromAssetAttributes.Length > 0;
+                   metadata.LoadOptions.Paths.Length > 0;
         }
 
         private readonly AssetMetadata _metadata;
@@ -36,14 +37,14 @@ namespace OneAsset.Editor.UI
 
         public override void OnGUI()
         {
-            var hasCorrectPath = _metadata.IsInLoadablePath(out var resPath);
+            var hasCorrectPath = _metadata.IsInLoadablePath(out var loadPath);
             if (!hasCorrectPath)
-                resPath = _metadata.FirstResourcesPath;
+                loadPath = _metadata.LoadOptions.Paths[0];
 
             using (new GUILayout.HorizontalScope())
             {
-                var path = $"Resources/{resPath}";
-                var labelContent = new GUIContent(GetGuiContent(hasCorrectPath, resPath, _metadata.TypeName));
+                var path = $"{loadPath}";
+                var labelContent = new GUIContent(GetGuiContent(hasCorrectPath, loadPath, _metadata.TypeName));
                 var labelStyle = new GUIStyle(EditorStyles.label);
                 labelStyle.margin.left += 2;
                 labelStyle.margin.right += 2;
@@ -53,7 +54,8 @@ namespace OneAsset.Editor.UI
                 var textFieldRect = GUILayoutUtility.GetRect(GUIContent.none, EditorStyles.textField);
 
                 GUI.enabled = false;
-                EditorGUI.TextField(textFieldRect, $"*/{path}");
+                // TODO: if in resources show "*/" at the beginning
+                EditorGUI.TextField(textFieldRect, $"{path}");
                 GUI.enabled = true;
 
                 if (GUI.RepeatButton(textFieldRect, GUIContent.none, GUIStyle.none))

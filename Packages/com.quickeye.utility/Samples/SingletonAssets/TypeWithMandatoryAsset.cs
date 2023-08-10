@@ -13,7 +13,7 @@ namespace QuickEye.Samples.SingletonAssets
     /// The <see cref="CreateAssetAutomaticallyAttribute"/> turns on a editor-only system that will create scriptable object file at specific path
     /// if it cannot be loaded from a path defined in <see cref="LoadFromAssetAttribute"/>
     /// </summary>
-    [LoadFromAsset(Path, Mandatory = true, CreateAssetAutomatically = true)]
+    [LoadFromAsset(Path, AssetIsMandatory = true, CreateAssetIfMissing = true)]
     public class TypeWithMandatoryAsset : OneScriptableObject<TypeWithMandatoryAsset>
     {
         private const string Path = "Assets/Samples/Settings/Resources/" + nameof(TypeWithMandatoryAsset);

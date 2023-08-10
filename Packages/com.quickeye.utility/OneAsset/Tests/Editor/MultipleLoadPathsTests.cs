@@ -15,7 +15,7 @@ namespace OneAsset.Editor.Tests
             var asset = Resources.Load<SoWithMultipleLoadPaths1>(SoWithMultipleLoadPaths1.FirstResourcesPath);
             Assert.NotNull(asset);
 
-            var actual = OneAssetLoader.LoadOrCreateInstance<SoWithMultipleLoadPaths1>();
+            var actual = OneAssetLoader.LoadOrCreateScriptableObject<SoWithMultipleLoadPaths1>();
 
             Assert.AreEqual(asset, actual);
         }
@@ -28,7 +28,7 @@ namespace OneAsset.Editor.Tests
             using (var expectedAssetScope = new TestAssetScope(options.Paths[0]))
             using (new TestAssetScope(options.Paths[1]))
             {
-                var asset = OneAssetLoader.LoadOrCreateInstance(typeof(SoWithAsset),options);
+                var asset = OneAssetLoader.LoadOrCreateScriptableObject(typeof(SoWithAsset),options);
 
                 Assert.NotNull(asset);
                 Assert.AreEqual(expectedAssetScope.Asset, asset);
@@ -46,7 +46,7 @@ namespace OneAsset.Editor.Tests
             Assert.IsNull(assetFromFirstPath);
             Assert.NotNull(assetFromSecondaryPath);
 
-            var actual = OneAssetLoader.LoadOrCreateInstance<SoWithMultipleLoadPaths2>();
+            var actual = OneAssetLoader.LoadOrCreateScriptableObject<SoWithMultipleLoadPaths2>();
 
             Assert.AreEqual(assetFromSecondaryPath, actual);
         }

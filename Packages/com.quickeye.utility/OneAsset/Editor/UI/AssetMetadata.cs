@@ -12,12 +12,14 @@ namespace OneAsset.Editor.UI
 
         public readonly string TypeName;
 
-        public readonly LoadFromAssetAttribute[] LoadFromAssetAttributes;
+        public readonly AssetLoadOptions LoadOptions;
+        public readonly AssetPath[] AssetPaths;
         public string[] ResourcesPaths { get; }
-        public string FirstResourcesPath => ResourcesPaths[0];
+        public string FirstResourcesPath =>
+            ResourcesPaths.Length == 0 ? null : ResourcesPaths[0];
 
-        public LoadFromAssetAttribute FirstLoadFromAssetAttribute =>
-            ResourcesPaths.Length == 0 ? null : LoadFromAssetAttributes[0];
+        public string FirstLoadPath =>
+            LoadOptions.Paths.Length == 0 ? null : LoadOptions.Paths[0];
 
         /// <summary>
         /// Metadata about the object that has <see cref="LoadFromAssetAttribute"/>
@@ -28,11 +30,12 @@ namespace OneAsset.Editor.UI
             Asset = asset;
             var type = asset.GetType();
             TypeName = type.Name;
-            LoadFromAssetAttributes = LoadFromAssetUtils.GetAttributesInOrder(type);
-            ResourcesPaths = LoadFromAssetAttributes.Select(a => a.ResourcesPath).ToArray();
+            LoadOptions = AssetLoadOptionsUtility.GetLoadOptions(type);
+            AssetPaths = LoadOptions.Paths.Select(p => LoadOptions.AssetPaths[p]).ToArray();
+            ResourcesPaths = LoadOptions.AssetPaths.Values.Where(p=>p.IsInResourcesFolder).Select(p => p.ResourcesPath).ToArray();
         }
 
-        public bool IsInLoadablePath(out string attributeLoadPath)
+        public bool IsInLoadablePath2(out string attributeLoadPath)
         {
             var assetPath = AssetDatabase.GetAssetPath(Asset);
             if (string.IsNullOrEmpty(assetPath))
@@ -54,6 +57,34 @@ namespace OneAsset.Editor.UI
             }
 
             attributeLoadPath = null;
+            return false;
+        }
+        
+        public bool IsInLoadablePath(out string loadPath)
+        {
+            var assetPath = AssetDatabase.GetAssetPath(Asset);
+            if (string.IsNullOrEmpty(assetPath))
+            {
+                loadPath = null;
+                return false;
+            }
+
+            foreach (var loadOptionsPath in LoadOptions.Paths)
+            {
+                var loadOptionsPathWithExt = loadOptionsPath;
+                if (!loadOptionsPathWithExt.EndsWith(".asset"))
+                    loadOptionsPathWithExt += ".asset";
+
+                if (!assetPath.EndsWith(loadOptionsPathWithExt))
+                    continue;
+                
+                if (LoadOptions.AssetPaths[loadOptionsPath].IsInResourcesFolder)
+                    loadPath = LoadOptions.AssetPaths[loadOptionsPath].ResourcesPath;
+                loadPath = loadOptionsPathWithExt;
+                return true;
+            }
+
+            loadPath = null;
             return false;
         }
     }

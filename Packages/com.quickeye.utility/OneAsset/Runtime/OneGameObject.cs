@@ -67,7 +67,7 @@ namespace OneAsset
             if (IsAppQuitting)
                 return null;
             if (_instance == null)
-                _instance = OneAssetLoader.CreateOrLoadGameObject(typeof(T)) as T;
+                _instance = OneAssetLoader.LoadOrCreateGameObject<T>();
 
             return _instance;
         }
