@@ -21,7 +21,7 @@ namespace OneAsset
         public bool AssetIsMandatory { get; set; }
 
         /// <summary>
-        /// In Editor, enables a system that will create scriptable object file if it cannot be loaded from <see cref="AssetLoadOptions.Paths"/>. It will always create asset at the first path form the <see cref="Paths"/> property.
+        /// In Editor, enables a system that will create scriptable object file if it cannot be loaded from <see cref="AssetLoadOptions.Paths"/>. It will always create asset at the first path from the <see cref="Paths"/> property.
         /// </summary>
         public bool CreateAssetIfMissing { get; set; }
 
