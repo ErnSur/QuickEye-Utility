@@ -8,7 +8,7 @@ namespace QuickEye.Samples.SingletonAssets
         private void Awake()
         {
             // PopupView class is a GameObject Singleton
-            PopupView.Instance.SetMessage($"Hello {Environment.UserName}!");
+            PopupView.Instance.SetMessage($"Hello World!");
             
             // Example usage of different types of singletons:
             var s1 = TypeWithoutAnAsset.Instance;

@@ -7,8 +7,11 @@ using Object = UnityEngine.Object;
 using UnityEditor;
 #endif
 
+
 namespace OneAsset
 {
+    // Ideally this code would be in editor assembly. But these methods need to be accessible from InitializeOnLoad
+    // there is no guarantee that editor callback will be registered like with `CreateAssetAction`
     public static partial class OneAssetLoader
     {
         private static bool TryLoadFromAssetDatabase(Type type, AssetPath path, out Object obj)
@@ -31,8 +34,6 @@ namespace OneAsset
                 return false;
             }
             
-            // Ideally this code would be in editor assembly. But when this method is called from InitializeOnLoad
-            // there is no guarantee that editor callback will be registered like with `CreateAssetAction`
             obj = UnityEditorInternal.InternalEditorUtility
                 .LoadSerializedFileAndForget(path.OriginalPath)
                 .FirstOrDefault(o => o.GetType() == type);

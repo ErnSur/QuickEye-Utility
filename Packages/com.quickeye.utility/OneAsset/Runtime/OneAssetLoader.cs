@@ -80,6 +80,7 @@ namespace OneAsset
         {
             return LoadOrCreateScriptableObject(typeof(T)) as T;
         }
+        
         #endregion
 
         #region LoadOrCreateGameObject

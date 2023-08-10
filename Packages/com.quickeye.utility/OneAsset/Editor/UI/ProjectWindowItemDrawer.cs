@@ -56,14 +56,14 @@ namespace OneAsset.Editor.UI
             var linkedIconRect = CalculateRectAfterLabelText(rect, projectItemLabelContent, true);
             
             var isInLoadablePath = meta.IsInLoadablePath(out _);
-            var linkedIcon = GetGuiContent(isInLoadablePath, meta.FirstResourcesPath, meta.TypeName);
+            var linkedIcon = GetGuiContent(isInLoadablePath, meta.FirstLoadPath, meta.TypeName);
             using (new EditorGUIUtility.IconSizeScope(new Vector2(16, 16)))
                 GUI.Label(linkedIconRect, linkedIcon, IconLabelStyle);
         }
 
         private static void DrawProjectGridItem(Rect rect, AssetMetadata meta)
         {
-            var content = GetGuiContent(meta.IsInLoadablePath(out _), meta.FirstResourcesPath, meta.TypeName);
+            var content = GetGuiContent(meta.IsInLoadablePath(out _), meta.FirstLoadPath, meta.TypeName);
             var iconRect = new Rect(rect)
             {
                 size = new Vector2(rect.size.y, rect.size.y) / 3
