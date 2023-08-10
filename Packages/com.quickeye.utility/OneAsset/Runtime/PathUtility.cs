@@ -15,6 +15,7 @@ namespace OneAsset
             return folders.Contains(folder);
         }
 
+        // TODO: enforce forward slashes
         public static string EnsurePathStartsWith(string folderName, string path)
         {
             var cleanPath = Path.Combine(Path.GetDirectoryName(path) ?? "", Path.GetFileName(path));
@@ -24,25 +25,20 @@ namespace OneAsset
             return Combine(folderName, path);
         }
 
-        // TODO: enforce forward slashes
         public static string EnsurePathEndsWith(string folderName, string path)
         {
             var cleanPath = Path.Combine(Path.GetDirectoryName(path) ?? "", Path.GetFileName(path));
             var folders = cleanPath.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
             return folders.Last() == folderName ? path : Path.Combine(path, folderName);
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="folderName"></param>
+        
+        /// <param name="folderName">Name of the folder that the result path should start with</param>
         /// <param name="path">Must use forward slashes</param>
-        /// <returns></returns>
         public static string GetPathRelativeTo(string folderName, string path)
         {
             if (!path.StartsWith("/"))
                 path = $"/{path}";
-            // TODO: chack if is case sensitive
+
             folderName = $"/{folderName}/";
             // Find the last index of the folder name in the path
             int index = path.LastIndexOf(folderName, StringComparison.InvariantCulture);

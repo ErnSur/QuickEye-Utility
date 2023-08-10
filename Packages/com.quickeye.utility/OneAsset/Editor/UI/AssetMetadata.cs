@@ -71,11 +71,18 @@ namespace OneAsset.Editor.UI
 
             foreach (var loadablePath in LoadOptions.AssetPaths)
             {
-                if (!assetPath.EndsWith(loadablePath.OriginalPath))
-                    continue;
+                if (loadablePath.IsInResourcesFolder &&
+                    assetPath.EndsWith(loadablePath.ResourcesPath + loadablePath.Extension))
+                {
+                    loadPath = loadablePath;
+                    return true;
+                }
 
-                loadPath = loadablePath;
-                return true;
+                if (loadablePath.OriginalPath == assetPath)
+                {
+                    loadPath = loadablePath;
+                    return true;
+                }
             }
 
             loadPath = null;
