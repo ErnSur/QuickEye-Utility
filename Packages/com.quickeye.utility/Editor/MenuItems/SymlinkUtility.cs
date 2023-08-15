@@ -42,7 +42,7 @@ namespace QuickEye.Utility.Editor
             {
                 var path = AssetDatabase.GUIDToAssetPath(guid);
 
-                if (string.IsNullOrEmpty(path))
+                if (string.IsNullOrEmpty(path) || !File.Exists(path))
                     return;
                 var attributes = File.GetAttributes(path);
                 var nr = IMGUIUtility.CalculateRectAfterLabelText(r, path, true);
@@ -253,7 +253,7 @@ namespace QuickEye.Utility.Editor
                 }
             }
         }
-        
+
         private enum SymlinkType
         {
             Junction,
