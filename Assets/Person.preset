@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!181963792 &2655988077585873504
+Preset:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Person
+  m_TargetType:
+    m_NativeTypeID: 114
+    m_ManagedTypePPtr: {fileID: 11500000, guid: 1f4cd29be5c546628631ff2eae25375c,
+      type: 3}
+    m_ManagedTypeFallback: 
+  m_Properties:
+  - target: {fileID: 0}
+    propertyPath: m_Enabled
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorHideFlags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorClassIdentifier
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: name
+    value: Per
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: egg
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: age
+    value: -70
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: size.x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: size.y
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: friends.Array.size
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: friends.Array.data[0]
+    value: original f1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: friends.Array.data[1]
+    value: original f2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: legs
+    value: 0
+    objectReference: {fileID: 0}
+  m_ExcludedProperties:
+  - m_Enabled
+  - m_EditorHideFlags
+  - m_EditorClassIdentifier
+  - name
+  - egg
+  - age
+  - size
+  - friends
+  - legs

@@ -1,0 +1,21 @@
+{
+    "dic": {
+        "list": [
+            {
+                "key": "prefab",
+                "value": "{\"guid\":\"3eeb5cf60c4ff4f148628b4bf0f70e8f\",\"fileId\":5274605344394302527}",
+                "duplicatedKey": false
+            },
+            {
+                "key": "age",
+                "value": "-56",
+                "duplicatedKey": false
+            },
+            {
+                "key": "legs",
+                "value": "0",
+                "duplicatedKey": false
+            }
+        ]
+    }
+}

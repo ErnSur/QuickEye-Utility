@@ -1,0 +1,19 @@
+{
+    "name": "ScriptableVariants.Editor",
+    "rootNamespace": "ScriptableVariants.Editor",
+    "references": [
+        "GUID:b407bbb6a44d441dda9557212a59a9ae",
+        "GUID:07ccd62b4443d194480040cde09607cc"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
