@@ -24,10 +24,7 @@ Data types, GUI Controls and Property Drawers related to time.
 
 ## One-Asset
 
-A set of classes and editor UI improvements aimed to improve workflows that expect single instances of assets.
-[Dedicated documentation](./OneAsset/README.md)
-
-<img  src="Documentation~/SingletonUI.png" width="70%">
+One Asset became a standalone package that can be found at [ErnSur/One-Asset](https://github.com/ErnSur/One-Asset).
 
 ## Editor
 
