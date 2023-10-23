@@ -1,3 +1,19 @@
 {
-  "name": "GlobalEvents","references": ["QuickEye.Utility","QuickEye.EventSystem"]
+    "name": "GlobalEvents",
+    "rootNamespace": "",
+    "references": [
+        "QuickEye.Utility",
+        "QuickEye.EventSystem",
+        "UnityAtoms.UnityAtomsCore.Runtime",
+        "UnityAtoms.UnityAtomsBaseAtoms.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

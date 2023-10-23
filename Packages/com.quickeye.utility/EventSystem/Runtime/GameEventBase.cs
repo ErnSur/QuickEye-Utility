@@ -29,4 +29,6 @@ namespace QuickEye.EventSystem
     {
         void RepeatLastInvoke();
     }
+    
+    
 }

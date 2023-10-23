@@ -5,6 +5,10 @@ namespace QuickEye.EventSystem
 {
     public abstract class GameEvent<TArgs> : GameEventBase, IInvokable
     {
+        public class Hub : MonoBehaviour
+        {
+            public TArgs val;
+        }
         [SerializeField]
         TArgs _lastPayload;
 
