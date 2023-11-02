@@ -1,7 +1,7 @@
 {
   "name": "com.quickeye.utility",
   "displayName": "QuickEye Utility",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "unity": "2020.3",
   "author": "Quick Eye",
   "type": "library",

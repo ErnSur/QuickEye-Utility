@@ -42,12 +42,18 @@ namespace QuickEye.Utility.Editor
             {
                 var path = AssetDatabase.GUIDToAssetPath(guid);
 
-                if (string.IsNullOrEmpty(path) || !File.Exists(path))
+
+                if (string.IsNullOrEmpty(path))
+                    return;
+                var exists = File.Exists(path) || Directory.Exists(path);
+                if(!exists)
                     return;
                 var attributes = File.GetAttributes(path);
                 var nr = IMGUIUtility.CalculateRectAfterLabelText(r, path, true);
                 if ((attributes & FolderSymlinkAttributes) == FolderSymlinkAttributes)
+                {
                     GUI.Label(nr, SymlinkLabelText, SymlinkMarkerStyle);
+                }
             }
             catch (Exception e)
             {
