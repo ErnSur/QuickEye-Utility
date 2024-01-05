@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 namespace QuickEye.Utility.Editor.AssemblyReloading
 {
     [InitializeOnLoad]
-    public static class AssemblyReloadToggle
+    internal static class AssemblyReloadToggle
     {
         private const string LockReloadPrefsKey = "LockReloadAssemblies";
         private const string UIAssetsDirectory = "Packages/com.quickeye.utility/Editor/AssemblyReloading/UI Assets/";
