@@ -1,3 +1,4 @@
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -9,16 +10,16 @@ namespace QuickEye.Utility.Editor.AssemblyReloading
     {
         private const string LockReloadPrefsKey = "LockReloadAssemblies";
         private const string UIAssetsDirectory = "Packages/com.quickeye.utility/Editor/AssemblyReloading/UI Assets/";
-        
+
         private const string UxmlPath = UIAssetsDirectory + "ExtendedStatusBar.uxml";
         private const string StyleSheetPathDark = UIAssetsDirectory + "ExtendedStatusBar.style.dark.uss";
         private const string StyleSheetPathLight = UIAssetsDirectory + "ExtendedStatusBar.style.light.uss";
 
-        private static bool UserAssemblyLock
-        {
-            get => EditorPrefs.GetInt(LockReloadPrefsKey, 0) == 1;
-            set => EditorPrefs.SetInt(LockReloadPrefsKey, value ? 1 : 0);
-        }
+        private static readonly MethodInfo CanReloadAssembliesMethod = typeof(EditorApplication).GetMethod(
+            "CanReloadAssemblies",
+            BindingFlags.Static | BindingFlags.NonPublic);
+
+        private static bool CanReloadAssemblies => (bool)CanReloadAssembliesMethod.Invoke(null, null);
 
         static AssemblyReloadToggle()
         {
@@ -34,16 +35,15 @@ namespace QuickEye.Utility.Editor.AssemblyReloading
             SetupAssemblyToggle(assemblyToggle);
         }
 
-        private static void SetupAssemblyToggle(Toggle assemblyToggle)
+        private static void SetupAssemblyToggle(Toggle disableAssemblyReloadToggle)
         {
-            assemblyToggle.value = UserAssemblyLock;
-            UpdateButtonTooltip(assemblyToggle);
-            assemblyToggle.RegisterValueChangedCallback(e =>
+            disableAssemblyReloadToggle.value = !CanReloadAssemblies;
+            UpdateButtonTooltip(disableAssemblyReloadToggle);
+            disableAssemblyReloadToggle.RegisterValueChangedCallback(e =>
             {
-                if (UserAssemblyLock == e.newValue)
+                if (CanReloadAssemblies == !e.newValue)
                     return;
-                UserAssemblyLock = e.newValue;
-                if (UserAssemblyLock)
+                if (e.newValue)
                 {
                     EditorApplication.LockReloadAssemblies();
                 }
@@ -53,8 +53,7 @@ namespace QuickEye.Utility.Editor.AssemblyReloading
                     EditorUtility.RequestScriptReload();
                 }
 
-                UpdateButtonTooltip(assemblyToggle);
-                Debug.Log($"UserAssemblyLock: {UserAssemblyLock}");
+                UpdateButtonTooltip(disableAssemblyReloadToggle);
             });
         }
 

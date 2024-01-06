@@ -1,5 +1,5 @@
 {
-    "name": "Unity.InternalAPIEditorBridge.008",
+    "name": "QuickEye.Utility.Editor.AssemblyReloading",
     "rootNamespace": "QuickEye.Utility.Editor.AssemblyReloading",
     "references": [],
     "includePlatforms": [
