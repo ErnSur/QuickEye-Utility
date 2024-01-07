@@ -1,6 +1,5 @@
 using System.Reflection;
 using UnityEditor;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace QuickEye.Utility.Editor.AssemblyReloading
@@ -8,7 +7,6 @@ namespace QuickEye.Utility.Editor.AssemblyReloading
     [InitializeOnLoad]
     internal static class AssemblyReloadToggle
     {
-        private const string LockReloadPrefsKey = "LockReloadAssemblies";
         private const string UIAssetsDirectory = "Packages/com.quickeye.utility/Editor/AssemblyReloading/UI Assets/";
 
         private const string UxmlPath = UIAssetsDirectory + "ExtendedStatusBar.uxml";
