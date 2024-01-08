@@ -32,7 +32,7 @@ namespace QuickEye.Utility.Editor.AssemblyReloading
             UpdateButtonTooltip(assemblyReloadToggle);
             assemblyReloadToggle.RegisterValueChangedCallback(e =>
             {
-                AssemblyReloadLock.SetActive(e.newValue);
+                AssemblyReloadLock.IsLocked = e.newValue;
                 UpdateButtonTooltip(assemblyReloadToggle);
             });
         }

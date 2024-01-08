@@ -1,31 +1,24 @@
-using System.Reflection;
 using UnityEditor;
 
 namespace QuickEye.Utility.Editor.AssemblyReloading
 {
     internal static class AssemblyReloadLock
     {
-        private static readonly MethodInfo CanReloadAssembliesMethod = typeof(EditorApplication).GetMethod(
-            "CanReloadAssemblies",
-            BindingFlags.Static | BindingFlags.NonPublic);
+        private static bool _isLocked;
 
         public static bool IsLocked
         {
-            get
+            get => _isLocked;
+            set
             {
-                var result = CanReloadAssembliesMethod?.Invoke(null, null);
-                if (result is bool canReload)
-                    return !canReload;
-                return false;
+                if (value == _isLocked)
+                    return;
+                if (value)
+                    Enable();
+                else
+                    Disable();
+                _isLocked = value;
             }
-        }
-
-        public static void SetActive(bool lockAssemblyReload)
-        {
-            if (lockAssemblyReload)
-                Enable();
-            else
-                Disable();
         }
 
         private static void Enable()
