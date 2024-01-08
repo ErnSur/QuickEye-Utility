@@ -1,11 +1,10 @@
-using System.Reflection;
 using UnityEditor;
 using UnityEngine.UIElements;
 
 namespace QuickEye.Utility.Editor.AssemblyReloading
 {
     [InitializeOnLoad]
-    internal static class AssemblyReloadToggle
+    internal static class UI
     {
         private const string UIAssetsDirectory = "Packages/com.quickeye.utility/Editor/AssemblyReloading/UI Assets/";
 
@@ -13,13 +12,7 @@ namespace QuickEye.Utility.Editor.AssemblyReloading
         private const string StyleSheetPathDark = UIAssetsDirectory + "ExtendedStatusBar.style.dark.uss";
         private const string StyleSheetPathLight = UIAssetsDirectory + "ExtendedStatusBar.style.light.uss";
 
-        private static readonly MethodInfo CanReloadAssembliesMethod = typeof(EditorApplication).GetMethod(
-            "CanReloadAssemblies",
-            BindingFlags.Static | BindingFlags.NonPublic);
-
-        private static bool CanReloadAssemblies => (bool)CanReloadAssembliesMethod.Invoke(null, null);
-
-        static AssemblyReloadToggle()
+        static UI()
         {
             StatusBarExtender.StatusBarCreated += InitializeExtendedStatusBar;
         }
@@ -29,29 +22,18 @@ namespace QuickEye.Utility.Editor.AssemblyReloading
             var extBarContainer = AddExtendedStatusBar(rootVisualElement);
             RegisterBarSizeCorrection(rootVisualElement, extBarContainer);
             rootVisualElement.Add(extBarContainer);
-            var assemblyToggle = extBarContainer.Q<Toggle>("compilation-toggle");
-            SetupAssemblyToggle(assemblyToggle);
+            var assemblyReloadToggle = extBarContainer.Q<Toggle>("compilation-toggle");
+            SetupAssemblyReloadToggle(assemblyReloadToggle);
         }
 
-        private static void SetupAssemblyToggle(Toggle disableAssemblyReloadToggle)
+        private static void SetupAssemblyReloadToggle(Toggle assemblyReloadToggle)
         {
-            disableAssemblyReloadToggle.value = !CanReloadAssemblies;
-            UpdateButtonTooltip(disableAssemblyReloadToggle);
-            disableAssemblyReloadToggle.RegisterValueChangedCallback(e =>
+            assemblyReloadToggle.value = AssemblyReloadLock.IsLocked;
+            UpdateButtonTooltip(assemblyReloadToggle);
+            assemblyReloadToggle.RegisterValueChangedCallback(e =>
             {
-                if (CanReloadAssemblies == !e.newValue)
-                    return;
-                if (e.newValue)
-                {
-                    EditorApplication.LockReloadAssemblies();
-                }
-                else
-                {
-                    EditorApplication.UnlockReloadAssemblies();
-                    EditorUtility.RequestScriptReload();
-                }
-
-                UpdateButtonTooltip(disableAssemblyReloadToggle);
+                AssemblyReloadLock.SetActive(e.newValue);
+                UpdateButtonTooltip(assemblyReloadToggle);
             });
         }
 
