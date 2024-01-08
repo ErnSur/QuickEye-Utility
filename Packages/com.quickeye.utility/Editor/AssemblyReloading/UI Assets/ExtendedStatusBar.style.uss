@@ -1,0 +1,45 @@
+.ext-status-bar {
+    align-self: flex-end;
+}
+
+.compilation-toggle {
+    width: 25px;
+    height: 20px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+}
+
+.compilation-toggle .unity-toggle__input {
+    -unity-background-scale-mode: scale-to-fit;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    height: 18px;
+    width: 16px;
+    flex-grow: 0;
+}
+
+.compilation-toggle:hover {
+    background-color: var(--unity-colors-highlight-background-hover-lighter);
+}
+
+.compilation-toggle:active {
+    background-color: initial;
+}
+
+.compilation-toggle #unity-checkmark {
+    display: none;
+}

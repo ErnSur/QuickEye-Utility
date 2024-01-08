@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Packages/com.quickeye.utility/Editor/AssemblyReloading/UI%20Assets/ExtendedStatusBar.style.uss?fileID=7433441132597879392&amp;guid=4057d183a10c440bf8a47251916671e3&amp;type=3#ExtendedStatusBar.style" />
+    <ui:VisualElement class="ext-status-bar" style="flex-direction: row;">
+        <ui:VisualElement style="flex-grow: 1; background-color: rgb(0, 255, 26); position: absolute; left: 0; top: 0; right: 0; bottom: 0; display: none;" />
+        <ui:Toggle name="compilation-toggle" class="compilation-toggle" />
+        <ui:VisualElement style="width: 15px;" />
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,11 @@
+.compilation-toggle .unity-toggle__input {
+    background-image: url('project://database/Packages/com.quickeye.utility/Editor/AssemblyReloading/UI%20Assets/Icons/Assembly.png?fileID=2800000&guid=4f12038a75ad3433a9d84aceecd2a40a&type=3#Assembly');
+}
+
+.compilation-toggle:hover {
+    background-color: var(--unity-colors-highlight-background-hover-lighter);
+}
+
+.compilation-toggle .unity-toggle__input:checked {
+    background-image: url('project://database/Packages/com.quickeye.utility/Editor/AssemblyReloading/UI%20Assets/Icons/AssemblyDisabled.png?fileID=2800000&guid=ac0552e57d18d4f3596f284f77ce344b&type=3#AssemblyDisabled');
+}

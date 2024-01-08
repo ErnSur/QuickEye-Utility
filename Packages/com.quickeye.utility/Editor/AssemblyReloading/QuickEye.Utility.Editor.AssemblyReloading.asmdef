@@ -1,0 +1,16 @@
+{
+    "name": "QuickEye.Utility.Editor.AssemblyReloading",
+    "rootNamespace": "QuickEye.Utility.Editor.AssemblyReloading",
+    "references": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
