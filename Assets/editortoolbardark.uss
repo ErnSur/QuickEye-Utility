@@ -1,0 +1,174 @@
+#Cloud .unity-editor-toolbar-element__icon {
+    background-image: resource("Icons/d_CloudConnect.png");
+}
+
+#History .unity-editor-toolbar-element__icon {
+    background-image: resource("Icons/d_UndoHistory.png");
+}
+
+#LayoutDropdown .unity-editor-toolbar-element__icon {
+    background-image: resource("StyleSheets/Northstar/Images/d_layout.png");
+}
+
+#Pause .unity-editor-toolbar-element__icon-off {
+    background-image: resource("Icons/d_PauseButton.png");
+}
+
+#Pause .unity-editor-toolbar-element__icon-on {
+    background-image: resource("Icons/d_PauseButton On.png");
+}
+
+#Play .unity-editor-toolbar-element__icon-off {
+    background-image: resource("Icons/d_PlayButton.png");
+}
+
+#Play .unity-editor-toolbar-element__icon-on {
+    background-image: resource("Icons/d_PlayButton On.png");
+}
+
+#Play .unity-editor-toolbar-element__button:checked {
+    background-color: rgb(40, 84, 124);
+}
+
+#Play:checked {
+    background-color: rgb(40, 84, 124);
+}
+
+#Pause:checked {
+    background-color: rgb(40, 84, 124);
+}
+
+#PreviewPackageInUse .unity-toolbar-button-preview-packages-in-use {
+    background-color: black;
+}
+
+#PreviewPackageInUse .unity-toolbar-button-preview-packages-in-use:hover {
+    background-color: rgb(15, 15, 15);
+}
+
+.unity-toolbar-button-preview-packages-in-use {
+    background-color: black;
+    border-color: rgba(255, 193, 7, 0.6);
+}
+
+.unity-editor-main-toolbar .unity-toolbar-button-preview-packages-in-use {
+    background-color: black;
+    border-color: rgba(255, 193, 7, 0.6);
+}
+
+.unity-editor-toolbar-element-preview-packages-in-use__label {
+    -unity-text-align: middle-center;
+    color: rgb(255, 193, 7);
+}
+
+#Step .unity-editor-toolbar-element__icon {
+    background-image: resource("Icons/d_StepButton.png");
+}
+
+#SnapSettings .unity-editor-toolbar-element__icon-on {
+    background-image: resource("Icons/Snap/d_SceneViewSnap-On.png");
+}
+
+#SnapSettings .unity-editor-toolbar-element__icon-off {
+    background-image: resource("Icons/Snap/d_SceneViewSnap-Off.png");
+}
+
+#History .unity-editor-toolbar-element__icon {
+    background-image: resource("Icons/d_UndoHistory.png");
+}
+
+.unity-icon-arrow {
+    background-image: resource("StyleSheets/Northstar/Images/d_dropdown.png");
+}
+
+.unity-icon-account {
+    background-image: resource("StyleSheets/Northstar/Images/d_account.png");
+}
+
+.unity-tool-settings #PivotIcon {
+    background-image: resource("Icons/d_ToolHandlePivot.png");
+}
+
+.unity-tool-settings #CenterIcon {
+    background-image: resource("Icons/d_ToolHandleCenter.png");
+}
+
+.unity-tool-settings #LocalIcon {
+    background-image: resource("Icons/d_ToolHandleLocal.png");
+}
+
+.unity-tool-settings #GlobalIcon {
+    background-image: resource("Icons/d_ToolHandleGlobal.png");
+}
+
+#BuiltinTools #ViewTool_Pan .unity-editor-toolbar-element__icon-off {
+    background-image: resource("Icons/d_ViewToolMove.png");
+}
+
+#BuiltinTools #ViewTool_Pan .unity-editor-toolbar-element__icon-on {
+    background-image: resource("Icons/d_ViewToolMove On.png");
+}
+
+#BuiltinTools #ViewTool_Zoom .unity-editor-toolbar-element__icon-off {
+    background-image: resource("Icons/d_ViewToolZoom.png");
+}
+
+#BuiltinTools #ViewTool_Zoom .unity-editor-toolbar-element__icon-on {
+    background-image: resource("Icons/d_ViewToolZoom On.png");
+}
+
+#BuiltinTools #ViewTool_Orbit .unity-editor-toolbar-element__icon-off {
+    background-image: resource("Icons/d_ViewToolOrbit.png");
+}
+
+#BuiltinTools #ViewTool_Orbit .unity-editor-toolbar-element__icon-on {
+    background-image: resource("Icons/d_ViewToolOrbit On.png");
+}
+
+#BuiltinTools #ViewTool_FPS .unity-editor-toolbar-element__icon-off {
+    background-image: resource("Icons/d_ViewToolOrbit.png");
+}
+
+#BuiltinTools #ViewTool_FPS .unity-editor-toolbar-element__icon-on {
+    background-image: resource("Icons/d_ViewToolOrbit On.png");
+}
+
+#BuiltinTools #MoveTool .unity-editor-toolbar-element__icon-off {
+    background-image: resource("Icons/d_MoveTool.png");
+}
+
+#BuiltinTools #MoveTool .unity-editor-toolbar-element__icon-on {
+    background-image: resource("Icons/d_MoveTool On.png");
+}
+
+#BuiltinTools #RotateTool .unity-editor-toolbar-element__icon-off {
+    background-image: resource("Icons/d_RotateTool.png");
+}
+
+#BuiltinTools #RotateTool .unity-editor-toolbar-element__icon-on {
+    background-image: resource("Icons/d_RotateTool On.png");
+}
+
+#BuiltinTools #ScaleTool .unity-editor-toolbar-element__icon-off {
+    background-image: resource("Icons/d_ScaleTool.png");
+}
+
+#BuiltinTools #ScaleTool .unity-editor-toolbar-element__icon-on {
+    background-image: resource("Icons/d_ScaleTool On.png");
+}
+
+#BuiltinTools #RectTool .unity-editor-toolbar-element__icon-off {
+    background-image: resource("Icons/d_RectTool.png");
+}
+
+#BuiltinTools #RectTool .unity-editor-toolbar-element__icon-on {
+    background-image: resource("Icons/d_RectTool On.png");
+}
+
+#BuiltinTools #TransformTool .unity-editor-toolbar-element__icon-off {
+    background-image: resource("Icons/d_TransformTool.png");
+}
+
+#BuiltinTools #TransformTool .unity-editor-toolbar-element__icon-on {
+    background-image: resource("Icons/d_TransformTool On.png");
+}

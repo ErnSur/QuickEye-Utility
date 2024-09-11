@@ -1,4 +1,6 @@
 using UnityEditor;
+using UnityEditor.ShortcutManagement;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace QuickEye.Utility.Editor.AssemblyReloading
@@ -7,10 +9,25 @@ namespace QuickEye.Utility.Editor.AssemblyReloading
     internal static class UI
     {
         private const string UIAssetsDirectory = "Packages/com.quickeye.utility/Editor/AssemblyReloading/UI Assets/";
-
+        private const string MenuItemName = "File/Lock Assembly Reload";
         private const string UxmlPath = UIAssetsDirectory + "ExtendedStatusBar.uxml";
         private const string StyleSheetPathDark = UIAssetsDirectory + "ExtendedStatusBar.style.dark.uss";
         private const string StyleSheetPathLight = UIAssetsDirectory + "ExtendedStatusBar.style.light.uss";
+
+        [Shortcut(MenuItemName, KeyCode.L, ShortcutModifiers.Shift | ShortcutModifiers.Action)]
+        [MenuItem(MenuItemName)]
+        private static void ToggleMenuAction()
+        {
+            Debug.Log("Assembly reload " + (!AssemblyReloadLock.IsLocked ? "disabled" : "enabled, reloading scripts") + ".");
+            AssemblyReloadLock.IsLocked = !AssemblyReloadLock.IsLocked;
+        }
+
+        [MenuItem(MenuItemName, validate = true)]
+        private static bool ToggleMenuActionValidate()
+        {
+            Menu.SetChecked("File/Lock Assembly Reload", AssemblyReloadLock.IsLocked);
+            return true;
+        }
 
         static UI()
         {
@@ -19,6 +36,8 @@ namespace QuickEye.Utility.Editor.AssemblyReloading
 
         private static void InitializeExtendedStatusBar(VisualElement rootVisualElement)
         {
+            var button = new Button() { text = "Hello world" };
+            rootVisualElement.Add(button);
             var extBarContainer = AddExtendedStatusBar(rootVisualElement);
             RegisterBarSizeCorrection(rootVisualElement, extBarContainer);
             rootVisualElement.Add(extBarContainer);
